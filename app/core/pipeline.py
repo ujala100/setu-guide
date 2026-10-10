@@ -24,13 +24,16 @@ from app.core.responder import (
 )
 
 
-PROMPT_FILES = {
-    "conversation_ideas": "prompts/conversation_ideas.txt",
-    "help_me_understand": "prompts/help_me_understand.txt",
-    "next_steps": "prompts/next_steps.txt",
-    "privacy_safety": "prompts/privacy_safety.txt",
-}
+from pathlib import Path
 
+PROMPT_DIR = Path(__file__).resolve().parent / "prompts"
+
+PROMPT_FILES = {
+    "conversation_ideas": PROMPT_DIR / "conversation_ideas.txt",
+    "help_me_understand": PROMPT_DIR / "help_me_understand.txt",
+    "next_steps": PROMPT_DIR / "next_steps.txt",
+    "privacy_safety": PROMPT_DIR / "privacy_safety.txt",
+}
 
 def load_prompt(
     intent,
@@ -49,10 +52,10 @@ def load_prompt(
         return None
 
     with open(
-        prompt_file,
-        "r",
-        encoding="utf-8"
-    ) as file:
+    prompt_file,
+    "r",
+    encoding="utf-8"
+) as file:
 
         prompt = file.read()
 
