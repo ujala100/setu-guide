@@ -77,3 +77,12 @@ def test_orchestrator_adapter_shape():
     assert len(out) == 3
     assert all(set(c) == {"id", "text", "topic", "source"} for c in out)
     assert retrieve_for_orchestrator("next_steps", {}, "what now")  # missing stage -> connect
+
+
+def test_unverified_deck_chunks_are_never_returned():
+    for stage in sorted(STAGES):
+        for intent in INTENTS:
+            for query in ("anything", "is it safe to share my salary", "can you predict if we will succeed",
+                          "is my data erased", "are names hidden"):
+                for r in retrieve(query, stage, intent, k=10):
+                    assert not r["source"].startswith("deck_"), (stage, intent, query, r["chunk_id"])
