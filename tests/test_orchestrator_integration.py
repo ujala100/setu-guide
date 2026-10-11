@@ -1,5 +1,9 @@
 """Router + retriever + prompts + responder wired through orchestrator.handle()."""
+import json
+
 import pytest
+
+from app.rag.retriever import KB_PATH
 
 from app.core import orchestrator, pipeline
 from app.schemas.guide import GuideRequest, Intent, Stage
@@ -140,3 +144,35 @@ def test_logs_never_contain_the_message(monkeypatch, caplog):
     with caplog.at_level("INFO", logger="setu.guide.core"):
         ask(intent="next_steps", message="PRIVATE-MARKER-TEXT about my match")
     assert "PRIVATE-MARKER-TEXT" not in caplog.text
+
+
+def _kb():
+    return {c["chunk_id"]: c for c in json.loads(open(KB_PATH, encoding="utf-8").read())}
+
+
+def test_answers_without_an_llm_key_come_from_the_stage_chunks():
+    r = ask(intent="conversation_ideas", stage="discuss")
+    assert "What does family involvement look like for you?" in r.questions
+    assert r.sources == ["KB-DISCUSS-003"] and r.fallback_used is False
+    # not the generic canned lines
+    assert "What is something you both enjoy discussing?" not in r.questions
+    assert len(ask(intent="conversation_ideas", stage="connect").questions) >= 3
+    assert "important conversations" in ask(intent="help_me_understand", stage="discuss").reply
+
+
+def test_answers_never_use_unverified_deck_chunks():
+    kb = _kb()
+    for stage in [s.value for s in Stage]:
+        for intent in INTENTS:
+            for message in (None, "is it safe to share my salary", "are names hidden by default"):
+                r = ask(intent=intent, stage=stage, message=message)
+                assert r.sources, (stage, intent)
+                for source_id in r.sources:
+                    assert not kb[source_id]["source"].startswith("deck_"), (stage, intent, source_id)
+
+
+def test_llm_failure_falls_back_to_the_knowledge_base_answer(monkeypatch):
+    use(monkeypatch, Provider(RuntimeError("boom")))
+    r = ask(intent="conversation_ideas", stage="discuss")
+    assert r.fallback_used is True
+    assert "What does family involvement look like for you?" in r.questions

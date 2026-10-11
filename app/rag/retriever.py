@@ -23,6 +23,12 @@ from typing import Dict, List, Optional
 
 KB_PATH = Path(__file__).parent / "knowledge_base" / "kb_chunks.json"
 
+# Chunks written from the fundraising deck (source "deck_...") contain product and privacy claims
+# nobody has confirmed for Setu (for example "names and photos are concealed by default", data
+# erasure periods, DPDP). They are never returned until the product owner confirms them: remove
+# the prefix below (or set "status": "verified" in the chunk) after sign-off.
+UNVERIFIED_SOURCE_PREFIXES = ("deck_",)
+
 STAGES = {"connect", "understand", "reflect", "discuss", "agree",
           "family", "reflect_again", "decision"}
 
@@ -94,6 +100,14 @@ def _get_index() -> _Index:
     return _index
 
 
+def _verified(chunk: Dict) -> bool:
+    if chunk.get("status") == "verified":
+        return True
+    if chunk.get("status") == "needs_review":
+        return False
+    return not chunk["source"].startswith(UNVERIFIED_SOURCE_PREFIXES)
+
+
 def retrieve(query: str, stage: str, intent: Optional[str] = None, k: int = 3) -> List[Dict]:
     """Return up to k chunks for this stage (plus global safety/privacy chunks).
 
@@ -111,7 +125,7 @@ def retrieve(query: str, stage: str, intent: Optional[str] = None, k: int = 3) -
 
     scored = []
     for i, chunk in enumerate(idx.chunks):
-        if chunk["stage"] not in (stage, "global"):
+        if chunk["stage"] not in (stage, "global") or not _verified(chunk):
             continue
         score = idx.similarity(q_vec, i) if q_vec else 0.0
         if intent and chunk["intent"] == intent:
