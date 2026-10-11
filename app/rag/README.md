@@ -15,6 +15,8 @@ journey stage. `retrieve_for_orchestrator(intent, ctx, query, k=3)` is the adapt
 - Hit rate is label-based (expected topic in top 3). It does not prove the chunk answers the question.
   Needs AI/ML 1's held-out conversations and a human relevance check.
 - English only.
-- Chunks sourced from the fundraising deck (`deck_*`) contain policy claims (data erasure period, DPDP,
-  "never sells data", Aadhaar handling). Product owner must confirm them before the assistant repeats them.
+- Chunks sourced from the fundraising deck (`deck_*`, 30 chunks) are NOT returned: they contain product and
+  privacy claims nobody has confirmed for Setu (names hidden by default, data erasure period, DPDP, Aadhaar).
+  After the product owner confirms a chunk, set `"status": "verified"` on it (or change
+  `UNVERIFIED_SOURCE_PREFIXES` in `retriever.py`).
 - Stage descriptions must match the Figma stage copy (see review notes).
