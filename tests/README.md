@@ -27,7 +27,7 @@ wrong types, over-length message/topic, ~1 MB body, malformed JSON, wrong
 content type, wrong method, unknown route, unicode) must return a clean 4xx in
 the standard error contract — never a 500, no stack trace, no echo of the
 caller's input. Full results table:
-[`docs/validation_test_results.md`](../../docs/validation_test_results.md).
+[`docs/validation_test_results.md`](../docs/validation_test_results.md).
 
 ---
 
@@ -145,4 +145,4 @@ docker logs setu-day3-load | grep -E 'load_user_|load_match_|How do I start'   #
 ## 4. Results
 
 Filled-in numbers, bug list and known limits: see
-[`docs/load_and_failure_test_notes.md`](../../docs/load_and_failure_test_notes.md).
+[`docs/load_and_failure_test_notes.md`](../docs/load_and_failure_test_notes.md).
