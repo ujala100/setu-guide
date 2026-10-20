@@ -50,7 +50,9 @@ def _enforce_rate_limits(req: GuideRequest, http_request: Request, settings: Set
     user_count, user_window = settings.user_limit
     ip_count, ip_window = settings.ip_limit
     allowed, blocked_key, retry_after = limiter.hit([
-        (f"user:{req.user_id}", user_count, user_window),
+        # Normalised (strip + casefold): Day 3 finding A showed "U1"/" u1"
+        # used to mint a fresh bucket and dodge the per-user quota.
+        (f"user:{req.user_id.strip().casefold()}", user_count, user_window),
         (f"ip:{client_ip(http_request, settings.trusted_proxy)}", ip_count, ip_window),
     ])
     if not allowed:

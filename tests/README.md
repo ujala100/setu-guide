@@ -6,6 +6,8 @@ Two suites live here:
 |---------------|--------------------|------------------------|
 | `tests/failure/` | pytest + httpx  | no (TestClient), except `test_container.py` |
 | `tests/load/`    | Locust          | yes (container on :8000) |
+| `tests/ratelimit/` | pytest        | no (TestClient) |
+| `tests/cache/`    | pytest        | no (TestClient) |
 
 Setup (once):
 
@@ -169,7 +171,42 @@ docker logs setu-day3-load | grep -E 'load_user_|load_match_|How do I start'   #
 
 ---
 
-## 3. Results
+## 3. Day 3 review suites (rate limit + cache isolation)
+
+`tests/ratelimit/test_rate_limit_review.py` (9 tests) pins the rate-limit
+audit: N+1 behaviour per user and per IP with `Retry-After`, isolation between
+users, `/health` never limited, the bypass attempts (forged
+`X-Forwarded-For` with `TRUSTED_PROXY=false`, rotating `user_id`s,
+`user_id` case/whitespace variants), a 200-request burst staying up, and the
+limiter's memory staying bounded. `tests/cache/test_cache_isolation.py`
+(13 tests) proves two users can never receive each other's cached reply: the
+fake orchestrator encodes the request into the reply, so isolation is asserted
+on **response bodies**, not just call counts, plus the never-cached set
+(free text, 500s, fallback, safety modified/blocked, flags) and
+`CACHE_ENABLED=false`.
+
+```bash
+python -m pytest tests/ratelimit tests/cache -q     # 22 tests, TestClient only
+```
+
+Both suites reset counters/cache between tests (autouse fixture) and use
+synthetic ids only. Results and the two fixed gaps:
+[`docs/rate_limit_check.md`](../docs/rate_limit_check.md),
+[`docs/cache_isolation_test.md`](../docs/cache_isolation_test.md).
+
+### Day 3 security scans (report: docs/security_scan_report.md)
+
+```bash
+pip install pip-audit
+pip-audit -r requirements.txt                        # Python dependencies
+trivy image --scanners vuln,secret setu-guide-api:day3   # image CVEs + secrets
+gitleaks git . -f json -r history.json --redact      # full git history
+gitleaks dir . -f json -r worktree.json --redact     # files on disk (filter .venv/)
+```
+
+---
+
+## 4. Results
 
 Filled-in numbers, bug list and known limits: see
 
@@ -177,5 +214,13 @@ Filled-in numbers, bug list and known limits: see
   (20 users, 50 users, 10-minute sustained) with real numbers.
 - [`docs/failure_drill_results.md`](../docs/failure_drill_results.md) - Day 2
   failure drills (Drill / Setup / Expected / Actual / Pass-Fail).
+- [`docs/rate_limit_check.md`](../docs/rate_limit_check.md) - Day 3 rate-limit
+  review (checklist, 2 gaps found and fixed).
+- [`docs/cache_isolation_test.md`](../docs/cache_isolation_test.md) - Day 3
+  cache isolation (cross-user check: none found).
+- [`docs/security_scan_report.md`](../docs/security_scan_report.md) - Day 3
+  dependency/image scan with before-after findings and hardening checklist.
+- [`docs/secrets_scan_result.md`](../docs/secrets_scan_result.md) - Day 3
+  secrets scan of repo, git history, image layers and container logs.
 - [`docs/load_and_failure_test_notes.md`](../docs/load_and_failure_test_notes.md) -
   the earlier Day 3 scenarios (A-D) and their numbers.
