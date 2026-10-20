@@ -686,17 +686,5 @@
     "intent": "privacy_safety",
     "text": "Users can pause the journey at any time. Pausing is not failure — it is a valid choice.",
     "source": "roadmap_sec22_safeguard"
-  },
-      
-    {
-      "chunk_id": "c_new_1",
-      "text": "We take your privacy very seriously. You can withdraw consent to share your profile data at any time.",
-      "tags": {
-        "stage": ["s2", "s5"],
-        "intent": ["privacy_safety"],
-        "topic": ["consent"]
-      }
-    }
-  ]
-
-  
+  }
+]
