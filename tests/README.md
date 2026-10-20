@@ -1,4 +1,4 @@
-# Day 3 tests: load + failure (owner: DevOps 1)
+# Load and failure tests (owner: DevOps 1)
 
 Three suites live here:
 
@@ -48,6 +48,24 @@ Without them the file skips itself (CI stays green without a built image).
 Overrides: `SETU_TEST_IMAGE`, `SETU_TEST_PORT` (default 8010), `DOCKER_EXE`.
 
 The whole suite (Day 1 + Day 2 + Day 3) is just `python -m pytest -q`.
+
+### Day 2 provider drills
+
+`test_provider_drills.py` covers the Day 2 drill set (LLM down / connection
+refused, LLM slow / beyond `LLM_TIMEOUT_SECONDS`, provider 429, and garbage
+replies: empty, whitespace, invalid JSON, wrong schema). Every drill asserts the
+same contract: HTTP 200, template reply, `fallback_used=true`,
+`safety.status="pass"`, `flags=[]`, never a 500, fallback never cached.
+
+```bash
+python -m pytest tests/failure/test_provider_drills.py -q   # 7 drills
+python -m pytest tests/failure -q                           # all failure tests
+```
+
+The Day 3 file `test_llm_failures.py` keeps its original coverage (timeout,
+invalid JSON/schema, wrong type, fallback-not-cached, recovery, 500); the two
+files do not duplicate a case. Results:
+[`docs/failure_drill_results.md`](../docs/failure_drill_results.md).
 
 ---
 
@@ -99,6 +117,29 @@ locust -f tests/load/scenario_c.py --headless \
   -u 6 -r 1 -t 90s --csv tests/load/results/c_ratelimit
 ```
 
+### Day 2 load runs (same Scenario A traffic, three profiles)
+
+Placeholders live at the top of `tests/load/common.py` (`TARGET_URL`,
+`LOAD_USERS`, `RAMP_UP_SECONDS`, `DURATION`). Each run keeps its own `--csv`
+prefix so the raw numbers stay separate under `tests/load/results/`:
+
+```bash
+# Run 1 - 20 users
+locust -f tests/load/scenario_a.py --headless \
+  -u 20 -r 1.0 -t 2m --csv tests/load/results/day2_20u --only-summary
+
+# Run 2 - 50 users
+locust -f tests/load/scenario_a.py --headless \
+  -u 50 -r 2.0 -t 2m --csv tests/load/results/day2_50u --only-summary
+
+# Run 3 - 10-minute sustained (20 users)
+locust -f tests/load/scenario_a.py --headless \
+  -u 20 -r 0.5 -t 10m --csv tests/load/results/day2_10min --only-summary
+```
+
+Pass criteria (placeholders until the lead confirms): 5xx error rate < 1 %,
+p95 < 2 s with mock/cached replies (< 12 s with the real LLM).
+
 Small **real-mode** run (5 users, 1 min) - `USE_MOCK=false` goes through the
 LLM safety net; no provider key is used and no provider is contacted:
 
@@ -113,13 +154,15 @@ locust -f tests/load/scenario_a.py --headless \
 
 ### Record while a run is active
 
-- **Container CPU/memory** - start the sampler before locust, stop it after:
+- **Container CPU/memory** - start the sampler before locust, stop it after.
+  Use **absolute paths** (a `Start-Job` runs in its own working directory, so a
+  relative `--csv` path silently writes nowhere):
 
   ```powershell
-  Start-Job -FilePath tests/load/collect_docker_stats.ps1 -ArgumentList `
-      "setu-day3-load", "tests/load/results/a_docker_stats.csv"
+  Start-Job -FilePath "$PWD\tests\load\collect_docker_stats.ps1" -ArgumentList `
+      "setu-day3-load", "$PWD\tests\load\results\a_docker_stats.csv"
   # ... locust ...
-  Get-Job | Stop-Job
+  Get-Job | Stop-Job; Remove-Job $job -Force
   ```
 
 - **Cache hit ratio + 429 count** - from the container's own access log for
@@ -145,4 +188,12 @@ docker logs setu-day3-load | grep -E 'load_user_|load_match_|How do I start'   #
 ## 4. Results
 
 Filled-in numbers, bug list and known limits: see
-[`docs/load_and_failure_test_notes.md`](../docs/load_and_failure_test_notes.md).
+
+- [`docs/load_test_report.md`](../docs/load_test_report.md) - Day 2 load runs
+  (20 users, 50 users, 10-minute sustained) with real numbers.
+- [`docs/failure_drill_results.md`](../docs/failure_drill_results.md) - Day 2
+  failure drills (Drill / Setup / Expected / Actual / Pass-Fail).
+- [`docs/validation_test_results.md`](../docs/validation_test_results.md) - API
+  input-validation matrix (successes, rejects, 500s, limits) with real numbers.
+- [`docs/load_and_failure_test_notes.md`](../docs/load_and_failure_test_notes.md) -
+  the earlier Day 3 scenarios (A-D) and their numbers.

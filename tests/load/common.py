@@ -1,7 +1,12 @@
-"""Shared config for the Day 3 load scenarios (tests/load/). Owner: DevOps 1.
+"""Shared config for the load scenarios (tests/load/). Owner: DevOps 1.
 
 ALL VALUES ARE PLACEHOLDERS - confirm with the lead. TARGET_URL becomes the
 staging URL when it exists.
+
+Day 2 (Phase 2) run profiles and pass limits are kept as variables at the top
+of this file (RUN_PROFILES, REAL_RUN_PROFILE, PASS_MAX_*): 20 users, 50 users,
+then a 10-minute sustained run; 5xx < 1 %, p95 < 2 s (mock/cached) and < 12 s
+(real LLM).
 
 Safety rules that apply to every scenario:
 - Never point a load run at a real LLM provider (free-tier quota): the main
@@ -20,6 +25,22 @@ TARGET_URL = os.environ.get("TARGET_URL", "http://localhost:8000")
 LOAD_USERS = int(os.environ.get("LOAD_USERS", "20"))           # 20 concurrent
 RAMP_UP_SECONDS = int(os.environ.get("RAMP_UP_SECONDS", "30"))  # 30 s ramp-up
 DURATION = os.environ.get("DURATION", "5m")                    # 5 minutes
+
+# --- Day 2 profiles (Phase 2): 20 users, 50 users, then a 10-min sustained run.
+# PLACEHOLDER until the lead confirms the final profile. Keep as variables.
+RUN_PROFILES = [
+    {"name": "day2_20u", "users": 20, "spawn": 1.0, "duration": "2m"},
+    {"name": "day2_50u", "users": 50, "spawn": 2.0, "duration": "2m"},
+    {"name": "day2_10min", "users": 20, "spawn": 0.5, "duration": "10m"},
+]
+# Real-LLM probe (only when a provider is wired in; contacts no provider today).
+REAL_RUN_PROFILE = {"name": "real_small", "users": 5, "spawn": 1.0, "duration": "60s"}
+
+# --- Pass criteria: PLACEHOLDER until lead confirms. Variables, not magic numbers.
+PASS_MAX_5XX_PERCENT = 1.0      # 5xx error rate must stay under 1 %
+PASS_MAX_P95_MOCK_MS = 2000     # p95 with mock / cached replies (ms)
+PASS_MAX_P95_REAL_MS = 12000    # p95 with the real LLM (ms)
+PASS_MAX_429S = 0               # no 429 during a run (limits raised for the run)
 
 # 8 stages x 4 intents - must match the frozen schema in app/schemas/guide.py.
 STAGES = ["connect", "understand", "reflect", "discuss",
