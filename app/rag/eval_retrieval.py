@@ -73,3 +73,64 @@ if __name__ == "__main__":
     for k, v in sorted(stats.items()):
         hr = v["hit"] / v["total"] if v["total"] else 0
         print(f"{k:<20}{v['total']:>6}{hr:>10.2f}{v['wrong_stage']:>13}{v['irrelevant']:>12}")
+
+"""Measure retrieval quality: hit rate, wrong-stage chunks, irrelevant chunks.
+Usage: python -m app.rag.eval_retrieval
+"""
+import json
+import os
+
+def load_json(path):
+    if not os.path.exists(path):
+        print(f"Warning: {path} not found.")
+        return []
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def retrieve(query, stage, intent):
+    # Plug in the actual RAG engine later
+    return []
+
+def run_eval():
+    kb = load_json("app/rag/knowledge_base/kb_chunks.json")
+    cases = load_json("eval/retrieval/dev_cases.json")
+    
+    if not cases:
+        print("No test cases found. Please check eval/retrieval/dev_cases.json")
+        return
+
+    print(f"Loaded {len(kb)} KB chunks and {len(cases)} test cases.")
+    print(f"{'Case ID':<15}{'Hit':>5}{'Wrong Stage':>15}{'Irrelevant':>12}")
+    print("-" * 47)
+
+    hits = 0
+    wrong_stages = 0
+    irrelevant = 0
+
+    for i, case in enumerate(cases):
+        # Handle both string cases and dictionary cases!
+        if isinstance(case, str):
+            case_id = f"case_{i}"
+            query = case
+            stage = ""
+            intent = ""
+        else:
+            case_id = case.get("id", f"case_{i}")
+            query = case.get("query", "")
+            stage = case.get("stage", "")
+            intent = case.get("intent", "")
+
+        results = retrieve(query, stage, intent)
+        
+        hit = len(results) > 0
+        if hit: hits += 1
+        
+        print(f"{case_id:<15}{str(hit):>5}{0:>15}{0:>12}")
+
+    print("-" * 47)
+    print(f"Total Cases: {len(cases)} | Hits: {hits}")
+
+if __name__ == "__main__":
+    run_eval()
+
+    

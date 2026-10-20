@@ -28,4 +28,4 @@ def check(kb_path, replies_path):
     print("OK: no orphan source IDs")
 
 if __name__ == "__main__":
-    check("kb/v2.json", "logs/api_replies.jsonl")
+   check("app/rag/knowledge_base/kb_chunks.json", "logs/api_replies.jsonl")
