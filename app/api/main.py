@@ -12,11 +12,12 @@ import traceback
 import uuid
 from typing import Any, Callable, Dict, List, Optional
 
-from fastapi import FastAPI, Request, Response
+from fastapi import Depends, FastAPI, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from app.api.auth import require_api_key
 from app.api.chat import run_chat
 from app.config import get_settings
 from app.core.orchestrator import handle
@@ -91,12 +92,20 @@ async def http_error(_: Request, exc: StarletteHTTPException) -> JSONResponse:
 
 
 @app.exception_handler(Exception)
-async def internal_error(_: Request, exc: Exception) -> JSONResponse:
+async def internal_error(request: Request, exc: Exception) -> JSONResponse:
     # Type name and code locations only: str(exc) may contain request data.
     frames = "".join(traceback.format_tb(getattr(exc, "__traceback__", None)))
     logger.error("unhandled %s -> 500 internal_error\n%s", type(exc).__name__, frames)
-    return JSONResponse(status_code=500,
-                        content=_error("internal_error", "An unexpected error occurred."))
+    response = JSONResponse(status_code=500,
+                            content=_error("internal_error", "An unexpected error occurred."))
+    # The access-log middleware sets X-Request-Id on the way out, but an
+    # unhandled exception never passes back through it. Day 4: without this
+    # the caller loses the correlation id on 500 - the one status it most
+    # needs to trace - while every other status carries it.
+    request_id = getattr(request.state, "request_id", None)
+    if request_id:
+        response.headers["X-Request-Id"] = request_id
+    return response
 
 
 @app.middleware("http")
@@ -132,7 +141,11 @@ def _log_http(request: Request, request_id: str, status: int, started: float) ->
 
 @app.get("/health", tags=["ops"])
 def health() -> Dict[str, str]:
-    """Liveness probe for CI and deploy checks. Never rate limited."""
+    """Liveness probe for CI and deploy checks. Never rate limited.
+
+    Never requires a credential either: the container HEALTHCHECK and the
+    load-balancer probe call it without one, so auth stays off this route.
+    """
     return {"status": "ok"}
 
 
@@ -153,7 +166,8 @@ def _orchestrator_entry(config) -> Optional[Callable]:
     return getattr(orchestrator, "handle_chat", None)
 
 
-@app.post("/v1/guide/chat", response_model=GuideResponse, tags=["guide"])
+@app.post("/v1/guide/chat", response_model=GuideResponse, tags=["guide"],
+          dependencies=[Depends(require_api_key)])
 def chat(req: GuideRequest, request: Request, response: Response) -> GuideResponse:
     return run_chat(req=req, http_request=request, http_response=response,
                     entry=_orchestrator_entry(get_settings()))

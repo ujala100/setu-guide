@@ -19,6 +19,12 @@ services:
     init: true
     restart: unless-stopped
 
+    # Day 4 recovery hardening (docs/recovery_test_notes.md): give the container
+    # more time than uvicorn's --timeout-graceful-shutdown (30s) before Docker
+    # sends SIGKILL, so an in-flight request can finish on `docker stop` /
+    # rolling restart instead of being cut off.
+    stop_grace_period: 35s
+
     # Day 3 hardening: the API is fully in-memory, so the root filesystem can
     # be read-only. Only /tmp is writable, all capabilities are dropped and
     # privilege escalation is disabled.
@@ -32,6 +38,9 @@ services:
 
     # Values come from .env (ignored by git). `required: false` keeps the file
     # optional so a fresh clone can still start with the built-in defaults.
+    # AUTH_METHOD / API_KEY live there too: the default is "none" (the endpoint
+    # is open), and switching it on needs a real API_KEY in .env - the
+    # placeholder value from .env.example is refused at startup on purpose.
     env_file:
       - path: .env
         required: false

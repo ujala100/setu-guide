@@ -8,6 +8,8 @@ Two suites live here:
 | `tests/load/`    | Locust          | yes (container on :8000) |
 | `tests/ratelimit/` | pytest        | no (TestClient) |
 | `tests/cache/`    | pytest        | no (TestClient) |
+| `tests/recovery/` | pytest        | yes (container, Docker required) |
+| `tests/integration/` | pytest     | no (TestClient) |
 
 Setup (once):
 
@@ -206,7 +208,82 @@ gitleaks dir . -f json -r worktree.json --redact     # files on disk (filter .ve
 
 ---
 
-## 4. Results
+## 4. Day 4 suites (recovery + integration + auth)
+
+### Recovery: timeouts, graceful shutdown, restart (Docker required)
+
+`tests/recovery/test_timeouts_shutdown.py` (8 tests) runs against a real
+container, because a TestClient cannot show a SIGTERM drain:
+
+```bash
+docker build -t setu-guide-api:day3 -f docker/Dockerfile .
+python -m pytest tests/recovery -q
+```
+
+It covers the LLM timeout budget (the fallback answer, never a hang), a
+request inside the budget (a real reply, not the fallback), one and three
+concurrent in-flight requests surviving `docker stop`, the idle keep-alive
+connection being released, `docker restart` under load recovering on its
+own, and the API key being enforced in a real container (`AUTH_METHOD=api_key`
+-> 401 without the key, 200 with it, `/health` open, the key absent from the
+logs). Two of the tests are config guards: they fail if the image CMD loses
+`--timeout-graceful-shutdown` / `--timeout-keep-alive`, or if
+`stop_grace_period` in `docker-compose.yml` stops being larger than the
+graceful window. Without Docker or the image the file skips itself. Overrides:
+`SETU_TEST_IMAGE` (default `setu-guide-api:day3`), `SETU_TEST_PORT` (default
+8011), `DOCKER_EXE`.
+
+The suite runs the image with a mounted launcher
+(`tests/recovery/slow_orchestrator.py`) that installs a slow
+`app.core.orchestrator.handle_chat` - the real-mode entry does not exist yet
+(lead follow-up, issue #15), so without it a request would fall back
+instantly and never stay in flight. **No file under `app/core` is modified.**
+
+### Integration: the contract a backend codes against
+
+`tests/integration/test_contract.py` (20 tests, TestClient only) pins what an
+external backend needs: the full response field set, the shared error
+envelope for 401 / 422 / 429 / 500 / 404, `Retry-After` as an integer number of
+seconds on 429, `fallback_used` as a 200 (not an error), `X-Request-Id` on
+every status including 500, a latency budget, and the **frozen request
+schema** (all 8 stage values, the 4 intent values, the field names and the
+length limits).
+
+```bash
+python -m pytest tests/integration -q
+```
+
+### Auth: the API key the lead asked for
+
+`tests/integration/test_auth.py` (25 tests, TestClient only) covers the
+inbound authentication added on Day 4:
+
+- the default (`AUTH_METHOD=none`) changes nothing - every other suite still
+  works;
+- `api_key` mode: the right key works, a missing / wrong / truncated / empty
+  key is a 401 with the standard envelope, and the `Authorization` header is
+  not accepted;
+- `bearer` mode: `Bearer <token>` works, a wrong scheme / token is a 401, the
+  response carries `WWW-Authenticate: Bearer`, and `X-API-Key` is not
+  accepted - switching method is a configuration change, so only one
+  credential may work at a time;
+- `/health` never needs a credential (the container `HEALTHCHECK` calls it);
+- startup fails fast when a method is on but no key is set, and the
+  placeholder value from `.env.example` is refused as a live credential;
+- the key never appears in a response body, a header, a log line or the
+  settings `repr`, and `.env.example` holds only a placeholder.
+
+```bash
+python -m pytest tests/integration -q
+```
+
+Results and the handover notes for the backend engineer and DevOps 2:
+[`docs/recovery_test_notes.md`](../docs/recovery_test_notes.md),
+[`docs/integration_check.md`](../docs/integration_check.md).
+
+---
+
+## 5. Results
 
 Filled-in numbers, bug list and known limits: see
 
@@ -224,3 +301,9 @@ Filled-in numbers, bug list and known limits: see
   secrets scan of repo, git history, image layers and container logs.
 - [`docs/load_and_failure_test_notes.md`](../docs/load_and_failure_test_notes.md) -
   the earlier Day 3 scenarios (A-D) and their numbers.
+- [`docs/recovery_test_notes.md`](../docs/recovery_test_notes.md) - Day 4
+  timeout, graceful-shutdown and restart scenarios (Scenario / Steps /
+  Expected / Actual / Recovery time / Pass-Fail) and the SIGKILL finding.
+- [`docs/integration_check.md`](../docs/integration_check.md) - Day 4 contract
+  check for the backend team: schemas, error codes, timings, the API-key
+  authentication and the open questions.
