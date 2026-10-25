@@ -1,4 +1,4 @@
-# Sambandh Setu - Intent Router
+﻿# Sambandh Setu - Intent Router
 
 
 SUPPORTED_INTENTS = {
@@ -55,6 +55,8 @@ def route_intent(user_message, quick_action=None):
         "conversation ideas",
         "talk about",
         "discuss with each other",
+        "hum kya baat karein",
+        "em matladali",
     ]
 
     for keyword in conversation_keywords:
@@ -75,6 +77,8 @@ def route_intent(user_message, quick_action=None):
         "clarify",
         "confused about",
         "help me understand",
+        "mujhe samjhao",
+        "ardham kaaledu",
     ]
 
     for keyword in understand_keywords:
@@ -96,6 +100,9 @@ def route_intent(user_message, quick_action=None):
         "what next",
         "where do we go from here",
         "what can we do from here",
+         "ab kya karein",
+         "next em cheyyali",
+         "ippudu em cheyyali",
     ]
 
     for keyword in next_step_keywords:
@@ -119,6 +126,9 @@ def route_intent(user_message, quick_action=None):
         "data handled",
         "information handled",
         "what information should i avoid",
+         "meri information kaun dekh sakta hai",
+          "should i share my personal details",
+          "personal details",
     ]
 
     for keyword in privacy_keywords:

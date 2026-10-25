@@ -2,6 +2,10 @@
 import sys
 import os
 
+from app.config import get_settings
+from app.core.llm_provider import OpenAILLMProvider
+
+
 # Add project root to Python path
 sys.path.append(
     os.path.dirname(
@@ -77,23 +81,28 @@ def load_prompt(
     return prompt
 
 
+
 def get_provider(use_gemini=False):
-    """
-    Select the LLM provider.
+    """Select a provider using shared application settings."""
 
-    By default, the mock provider is used.
-    This keeps automated tests independent
-    from external APIs.
+    settings = get_settings()
 
-    When use_gemini=True, the real Gemini
-    provider is used.
-    """
+    # Mock mode always takes priority.
+    if settings.use_mock:
+        return MockLLMProvider()
 
-    if use_gemini:
+    if settings.llm_provider == "openai":
+        return OpenAILLMProvider(
+            api_key=settings.llm_api_key,
+            timeout_seconds=settings.llm_timeout_seconds,
+        )
 
+    if settings.llm_provider == "gemini" or use_gemini:
         return GeminiLLMProvider()
 
-    return MockLLMProvider()
+    raise ValueError(
+        f"Unsupported LLM provider: {settings.llm_provider}"
+    )
 
 
 def run_pipeline(
@@ -146,39 +155,43 @@ def run_pipeline(
         retrieved_context
     )
 
-    # Step 4: Select provider
+
+    # Step 4: Select provider and retry up to two attempts.
+    llm_result = None
+
     try:
+        provider = get_provider()
 
-        provider = get_provider(
-            use_gemini=use_gemini
-        )
+        for attempt in range(2):
+            try:
+                candidate = provider.generate(prompt)
 
-        llm_result = provider.generate(
-            prompt
-        )
+                if validate_response(candidate):
+                    llm_result = candidate
+                    break
+
+                print(
+                    f"Invalid LLM response on attempt {attempt + 1}."
+                )
+
+            except Exception as error:
+                print(
+                    f"LLM provider failed on attempt "
+                    f"{attempt + 1}: {type(error).__name__}"
+                )
 
     except Exception as error:
-
         print(
-            f"LLM provider failed: {error}"
+            f"LLM provider initialization failed: "
+            f"{type(error).__name__}"
         )
 
-        llm_result = None
-
-    # Step 5: Validate LLM response
+    # Step 5: Return a valid response if one was obtained.
     if llm_result is not None:
+        return llm_result
 
-        if validate_response(
-            llm_result
-        ):
-
-            return llm_result
-
-    # Step 6: Template fallback
-    return create_response(
-        intent,
-        user_message
-    )
+    # Step 6: Template fallback.
+    return create_response(intent, user_message)
 
 
 def handle_request(request, use_gemini=False):

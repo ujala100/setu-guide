@@ -21,9 +21,9 @@ def create_response(intent, user_message):
         return {
             "intent": intent,
             "response": [
-                "What is something you both enjoy discussing?",
-                "What is something you would like to understand better about each other?",
-                "What topic would you both feel comfortable talking about?"
+                "What topic would you both feel comfortable talking about?",
+                "You can look at the different perspectives involved.",
+                "If something is still unclear, you can ask a more specific question."
             ]
         }
 

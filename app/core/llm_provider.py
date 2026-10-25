@@ -1,8 +1,12 @@
-
+﻿
 import os
 import json
 from google import genai
+import logging
+import time
+from openai import OpenAI
 
+logger = logging.getLogger("setu.guide.llm")
 
 class LLMProvider:
     def generate(self, prompt):
@@ -80,12 +84,12 @@ class MockLLMProvider(LLMProvider):
         }
 
 
+
 class GeminiLLMProvider(LLMProvider):
+    MODEL = "gemini-3.8-flash"
 
     def __init__(self):
-
         api_key = os.environ.get("GEMINI_API_KEY")
-
         if not api_key:
             raise ValueError(
                 "GEMINI_API_KEY environment variable is not set."
@@ -93,62 +97,135 @@ class GeminiLLMProvider(LLMProvider):
 
         self.client = genai.Client(
             api_key=api_key,
-            http_options={
-                "timeout": 10000
-            }
+            http_options={"timeout": 10000},
         )
 
     def generate(self, prompt):
+        start = time.perf_counter()
 
         try:
             interaction = self.client.interactions.create(
-                model="gemini-3.8-flash",
-                input=prompt
+                model=self.MODEL,
+                input=prompt,
             )
-
-        except KeyboardInterrupt:
-            print("Gemini request interrupted.")
-            return None
-
-        except Exception as error:
-            print(f"Gemini provider unavailable: {error}")
-            return None
-
-        try:
             output_text = interaction.output_text.strip()
 
-        except Exception as error:
-            print(f"Gemini output error: {error}")
-            return None
+            usage = getattr(interaction, "usage", None)
+            if usage is None:
+                logger.info(
+                    "provider=gemini usage_available=false"
+                )
+            else:
+                input_tokens = getattr(
+                    usage, "total_input_tokens", 0
+                ) or 0
+                output_tokens = getattr(
+                    usage, "total_output_tokens", 0
+                ) or 0
+                total_tokens = getattr(
+                    usage, "total_tokens",
+                    input_tokens + output_tokens,
+                ) or 0
 
-        # Remove Markdown code fences if Gemini returns them.
-        if output_text.startswith("```json"):
-            output_text = output_text[7:]
+                # Estimates for the model's configured pricing.
+                estimated_cost = (
+                    input_tokens * 0.30
+                    + output_tokens * 2.50
+                ) / 1_000_000
 
-        elif output_text.startswith("```"):
-            output_text = output_text[3:]
+                logger.info(
+                    "provider=gemini input_tokens=%s "
+                    "output_tokens=%s total_tokens=%s "
+                    "estimated_cost_usd=%.10f latency_ms=%.2f",
+                    input_tokens,
+                    output_tokens,
+                    total_tokens,
+                    estimated_cost,
+                    (time.perf_counter() - start) * 1000,
+                )
 
-        if output_text.endswith("```"):
-            output_text = output_text[:-3]
+            output_text = output_text.removeprefix(
+                "```json"
+            ).removeprefix("```").strip()
 
-        output_text = output_text.strip()
+            if output_text.endswith("```"):
+                output_text = output_text[:-3].strip()
 
-        try:
             return json.loads(output_text)
 
-        except json.JSONDecodeError as error:
-            print(f"Gemini returned invalid JSON: {error}")
+        except Exception as error:
+            logger.warning(
+                "Gemini request or response processing failed: %s",
+                type(error).__name__,
+            )
             return None
 
 
-if __name__ == "__main__":
+class OpenAILLMProvider(LLMProvider):
+    MODEL = "gpt-4.1-mini"
 
-    print("Testing MockLLMProvider...")
+    def __init__(self, api_key=None, timeout_seconds=10.0):
+        api_key = api_key or os.environ.get("LLM_API_KEY")
+        if not api_key:
+            raise ValueError(
+                "LLM_API_KEY is required for the OpenAI provider."
+            )
 
-    provider = MockLLMProvider()
+        self.client = OpenAI(
+            api_key=api_key,
+            timeout=timeout_seconds,
+            max_retries=0,
+        )
 
-    result = provider.generate(
-        "Generate three neutral conversation ideas."
-    )
+    def generate(self, prompt):
+        start = time.perf_counter()
 
-    print(result)
+        try:
+            result = self.client.responses.create(
+                model=self.MODEL,
+                input=prompt,
+                text={"format": {"type": "json_object"}},
+            )
+
+            usage = getattr(result, "usage", None)
+            if usage is None:
+                logger.info(
+                    "provider=openai usage_available=false"
+                )
+            else:
+                input_tokens = getattr(
+                    usage, "input_tokens", 0
+                ) or 0
+                output_tokens = getattr(
+                    usage, "output_tokens", 0
+                ) or 0
+                total_tokens = getattr(
+                    usage, "total_tokens",
+                    input_tokens + output_tokens,
+                ) or 0
+
+                logger.info(
+                    "provider=openai input_tokens=%s "
+                    "output_tokens=%s total_tokens=%s latency_ms=%.2f",
+                    input_tokens,
+                    output_tokens,
+                    total_tokens,
+                    (time.perf_counter() - start) * 1000,
+                )
+
+            output_text = result.output_text.strip()
+            output_text = output_text.removeprefix(
+                "```json"
+            ).removeprefix("```").strip()
+
+            if output_text.endswith("```"):
+                output_text = output_text[:-3].strip()
+
+            return json.loads(output_text)
+
+        except Exception as error:
+            logger.warning(
+                "OpenAI request or response processing failed: %s",
+                type(error).__name__,
+            )
+            return None
