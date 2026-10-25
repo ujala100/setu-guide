@@ -1,5 +1,5 @@
-﻿# Sambandh Setu - Intent Router
-
+﻿
+# Sambandh Setu - Intent Router
 
 SUPPORTED_INTENTS = {
     "conversation_ideas",
@@ -13,33 +13,21 @@ def route_intent(user_message, quick_action=None):
     """
     Determine the user's intent.
 
-    Quick action takes priority over free-text classification.
+    A valid quick action takes priority over free-text classification.
+    Return None when no confident keyword match is found.
     """
 
-    # ---------------------------------------------------------
-    # Rule 1: Quick action has priority
-    # ---------------------------------------------------------
+    # Rule 1: Quick action takes priority.
+    if quick_action in SUPPORTED_INTENTS:
+        return quick_action
 
-    if quick_action:
-        if quick_action in SUPPORTED_INTENTS:
-            return quick_action
-
-    # ---------------------------------------------------------
-    # Rule 2: Handle empty or invalid messages
-    # ---------------------------------------------------------
-
-    if not user_message:
+    # Rule 2: Handle empty messages.
+    if not isinstance(user_message, str) or not user_message.strip():
         return None
 
     message = user_message.lower().strip()
 
-    if not message:
-        return None
-
-    # ---------------------------------------------------------
-    # Rule 3: Conversation ideas
-    # ---------------------------------------------------------
-
+    # Rule 3: Conversation ideas.
     conversation_keywords = [
         "what can we talk",
         "what should we talk",
@@ -59,14 +47,10 @@ def route_intent(user_message, quick_action=None):
         "em matladali",
     ]
 
-    for keyword in conversation_keywords:
-        if keyword in message:
-            return "conversation_ideas"
+    if any(keyword in message for keyword in conversation_keywords):
+        return "conversation_ideas"
 
-    # ---------------------------------------------------------
-    # Rule 4: Help me understand
-    # ---------------------------------------------------------
-
+    # Rule 4: Help me understand.
     understand_keywords = [
         "explain",
         "don't understand",
@@ -81,14 +65,10 @@ def route_intent(user_message, quick_action=None):
         "ardham kaaledu",
     ]
 
-    for keyword in understand_keywords:
-        if keyword in message:
-            return "help_me_understand"
+    if any(keyword in message for keyword in understand_keywords):
+        return "help_me_understand"
 
-    # ---------------------------------------------------------
-    # Rule 5: Next steps
-    # ---------------------------------------------------------
-
+    # Rule 5: Next steps.
     next_step_keywords = [
         "what should we do next",
         "what should we discuss next",
@@ -100,19 +80,15 @@ def route_intent(user_message, quick_action=None):
         "what next",
         "where do we go from here",
         "what can we do from here",
-         "ab kya karein",
-         "next em cheyyali",
-         "ippudu em cheyyali",
+        "ab kya karein",
+        "next em cheyyali",
+        "ippudu em cheyyali",
     ]
 
-    for keyword in next_step_keywords:
-        if keyword in message:
-            return "next_steps"
+    if any(keyword in message for keyword in next_step_keywords):
+        return "next_steps"
 
-    # ---------------------------------------------------------
-    # Rule 6: Privacy and safety
-    # ---------------------------------------------------------
-
+    # Rule 6: Privacy and safety.
     privacy_keywords = [
         "private",
         "privacy",
@@ -126,37 +102,36 @@ def route_intent(user_message, quick_action=None):
         "data handled",
         "information handled",
         "what information should i avoid",
-         "meri information kaun dekh sakta hai",
-          "should i share my personal details",
-          "personal details",
+        "meri information kaun dekh sakta hai",
+        "should i share my personal details",
+        "personal details",
     ]
 
-    for keyword in privacy_keywords:
-        if keyword in message:
-            return "privacy_safety"
+    if any(keyword in message for keyword in privacy_keywords):
+        return "privacy_safety"
 
-    # ---------------------------------------------------------
-    # Rule 7: No confident match
-    # ---------------------------------------------------------
-
+    # Rule 7: No confident match.
     return None
 
 
-if __name__ == "__main__":
+def detect_intent(user_message, quick_action=None):
+    """Compatibility alias for callers using detect_intent()."""
+    return route_intent(user_message, quick_action)
 
+
+if __name__ == "__main__":
     test_messages = [
         "What can we talk about?",
         "Can you explain this to me?",
         "What should we discuss next?",
         "Is my information private?",
-        "What questions can we ask each other?",
+        "hum kya baat karein",
+        "mujhe samjhao",
+        "next em cheyyali",
         "Hello, I have a question.",
     ]
 
     for message in test_messages:
-
-        intent = route_intent(message)
-
         print(f"Message: {message}")
-        print(f"Intent: {intent}")
+        print(f"Intent: {route_intent(message)}")
         print("-" * 50)

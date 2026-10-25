@@ -1,12 +1,15 @@
-﻿
+
 import os
 import json
-from google import genai
 import logging
 import time
+
+from google import genai
 from openai import OpenAI
 
+
 logger = logging.getLogger("setu.guide.llm")
+
 
 class LLMProvider:
     def generate(self, prompt):
@@ -16,12 +19,11 @@ class LLMProvider:
 
 
 class MockLLMProvider(LLMProvider):
+    """Deterministic provider for local development and testing."""
 
     def generate(self, prompt):
-
         prompt_lower = prompt.lower()
 
-        # Identify the intent from the prompt's specific instruction.
         if (
             "conversation ideas" in prompt_lower
             or "suggest conversation" in prompt_lower
@@ -31,8 +33,8 @@ class MockLLMProvider(LLMProvider):
                 "response": [
                     "What is something you both enjoy discussing?",
                     "What is something you would like to understand better about each other?",
-                    "What topic would you both feel comfortable talking about?"
-                ]
+                    "What topic would you both feel comfortable talking about?",
+                ],
             }
 
         if (
@@ -45,8 +47,8 @@ class MockLLMProvider(LLMProvider):
                 "response": [
                     "Let's break the topic down into simpler points.",
                     "You can look at the different perspectives involved.",
-                    "If something is still unclear, you can ask a more specific question."
-                ]
+                    "If something is still unclear, you can ask a more specific question.",
+                ],
             }
 
         if (
@@ -58,8 +60,8 @@ class MockLLMProvider(LLMProvider):
                 "response": [
                     "You could discuss the topic openly with each other.",
                     "You could identify what is still unclear.",
-                    "You could decide together what you would like to discuss next."
-                ]
+                    "You could decide together what you would like to discuss next.",
+                ],
             }
 
         if (
@@ -72,17 +74,16 @@ class MockLLMProvider(LLMProvider):
                 "response": [
                     "Please review the available privacy and safety information before sharing sensitive information.",
                     "Avoid sharing unnecessary personal or sensitive details.",
-                    "If you have a specific privacy concern, ask about that concern directly."
-                ]
+                    "If you have a specific privacy concern, ask about that concern directly.",
+                ],
             }
 
         return {
             "intent": None,
             "response": [
                 "I could not confidently identify the request."
-            ]
+            ],
         }
-
 
 
 class GeminiLLMProvider(LLMProvider):
@@ -90,6 +91,7 @@ class GeminiLLMProvider(LLMProvider):
 
     def __init__(self):
         api_key = os.environ.get("GEMINI_API_KEY")
+
         if not api_key:
             raise ValueError(
                 "GEMINI_API_KEY environment variable is not set."
@@ -108,26 +110,32 @@ class GeminiLLMProvider(LLMProvider):
                 model=self.MODEL,
                 input=prompt,
             )
+
             output_text = interaction.output_text.strip()
 
             usage = getattr(interaction, "usage", None)
+
             if usage is None:
                 logger.info(
                     "provider=gemini usage_available=false"
                 )
             else:
-                input_tokens = getattr(
-                    usage, "total_input_tokens", 0
-                ) or 0
-                output_tokens = getattr(
-                    usage, "total_output_tokens", 0
-                ) or 0
-                total_tokens = getattr(
-                    usage, "total_tokens",
-                    input_tokens + output_tokens,
-                ) or 0
+                input_tokens = (
+                    getattr(usage, "total_input_tokens", 0) or 0
+                )
+                output_tokens = (
+                    getattr(usage, "total_output_tokens", 0) or 0
+                )
+                total_tokens = (
+                    getattr(
+                        usage,
+                        "total_tokens",
+                        input_tokens + output_tokens,
+                    )
+                    or 0
+                )
 
-                # Estimates for the model's configured pricing.
+                # Approximate estimate only; verify current model pricing.
                 estimated_cost = (
                     input_tokens * 0.30
                     + output_tokens * 2.50
@@ -144,9 +152,11 @@ class GeminiLLMProvider(LLMProvider):
                     (time.perf_counter() - start) * 1000,
                 )
 
-            output_text = output_text.removeprefix(
-                "```json"
-            ).removeprefix("```").strip()
+            output_text = (
+                output_text.removeprefix("```json")
+                .removeprefix("```")
+                .strip()
+            )
 
             if output_text.endswith("```"):
                 output_text = output_text[:-3].strip()
@@ -166,6 +176,7 @@ class OpenAILLMProvider(LLMProvider):
 
     def __init__(self, api_key=None, timeout_seconds=10.0):
         api_key = api_key or os.environ.get("LLM_API_KEY")
+
         if not api_key:
             raise ValueError(
                 "LLM_API_KEY is required for the OpenAI provider."
@@ -188,21 +199,26 @@ class OpenAILLMProvider(LLMProvider):
             )
 
             usage = getattr(result, "usage", None)
+
             if usage is None:
                 logger.info(
                     "provider=openai usage_available=false"
                 )
             else:
-                input_tokens = getattr(
-                    usage, "input_tokens", 0
-                ) or 0
-                output_tokens = getattr(
-                    usage, "output_tokens", 0
-                ) or 0
-                total_tokens = getattr(
-                    usage, "total_tokens",
-                    input_tokens + output_tokens,
-                ) or 0
+                input_tokens = (
+                    getattr(usage, "input_tokens", 0) or 0
+                )
+                output_tokens = (
+                    getattr(usage, "output_tokens", 0) or 0
+                )
+                total_tokens = (
+                    getattr(
+                        usage,
+                        "total_tokens",
+                        input_tokens + output_tokens,
+                    )
+                    or 0
+                )
 
                 logger.info(
                     "provider=openai input_tokens=%s "
@@ -214,9 +230,11 @@ class OpenAILLMProvider(LLMProvider):
                 )
 
             output_text = result.output_text.strip()
-            output_text = output_text.removeprefix(
-                "```json"
-            ).removeprefix("```").strip()
+            output_text = (
+                output_text.removeprefix("```json")
+                .removeprefix("```")
+                .strip()
+            )
 
             if output_text.endswith("```"):
                 output_text = output_text[:-3].strip()
@@ -229,3 +247,14 @@ class OpenAILLMProvider(LLMProvider):
                 type(error).__name__,
             )
             return None
+
+
+if __name__ == "__main__":
+    print("Testing MockLLMProvider...")
+
+    provider = MockLLMProvider()
+    result = provider.generate(
+        "Generate three neutral conversation ideas."
+    )
+
+    print(result)
