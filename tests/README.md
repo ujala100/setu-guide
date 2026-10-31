@@ -1,9 +1,10 @@
 # Load and failure tests (owner: DevOps 1)
 
-Two suites live here:
+Three suites live here:
 
 | Folder        | Tool               | Needs a server?        |
 |---------------|--------------------|------------------------|
+| `tests/validation/` | pytest + httpx | no (TestClient) |
 | `tests/failure/` | pytest + httpx  | no (TestClient), except `test_container.py` |
 | `tests/load/`    | Locust          | yes (container on :8000) |
 
@@ -15,7 +16,22 @@ pip install -r requirements-dev.txt      # pytest, httpx, locust (all pinned)
 
 ---
 
-## 1. Failure tests
+## 1. Validation tests (bad input)
+
+```bash
+python -m pytest tests/validation -q
+```
+
+Every malformed request (bad stage/intent, missing fields, empty/null body,
+wrong types, over-length message/topic, ~1 MB body, malformed JSON, wrong
+content type, wrong method, unknown route, unicode) must return a clean 4xx in
+the standard error contract — never a 500, no stack trace, no echo of the
+caller's input. Full results table:
+[`docs/validation_test_results.md`](../docs/validation_test_results.md).
+
+---
+
+## 2. Failure tests
 
 ```bash
 python -m pytest tests/failure -q
@@ -53,7 +69,7 @@ files do not duplicate a case. Results:
 
 ---
 
-## 2. Load tests (Locust)
+## 3. Load tests (Locust)
 
 **Never** point a load run at a real LLM provider (free-tier quota): the
 main runs below use `USE_MOCK=true`. All knobs are placeholders at the top of
@@ -169,7 +185,7 @@ docker logs setu-day3-load | grep -E 'load_user_|load_match_|How do I start'   #
 
 ---
 
-## 3. Results
+## 4. Results
 
 Filled-in numbers, bug list and known limits: see
 
@@ -177,5 +193,7 @@ Filled-in numbers, bug list and known limits: see
   (20 users, 50 users, 10-minute sustained) with real numbers.
 - [`docs/failure_drill_results.md`](../docs/failure_drill_results.md) - Day 2
   failure drills (Drill / Setup / Expected / Actual / Pass-Fail).
+- [`docs/validation_test_results.md`](../docs/validation_test_results.md) - API
+  input-validation matrix (successes, rejects, 500s, limits) with real numbers.
 - [`docs/load_and_failure_test_notes.md`](../docs/load_and_failure_test_notes.md) -
   the earlier Day 3 scenarios (A-D) and their numbers.
