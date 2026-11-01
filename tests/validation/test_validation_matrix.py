@@ -1,6 +1,12 @@
-"""Day 3: bad input and protocol failures must be a clean 4xx in the standard
-error contract {"error": {"code", "message", "details"}} - never a 500, never
-a stack trace, never an echo of what the caller sent.
+"""Phase 2 Day 1: validation review.
+
+Every bad input must come back as a clean 4xx in the standard error contract
+{"error": {"code", "message", "details"}} - never a 500, never a stack trace,
+and the caller's input is never echoed back.
+
+This suite is the single home for input-validation checks (moved here from
+tests/failure/test_bad_input.py so there is no duplicate). Failure-drill and
+privacy tests stay in tests/failure/.
 
 Owner: DevOps 1 (app/api is ours; app/core, app/rag, app/safety are not).
 """
@@ -9,11 +15,12 @@ import json
 import pytest
 
 CHAT = "/v1/guide/chat"
-# Canary value: if it ever comes back in an error body or a log line, we echo
-# caller input where we must not.
+# Canary value: if it ever comes back in an error body (or a log line, see
+# tests/failure/test_log_privacy.py) we are echoing caller input where we must
+# not.
 ECHO = "ECHO-CANARY-VALUE"
 
-BASE = {"user_id": "day3_bad_u1", "match_id": "day3_bad_m1",
+BASE = {"user_id": "validation_u1", "match_id": "validation_m1",
         "stage": "connect", "intent": "next_steps"}
 
 
@@ -37,8 +44,8 @@ def assert_error_format(r, status, code):
 # ------------------------------------------------- schema violations -> 422
 
 _INVALID_JSON_PAYLOADS = [
-    ("unknown stage", {**BASE, "stage": "teleport"}, "stage: enum"),
-    ("unknown intent", {**BASE, "intent": "make_me_rich"}, "intent: enum"),
+    ("bad stage", {**BASE, "stage": "teleport"}, "stage: enum"),
+    ("bad intent", {**BASE, "intent": "make_me_rich"}, "intent: enum"),
     ("missing user_id", {"match_id": BASE["match_id"], "stage": "connect",
                          "intent": "next_steps"}, "user_id: missing"),
     ("missing match_id", {"user_id": BASE["user_id"], "stage": "connect",
@@ -70,10 +77,43 @@ def test_empty_json_object_lists_every_missing_field(client):
     assert "match_id: missing" in err["details"]
 
 
+def test_whitespace_only_message_is_treated_as_missing(client):
+    """A message of spaces is not a real message: still 422, not a 200."""
+    payload = {"user_id": BASE["user_id"], "match_id": BASE["match_id"],
+               "stage": "connect", "message": "    "}
+    assert_error_format(client.post(CHAT, json=payload), 422, "invalid_request")
+
+
+# ------------------------------------------------- length boundaries (valid)
+
+def test_message_at_500_chars_is_accepted(client):
+    payload = {"user_id": "validation_len_u1", "match_id": "validation_len_m1",
+               "stage": "connect", "message": "a" * 500}
+    assert client.post(CHAT, json=payload).status_code == 200
+
+
+def test_message_at_501_chars_is_rejected(client):
+    payload = {"user_id": "validation_len_u2", "match_id": "validation_len_m2",
+               "stage": "connect", "message": "a" * 501}
+    assert_error_format(client.post(CHAT, json=payload), 422, "invalid_request")
+
+
+def test_topic_at_100_chars_is_accepted(client):
+    payload = {"user_id": "validation_len_u3", "match_id": "validation_len_m3",
+               "stage": "connect", "intent": "next_steps", "topic": "t" * 100}
+    assert client.post(CHAT, json=payload).status_code == 200
+
+
 # -------------------------------------------------- malformed / raw bodies
 
 def test_empty_body(client):
     r = client.post(CHAT, content=b"", headers={"content-type": "application/json"})
+    assert_error_format(r, 422, "invalid_request")
+
+
+def test_null_body(client):
+    """A literal JSON `null` body is not an object: 422, not a 500."""
+    r = client.post(CHAT, content=b"null", headers={"content-type": "application/json"})
     assert_error_format(r, 422, "invalid_request")
 
 
@@ -123,7 +163,7 @@ _UNICODE_CASES = [
 
 @pytest.mark.parametrize("label,extra", _UNICODE_CASES, ids=[c[0] for c in _UNICODE_CASES])
 def test_unicode_input_returns_200_without_crash(client, label, extra):
-    payload = {"user_id": "day3_uni_u1", "match_id": "day3_uni_m1",
+    payload = {"user_id": "validation_uni_u1", "match_id": "validation_uni_m1",
                "stage": "understand", **extra}
     r = client.post(CHAT, json=payload)
     assert r.status_code == 200, f"{label}: {r.status_code} {r.text[:200]}"
@@ -134,6 +174,6 @@ def test_unicode_input_returns_200_without_crash(client, label, extra):
 
 
 def test_message_with_newlines_and_tabs_is_accepted(client):
-    payload = {"user_id": "day3_uni_u2", "match_id": "day3_uni_m2",
+    payload = {"user_id": "validation_uni_u2", "match_id": "validation_uni_m2",
                "stage": "discuss", "message": "line one\nline two\tend 🙂"}
     assert client.post(CHAT, json=payload).status_code == 200
