@@ -60,8 +60,8 @@ class Settings(BaseSettings):
     llm_api_key: str | None = Field(default=None, repr=False)
     llm_provider: str = "placeholder"
     llm_timeout_seconds: float = Field(default=10.0, gt=0)
+    llm_model: str = "gemini-3.8-flash"
     use_mock: bool = True
-
     # --- rate limiting (single instance; needs Redis if we scale out) -------
     rate_limit_per_user: str = "30/minute"
     rate_limit_per_ip: str = "60/minute"
