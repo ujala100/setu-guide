@@ -15,14 +15,14 @@ Current mock/staging status:
 - Default runtime is **mock mode** (`USE_MOCK=true`). The mock reply body is the literal string `"(mock reply)"` with `fallback_used=false` on the normal path.
 - The real orchestrator entry point `app.core.orchestrator.handle_chat` **does not exist yet** (lead-owned `app/core`). When `USE_MOCK=false`, every chat call currently returns a safe HTTP `200` with `fallback_used=true` instead of a `500` (see §17).
 - Rate limiting and response caching are implemented in-process (single instance). Multi-instance deployments need Redis (see §§15–16).
-- No authentication is implemented (see §3).
+- Authentication is implemented but **off by default** (`AUTH_METHOD=none`); see §3.
 
 ## 2. Base URLs
 
 | Environment | Base URL |
 |-------------|----------|
 | Local | `http://localhost:8000` |
-| Staging | `https://setu-guide.onrender.com` |
+| Staging | [PLACEHOLDER] - no staging endpoint has been confirmed yet |
 
 Run locally:
 
@@ -35,14 +35,38 @@ Swagger: `http://localhost:8000/docs`
 
 ## 3. Authentication
 
-The current API does **NOT** implement any of the following:
+Authentication is **implemented but disabled by default**. The method is
+configuration, not code - only the environment changes.
 
-- `Authorization` header: **not implemented**
-- API key (any header/query): **not implemented**
-- `X-API-Key`: **not implemented**
+| `AUTH_METHOD` | Credential the caller sends | Status |
+|---------------|-----------------------------|--------|
+| `none` (default) | none - the endpoint is open | current behaviour, nothing changes |
+| `api_key` | `X-API-Key: <key>` | lead's working choice (Day 4) |
+| `bearer` | `Authorization: Bearer <token>` | switchable if the team prefers it |
 
-Do not send credentials. `401`/`403` error codes exist as static mappings but are never raised (see §14).
-`internal_api_key` exists in `Settings`/`.env.example` but is documented there as "not read by this service yet".
+| Setting | Required | Notes |
+|---------|----------|-------|
+| `AUTH_METHOD` | no | one of `none` / `api_key` / `bearer` |
+| `API_KEY` | yes, when `AUTH_METHOD` is not `none` | secret from the environment; **never committed**; startup fails fast without it, and the placeholder value from `.env.example` is refused as a live credential |
+
+Rules:
+
+- The key is compared in constant time and is never logged, echoed back or
+  written into an error body.
+- A missing key and a wrong key give the **same** `401`, so the endpoint cannot
+  be used to probe which keys exist.
+- `GET /health` **stays open** - the container `HEALTHCHECK` and the
+  load-balancer probe call it without a credential.
+- `401` uses the standard error envelope (`§14`): `{"error": {"code":
+  "unauthorized", "message": ..., "details": []}}`, with `X-Request-Id` present.
+- In `bearer` mode the response carries `WWW-Authenticate: Bearer`.
+- The method is strict: in `bearer` mode an `X-API-Key` header is **not**
+  accepted, and the other way round - switching is a configuration change, so
+  only one credential may work at a time.
+
+`internal_api_key` still exists in `Settings`/`.env.example` and is still
+documented there as "not read by this service yet"; it is a different value
+from `API_KEY`.
 
 ## 4. Common Headers
 
@@ -52,6 +76,7 @@ Request headers:
 |--------|----------|-------|
 | `Content-Type: application/json` | Yes for `POST /v1/guide/chat` | JSON body parsing. |
 | `X-Request-Id` | No (optional) | Caller-supplied correlation id. If absent the server generates `uuid4().hex[:12]`. |
+| `X-API-Key` | Only when `AUTH_METHOD=api_key` | The API key. See §3. |
 | `X-Forwarded-For` | No | Only honored when `TRUSTED_PROXY=true`. Otherwise ignored (client IP = TCP peer). See §15. |
 
 Response headers:
@@ -229,7 +254,9 @@ Uniform shape for every failure (`app/api/main.py:61`):
 | 429 | `rate_limited` | Per-user or per-IP bucket exhausted. | Message `"Too many requests. Please retry shortly."` + `Retry-After` header. |
 | 500 | `internal_error` | Unhandled exception. | Message `"An unexpected error occurred."` Only the exception type + traceback frames are logged; `str(exc)` is never returned. |
 
-Currently mapped but **not actually raised** by the implementation: `400 invalid_request`, `401 unauthorized`, `403 forbidden`, `503 service_unavailable`. They exist in `_HTTP_ERRORS` for future use; do not code integrations against them today.
+| 401 | `unauthorized` | The credential is missing or wrong (only when `AUTH_METHOD` is not `none`). | Message `"Missing or invalid credentials."` + `details: []`. Never reveals whether the key was missing or wrong. See §3. |
+
+Currently mapped but **not actually raised** by the implementation: `400 invalid_request`, `403 forbidden`, `503 service_unavailable`. They exist in `_HTTP_ERRORS` for future use; do not code integrations against them today.
 
 ## 15. Rate limiting
 
@@ -429,7 +456,10 @@ Unknown route (`404`) and wrong method (`405`) share the envelope with codes `no
 
 ## 22. Staging verification checklist
 
-Base: `https://setu-guide.onrender.com` (Postman `base_url` variable; local default `http://localhost:8000`).
+Base: [PLACEHOLDER] - no staging endpoint has been confirmed yet (the lead
+said to treat staging as not ready). Local default `http://localhost:8000`.
+The Postman collection still carries an unconfirmed `base_url`; confirm it with
+DevOps 2 before using it.
 
 - [ ] `GET /health` → `200 {"status":"ok"}`, `X-Request-Id` present, no `X-Cache`.
 - [ ] `POST /v1/guide/chat` quick action (`connect`/`next_steps`, synthetic ids) → `200`, 7-key body, `safety.status=="pass"`, `fallback_used==false`, `X-Cache: MISS` then `HIT` on repeat.

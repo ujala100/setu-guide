@@ -23,6 +23,13 @@ PERIOD_SECONDS: Dict[str, int] = {
     "day": 86400, "days": 86400, "d": 86400,
 }
 _LOG_LEVELS = ("CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG", "NOTSET")
+# Inbound authentication methods. "none" keeps the endpoint open (the default
+# until the team confirms the method); "api_key" reads the X-API-Key header;
+# "bearer" reads Authorization: Bearer <token>.
+AUTH_METHODS = ("none", "api_key", "bearer")
+# The dummy value that ships in .env.example. It is refused as a live
+# credential so a copied template can never leave the endpoint open.
+PLACEHOLDER_SECRET = "placeholder-not-a-real-key"
 
 
 class SettingsError(RuntimeError):
@@ -53,8 +60,8 @@ class Settings(BaseSettings):
     llm_api_key: str | None = Field(default=None, repr=False)
     llm_provider: str = "placeholder"
     llm_timeout_seconds: float = Field(default=10.0, gt=0)
+    llm_model: str = "gemini-3.8-flash"
     use_mock: bool = True
-
     # --- rate limiting (single instance; needs Redis if we scale out) -------
     rate_limit_per_user: str = "30/minute"
     rate_limit_per_ip: str = "60/minute"
@@ -68,6 +75,16 @@ class Settings(BaseSettings):
     # --- logging ------------------------------------------------------------
     log_level: str = "INFO"
 
+    # --- inbound authentication (Day 4) ---------------------------------------
+    # AUTH_METHOD: "none" (default - the endpoint stays open), "api_key"
+    # (X-API-Key header) or "bearer" (Authorization: Bearer <token>).
+    # The method is configurable so the team can switch to Bearer without a
+    # code change - only the environment changes.
+    auth_method: str = "none"
+    # Secret. Required when AUTH_METHOD is not "none". Never logged, never
+    # returned in an error, never committed (it comes from the environment).
+    api_key: str | None = Field(default=None, repr=False)
+
     # --- not owned by this service, kept for the shared .env ---------------
     internal_api_key: str | None = Field(default=None, repr=False)
 
@@ -76,6 +93,15 @@ class Settings(BaseSettings):
     def _valid_rate_limit(cls, value: str) -> str:
         parse_rate_limit(value)
         return value
+
+    @field_validator("auth_method")
+    @classmethod
+    def _valid_auth_method(cls, value: str) -> str:
+        method = str(value or "none").strip().lower()
+        if method not in AUTH_METHODS:
+            raise ValueError(
+                f"invalid AUTH_METHOD {value!r}: use one of {', '.join(AUTH_METHODS)}")
+        return method
 
     @field_validator("log_level")
     @classmethod
@@ -91,6 +117,28 @@ class Settings(BaseSettings):
             raise ValueError(
                 "LLM_API_KEY is required when USE_MOCK=false. "
                 "Set it in the environment (see .env.example) or keep USE_MOCK=true."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def _require_api_key_when_auth_is_on(self):
+        if self.auth_method != "none" and not self.api_key:
+            raise ValueError(
+                f"API_KEY is required when AUTH_METHOD={self.auth_method}. "
+                "Set it in the environment (see .env.example); it is never committed."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def _reject_the_placeholder_key(self):
+        # The value shipped in .env.example must never work as a live
+        # credential - otherwise copying the template and flipping
+        # AUTH_METHOD would silently open the endpoint with a guessable key.
+        if self.auth_method != "none" and self.api_key == PLACEHOLDER_SECRET:
+            raise ValueError(
+                f"API_KEY is still the placeholder value ({PLACEHOLDER_SECRET}). "
+                "Set a real secret in the environment before enabling "
+                f"AUTH_METHOD={self.auth_method}."
             )
         return self
 
