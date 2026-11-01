@@ -5,6 +5,7 @@ import time
 
 from app.core import orchestrator
 from app.schemas.guide import GuideRequest
+from app.core import orchestrator
 
 CHAT = "/v1/guide/chat"
 QUICK_ACTION = {"user_id": "u1", "match_id": "m1", "stage": "connect", "intent": "next_steps"}
@@ -58,9 +59,10 @@ def test_orchestrator_failure_is_not_cached(client, set_env, monkeypatch):
     assert second.json()["fallback_used"] is True
 
 
-def test_missing_handle_chat_is_reported_as_fallback_not_error(client, set_env):
+def test_missing_handle_chat_is_reported_as_fallback_not_error(client, set_env, monkeypatch):
     """Real mode before the lead ships handle_chat: still a 200, never a 500."""
     set_env(USE_MOCK="false", LLM_API_KEY="dummy-key-for-tests")
+    monkeypatch.delattr(orchestrator, "handle_chat", raising=False)
     r = client.post(CHAT, json=QUICK_ACTION)
     assert r.status_code == 200
     assert r.json()["fallback_used"] is True
