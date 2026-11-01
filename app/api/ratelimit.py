@@ -48,12 +48,25 @@ class RateLimiter:
             return True, "", 0
 
     def _sweep(self, now: float) -> None:
-        """Keep the dict bounded: drop buckets older than the longest window."""
+        """Keep the dict bounded: drop stale buckets, then the least recently
+        used ones if a flood of fresh buckets is still over the cap."""
         if len(self._hits) <= _MAX_KEYS:
             return
         cutoff = now - _MAX_WINDOW
         for key in [k for k, v in self._hits.items() if not v or v[-1] < cutoff]:
             del self._hits[key]
+        if len(self._hits) > _MAX_KEYS:
+            # Day 3 finding B: a high-cardinality flood (one request per new
+            # id) survives the day-old sweep, so the cap never held. Evict the
+            # least recently used buckets down to 90% of the cap; just-used
+            # buckets keep their counters, and limits only become approximate
+            # above _MAX_KEYS distinct ids in one window - the usual
+            # in-memory trade-off (a shared store such as Redis removes it).
+            target = int(_MAX_KEYS * 0.9)
+            ordered = sorted(
+                self._hits, key=lambda k: self._hits[k][-1] if self._hits[k] else 0.0)
+            for key in ordered[: len(ordered) - target]:
+                del self._hits[key]
 
     def reset(self) -> None:
         """Test helper - clears every counter."""
