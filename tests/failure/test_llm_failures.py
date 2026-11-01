@@ -87,10 +87,21 @@ def test_llm_returns_wrong_type(client, set_env, monkeypatch):
     assert_safe_fallback(r)
 
 
-def test_handle_chat_not_implemented_yet(client, set_env):
-    """Real mode before the lead ships handle_chat: still 200, never a 500."""
+def test_real_mode_with_failing_provider_falls_back_without_500(client, set_env, monkeypatch):
+    """Real mode, provider returns nothing: still 200, safe fallback, no network call."""
+    from app.core import orchestrator
+
+    class DownProvider:
+        def generate(self, prompt):
+            return None
+
+    monkeypatch.setattr(orchestrator, "_provider", lambda: DownProvider())
     set_env(USE_MOCK="false", LLM_API_KEY="dummy-key-for-tests")
-    assert_safe_fallback(client.post(CHAT, json=QUICK_ACTION))
+    r = client.post(CHAT, json=QUICK_ACTION)
+    assert r.status_code == 200
+    body = r.json()
+    assert body["fallback_used"] is True
+    assert body["safety"]["status"] == "pass"
 
 
 def test_fallback_reply_is_not_cached(client, set_env, monkeypatch):
