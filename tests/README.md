@@ -1,9 +1,10 @@
 # Load and failure tests (owner: DevOps 1)
 
-Two suites live here:
+Three suites live here:
 
 | Folder        | Tool               | Needs a server?        |
 |---------------|--------------------|------------------------|
+| `tests/validation/` | pytest + httpx | no (TestClient) |
 | `tests/failure/` | pytest + httpx  | no (TestClient), except `test_container.py` |
 | `tests/load/`    | Locust          | yes (container on :8000) |
 | `tests/ratelimit/` | pytest        | no (TestClient) |
@@ -19,7 +20,22 @@ pip install -r requirements-dev.txt      # pytest, httpx, locust (all pinned)
 
 ---
 
-## 1. Failure tests
+## 1. Validation tests (bad input)
+
+```bash
+python -m pytest tests/validation -q
+```
+
+Every malformed request (bad stage/intent, missing fields, empty/null body,
+wrong types, over-length message/topic, ~1 MB body, malformed JSON, wrong
+content type, wrong method, unknown route, unicode) must return a clean 4xx in
+the standard error contract — never a 500, no stack trace, no echo of the
+caller's input. Full results table:
+[`docs/validation_test_results.md`](../docs/validation_test_results.md).
+
+---
+
+## 2. Failure tests
 
 ```bash
 python -m pytest tests/failure -q
@@ -57,7 +73,7 @@ files do not duplicate a case. Results:
 
 ---
 
-## 2. Load tests (Locust)
+## 3. Load tests (Locust)
 
 **Never** point a load run at a real LLM provider (free-tier quota): the
 main runs below use `USE_MOCK=true`. All knobs are placeholders at the top of
@@ -173,6 +189,7 @@ docker logs setu-day3-load | grep -E 'load_user_|load_match_|How do I start'   #
 
 ---
 
+ feature/phase2-day4-recovery-integration-v2
 ## 3. Day 3 review suites (rate limit + cache isolation)
 
 `tests/ratelimit/test_rate_limit_review.py` (9 tests) pins the rate-limit
@@ -285,12 +302,16 @@ Results and the handover notes for the backend engineer and DevOps 2:
 
 ## 5. Results
 
+## 4. Results
+ dev
+
 Filled-in numbers, bug list and known limits: see
 
 - [`docs/load_test_report.md`](../docs/load_test_report.md) - Day 2 load runs
   (20 users, 50 users, 10-minute sustained) with real numbers.
 - [`docs/failure_drill_results.md`](../docs/failure_drill_results.md) - Day 2
   failure drills (Drill / Setup / Expected / Actual / Pass-Fail).
+ feature/phase2-day4-recovery-integration-v2
 - [`docs/rate_limit_check.md`](../docs/rate_limit_check.md) - Day 3 rate-limit
   review (checklist, 2 gaps found and fixed).
 - [`docs/cache_isolation_test.md`](../docs/cache_isolation_test.md) - Day 3
@@ -299,6 +320,10 @@ Filled-in numbers, bug list and known limits: see
   dependency/image scan with before-after findings and hardening checklist.
 - [`docs/secrets_scan_result.md`](../docs/secrets_scan_result.md) - Day 3
   secrets scan of repo, git history, image layers and container logs.
+
+- [`docs/validation_test_results.md`](../docs/validation_test_results.md) - API
+  input-validation matrix (successes, rejects, 500s, limits) with real numbers.
+ dev
 - [`docs/load_and_failure_test_notes.md`](../docs/load_and_failure_test_notes.md) -
   the earlier Day 3 scenarios (A-D) and their numbers.
 - [`docs/recovery_test_notes.md`](../docs/recovery_test_notes.md) - Day 4
