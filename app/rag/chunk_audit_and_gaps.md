@@ -16,3 +16,4 @@
 - Add 3 new privacy chunks.
 - Add 5 new topic chunks (Readiness, Income).
 - Re-tag chunks that were mapped to the wrong intents.
+"Update: Added 10 new conversation_ideas chunks to fix the gap."

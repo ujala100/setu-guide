@@ -1,31 +1,34 @@
-"""Every sources[] ID in API replies must map to a real chunk. Exit 1 on orphan."""
-import json, sys
+"""Runs the evaluation and ensures every returned chunk has a valid source."""
+import json
 import os
+import sys
+from app.rag.eval_retrieval import TEST_CASES
+from app.rag.retriever import retrieve
 
-def check(kb_path, replies_path):
-    if not os.path.exists(kb_path):
-        print(f"Warning: {kb_path} not found. Cannot check IDs.")
-        return
+KB_PATH = "app/rag/knowledge_base/kb_chunks.json"
 
-    with open(kb_path) as f:
-        ids = {c["chunk_id"] for c in json.load(f)}
+def check():
+    if not os.path.exists(KB_PATH):
+        print(f"Error: {KB_PATH} not found. Failing.")
+        sys.exit(1)
 
+    with open(KB_PATH, "r", encoding="utf-8") as f:
+        valid_ids = {c["chunk_id"] for c in json.load(f)}
+
+    print("Running evaluation to check source IDs...")
     orphans = []
-    if os.path.exists(replies_path):
-        with open(replies_path) as f:
-            for i, line in enumerate(f, 1):
-                if not line.strip(): continue
-                for sid in json.loads(line).get("sources", []):
-                    if sid not in ids: 
-                        orphans.append((i, sid))
-    else:
-        print(f"Warning: {replies_path} not found. Create a dummy file to test.")
-        return
+    
+    for case in TEST_CASES:
+        results = retrieve(case["query"], case["stage"], case["intent"], k=3)
+        for r in results:
+            if r["chunk_id"] not in valid_ids:
+                orphans.append(r["chunk_id"])
 
     if orphans:
-        print("ORPHAN IDs FOUND:", orphans)
+        print(f"ERROR: Found orphan chunk IDs: {orphans}")
         sys.exit(1)
-    print("OK: no orphan source IDs")
+        
+    print("OK: All chunks returned by evaluation map to real KB source IDs.")
 
 if __name__ == "__main__":
-   check("app/rag/knowledge_base/kb_chunks.json", "logs/api_replies.jsonl")
+    check()

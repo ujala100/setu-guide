@@ -21,3 +21,5 @@
 -**Fix:** Added `NO_ANSWER_THRESHOLD = 0.55` in `threshold.py`. If the score is lower, it returns a safe fallback.
 -**Issue:** Bot was grabbing chunks from the wrong stage.
 -**Fix:** Enforced a strict `stage` filter in the retrieval logic.
+ "Top-k is set to 3 to ensure the orchestrator receives the best 3 chunks, avoiding context overload."
+ 
