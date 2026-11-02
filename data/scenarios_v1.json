@@ -1,0 +1,415 @@
+
+{
+  "version": "v1",
+  "description": "Setu Guide stage-intent and free-text evaluation scenarios",
+  "cases": [
+    {
+      "id": "s01",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What should I ask during our first conversation?",
+      "stage": "connect",
+      "intent": "conversation_ideas",
+      "expected_intent": "conversation_ideas"
+    },
+    {
+      "id": "s02",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What should I understand before moving forward?",
+      "stage": "connect",
+      "intent": "help_me_understand",
+      "expected_intent": "help_me_understand"
+    },
+    {
+      "id": "s03",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What should I do next?",
+      "stage": "connect",
+      "intent": "next_steps",
+      "expected_intent": "next_steps"
+    },
+    {
+      "id": "s04",
+      "input_type": "structured",
+      "language": "en",
+      "q": "Is my information private?",
+      "stage": "connect",
+      "intent": "privacy_safety",
+      "expected_intent": "privacy_safety"
+    },
+    {
+      "id": "s05",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What should we discuss to understand each other?",
+      "stage": "understand",
+      "intent": "conversation_ideas",
+      "expected_intent": "conversation_ideas"
+    },
+    {
+      "id": "s06",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What does this stage mean?",
+      "stage": "understand",
+      "intent": "help_me_understand",
+      "expected_intent": "help_me_understand"
+    },
+    {
+      "id": "s07",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What should I do after understanding this?",
+      "stage": "understand",
+      "intent": "next_steps",
+      "expected_intent": "next_steps"
+    },
+    {
+      "id": "s08",
+      "input_type": "structured",
+      "language": "en",
+      "q": "Who can access my private answers?",
+      "stage": "understand",
+      "intent": "privacy_safety",
+      "expected_intent": "privacy_safety"
+    },
+    {
+      "id": "s09",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What questions should I ask myself?",
+      "stage": "reflect",
+      "intent": "conversation_ideas",
+      "expected_intent": "conversation_ideas"
+    },
+    {
+      "id": "s10",
+      "input_type": "structured",
+      "language": "en",
+      "q": "Why is reflection important?",
+      "stage": "reflect",
+      "intent": "help_me_understand",
+      "expected_intent": "help_me_understand"
+    },
+    {
+      "id": "s11",
+      "input_type": "structured",
+      "language": "en",
+      "q": "How should I prepare for the next conversation?",
+      "stage": "reflect",
+      "intent": "next_steps",
+      "expected_intent": "next_steps"
+    },
+    {
+      "id": "s12",
+      "input_type": "structured",
+      "language": "en",
+      "q": "Are my reflections confidential?",
+      "stage": "reflect",
+      "intent": "privacy_safety",
+      "expected_intent": "privacy_safety"
+    },
+    {
+      "id": "s13",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What should we talk about together?",
+      "stage": "discuss",
+      "intent": "conversation_ideas",
+      "expected_intent": "conversation_ideas"
+    },
+    {
+      "id": "s14",
+      "input_type": "structured",
+      "language": "en",
+      "q": "How do we understand each other's expectations?",
+      "stage": "discuss",
+      "intent": "help_me_understand",
+      "expected_intent": "help_me_understand"
+    },
+    {
+      "id": "s15",
+      "input_type": "structured",
+      "language": "en",
+      "q": "How can we move this discussion forward?",
+      "stage": "discuss",
+      "intent": "next_steps",
+      "expected_intent": "next_steps"
+    },
+    {
+      "id": "s16",
+      "input_type": "structured",
+      "language": "en",
+      "q": "Will our private discussions remain private?",
+      "stage": "discuss",
+      "intent": "privacy_safety",
+      "expected_intent": "privacy_safety"
+    },
+    {
+      "id": "s17",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What questions should we ask before agreeing?",
+      "stage": "agree",
+      "intent": "conversation_ideas",
+      "expected_intent": "conversation_ideas"
+    },
+    {
+      "id": "s18",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What does reaching an agreement mean?",
+      "stage": "agree",
+      "intent": "help_me_understand",
+      "expected_intent": "help_me_understand"
+    },
+    {
+      "id": "s19",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What should we do after agreeing?",
+      "stage": "agree",
+      "intent": "next_steps",
+      "expected_intent": "next_steps"
+    },
+    {
+      "id": "s20",
+      "input_type": "structured",
+      "language": "en",
+      "q": "Can anyone see our agreement privately?",
+      "stage": "agree",
+      "intent": "privacy_safety",
+      "expected_intent": "privacy_safety"
+    },
+    {
+      "id": "s21",
+      "input_type": "structured",
+      "language": "en",
+      "q": "How should our families meet?",
+      "stage": "family",
+      "intent": "conversation_ideas",
+      "expected_intent": "conversation_ideas"
+    },
+    {
+      "id": "s22",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What does family involvement mean?",
+      "stage": "family",
+      "intent": "help_me_understand",
+      "expected_intent": "help_me_understand"
+    },
+    {
+      "id": "s23",
+      "input_type": "structured",
+      "language": "en",
+      "q": "How should we plan the first family meeting?",
+      "stage": "family",
+      "intent": "next_steps",
+      "expected_intent": "next_steps"
+    },
+    {
+      "id": "s24",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What family information is private?",
+      "stage": "family",
+      "intent": "privacy_safety",
+      "expected_intent": "privacy_safety"
+    },
+    {
+      "id": "s25",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What new questions should I ask after family discussions?",
+      "stage": "reflect_again",
+      "intent": "conversation_ideas",
+      "expected_intent": "conversation_ideas"
+    },
+    {
+      "id": "s26",
+      "input_type": "structured",
+      "language": "en",
+      "q": "How should I understand my feelings after family talks?",
+      "stage": "reflect_again",
+      "intent": "help_me_understand",
+      "expected_intent": "help_me_understand"
+    },
+    {
+      "id": "s27",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What should I do after reflecting again?",
+      "stage": "reflect_again",
+      "intent": "next_steps",
+      "expected_intent": "next_steps"
+    },
+    {
+      "id": "s28",
+      "input_type": "structured",
+      "language": "en",
+      "q": "Are my second reflections private?",
+      "stage": "reflect_again",
+      "intent": "privacy_safety",
+      "expected_intent": "privacy_safety"
+    },
+    {
+      "id": "s29",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What should we discuss before making a decision?",
+      "stage": "decision",
+      "intent": "conversation_ideas",
+      "expected_intent": "conversation_ideas"
+    },
+    {
+      "id": "s30",
+      "input_type": "structured",
+      "language": "en",
+      "q": "What should I consider before deciding?",
+      "stage": "decision",
+      "intent": "help_me_understand",
+      "expected_intent": "help_me_understand"
+    },
+    {
+      "id": "s31",
+      "input_type": "structured",
+      "language": "en",
+      "q": "How can I communicate my decision?",
+      "stage": "decision",
+      "intent": "next_steps",
+      "expected_intent": "next_steps"
+    },
+    {
+      "id": "s32",
+      "input_type": "structured",
+      "language": "en",
+      "q": "How is my decision-related information protected?",
+      "stage": "decision",
+      "intent": "privacy_safety",
+      "expected_intent": "privacy_safety"
+    },
+    {
+      "id": "f01",
+      "input_type": "free_text",
+      "language": "en",
+      "q": "How do I raise the topic of living near my parents?",
+      "stage": "discuss",
+      "expected_intent": "help_me_understand"
+    },
+    {
+      "id": "f02",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "q": "Main unse future mein parents ke paas rehne ke baare mein kaise baat karun?",
+      "stage": "discuss",
+      "expected_intent": "help_me_understand"
+    },
+    {
+      "id": "f03",
+      "input_type": "free_text",
+      "language": "en",
+      "q": "I feel nervous about discussing my career plans after marriage.",
+      "stage": "discuss",
+      "expected_intent": "help_me_understand"
+    },
+    {
+      "id": "f04",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "q": "Mujhe samajh nahi aa raha ki unse career aur marriage balance ke baare mein kaise baat karun.",
+      "stage": "discuss",
+      "expected_intent": "help_me_understand"
+    },
+    {
+      "id": "f05",
+      "input_type": "free_text",
+      "language": "en",
+      "q": "Can you suggest some questions for our first meeting?",
+      "stage": "connect",
+      "expected_intent": "conversation_ideas"
+    },
+    {
+      "id": "f06",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "q": "Pehli meeting mein main unse kya questions pooch sakta hoon?",
+      "stage": "connect",
+      "expected_intent": "conversation_ideas"
+    },
+    {
+      "id": "f07",
+      "input_type": "free_text",
+      "language": "en",
+      "q": "What should I do if we disagree about where to live?",
+      "stage": "discuss",
+      "expected_intent": "next_steps"
+    },
+    {
+      "id": "f08",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "q": "Agar hum dono ki expectations alag hain toh ab mujhe kya karna chahiye?",
+      "stage": "discuss",
+      "expected_intent": "next_steps"
+    },
+    {
+      "id": "f09",
+      "input_type": "free_text",
+      "language": "en",
+      "q": "What does being emotionally ready for marriage mean?",
+      "stage": "understand",
+      "expected_intent": "help_me_understand"
+    },
+    {
+      "id": "f10",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "q": "Shaadi se pehle emotionally ready hone ka kya matlab hai?",
+      "stage": "understand",
+      "expected_intent": "help_me_understand"
+    },
+    {
+      "id": "f11",
+      "input_type": "free_text",
+      "language": "en",
+      "q": "Can my family read my private answers?",
+      "stage": "family",
+      "expected_intent": "privacy_safety"
+    },
+    {
+      "id": "f12",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "q": "Kya mere parents mere private answers dekh sakte hain?",
+      "stage": "family",
+      "expected_intent": "privacy_safety"
+    },
+    {
+      "id": "f13",
+      "input_type": "free_text",
+      "language": "en",
+      "q": "I am unsure how to communicate that I need more time.",
+      "stage": "decision",
+      "expected_intent": "next_steps"
+    },
+    {
+      "id": "f14",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "q": "Mujhe decision lene ke liye thoda aur time chahiye, main kaise bataun?",
+      "stage": "decision",
+      "expected_intent": "next_steps"
+    },
+    {
+      "id": "f15",
+      "input_type": "free_text",
+      "language": "en",
+      "q": "How can we understand whether our expectations are aligned?",
+      "stage": "reflect",
+      "expected_intent": "help_me_understand"
+    }
+  ]
+}
