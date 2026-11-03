@@ -248,3 +248,8 @@ def handle(req: GuideRequest) -> GuideResponse:
         status = SafetyStatus.modified if out_flags else SafetyStatus.passed
         return GuideResponse(intent=intent, reply=text, questions=qs,
                              safety=Safety(status=status, flags=out_flags), fallback_used=True)
+    
+    # app/api/main.py looks up `handle_chat` when USE_MOCK=false.
+handle_chat = handle
+if __name__ == "__main__":
+    pass
