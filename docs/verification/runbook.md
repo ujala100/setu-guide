@@ -82,10 +82,10 @@ diagrams, production-to-production checklists, or production readiness claims.
 | **Docker Configuration & Test Specs** | **VERIFIED IN REPO** | `docker/Dockerfile`, `docker-compose.yml`, `tests/failure/test_container.py` | Multi-stage builder, non-root user `app`, and container failure test definitions are present in repo. |
 | **Docker Runtime Execution** | **PENDING EXECUTION** | `tests/failure/test_container.py` (3 tests skip if image absent) | Container build and runtime execution must be run by operator; skipped in CI by design. Labeled pending until local run succeeds. |
 | **Release Tag** | **NOT CREATED** | `git tag --list` and post-prune check return no tags | No release tag exists. Do not create, push, move, or recreate a tag. Wait for the project lead's frozen SHA before any redeploy or tagging. |
-| **Fail-Fast Configuration** | **VERIFIED** | `app/config.py:118-125`, `tests/test_day2_config.py` | Missing `LLM_API_KEY` when `USE_MOCK=false` aborts startup cleanly. |
+| **Fail-Fast Configuration** | **VERIFIED** | `app/config.py:88-93`, `tests/test_day2_config.py` | Missing `LLM_API_KEY` when `USE_MOCK=false` aborts startup cleanly. |
 | **In-Memory Rate Limiting** | **VERIFIED** | `app/api/ratelimit.py`, `tests/test_day2_rate_limit.py`, Scenario C | In-process limiter verified. Thresholds (30/user, 60/IP) are proposed placeholders pending lead approval. Single-instance only. |
 | **In-Memory Response Caching** | **VERIFIED** | `app/api/cache.py`, `tests/test_day2_cache.py`, Scenario B | In-process cache verified. TTL (600s) and size (500) are proposed placeholders pending lead approval. Single-instance only. |
-| **Health Probe Contract** | **VERIFIED** | `app/api/main.py:133-136`, `Dockerfile:48-49` | `GET /health` returns `200 {"status":"ok"}`; exempt from rate limits. |
+| **Health Probe Contract** | **VERIFIED** | `app/api/main.py:133-136`, `docker/Dockerfile:48-49` | `GET /health` returns `200 {"status":"ok"}`; exempt from rate limits. |
 | **Log Privacy Guard** | **VERIFIED** | `app/api/main.py:102-132`, `tests/failure/test_log_privacy.py` | Request body, PII, and API keys are strictly excluded from logs. |
 | **Staging Service URL** | **CURRENT** | Project lead review; `docs/api.md`, Postman collection | The only current staging base URL is `https://setu-guide-1wiy.onrender.com`. |
 | **Render Web Dashboard** | **REQUIRES ACCESS** | No dashboard credentials or API tokens in repo | Operator must obtain Render access from the repository owner. |
@@ -171,7 +171,7 @@ Before initiating any deployment (local container run or staging update), execut
    ```bash
    docker build -f docker/Dockerfile -t setu-guide-api:day2 .
    ```
-   *Pass condition:* Multi-stage build completes successfully. Image metadata confirms non-root user `app` (`Dockerfile:29,43`) and `EXPOSE 8000`.
+   *Pass condition:* Multi-stage build completes successfully. Image metadata confirms non-root user `app` (`docker/Dockerfile:29,43`) and `EXPOSE 8000`.
 
 3. Docker Runtime Verification Status:
    - The repository provides Docker packaging (`docker/Dockerfile`, `docker-compose.yml`) and container failure tests (`tests/failure/test_container.py`).
