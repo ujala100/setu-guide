@@ -42,7 +42,7 @@ The Setu Guide service operates across distinct deployment topologies:
 |    |             USE_MOCK=true                   USE_MOCK=false                              |    |
 |    |             Mock Provider (Extractive KB)   Real LLM Provider                           |    |
 |    |             "Here are some questions..."    (Requires LLM_API_KEY;                      |    |
-|    |                                              handle_chat pending lead)                  |    |
+|    |                                              handle_chat fallback path)                 |    |
 |    +-----------------------------------------------------------------------------------------+    |
 |          |                                                                                        |
 |          +--- Mount: ./models -> /app/models:ro (docker-compose.yml)                              |
@@ -50,35 +50,30 @@ The Setu Guide service operates across distinct deployment topologies:
 +---------------------------------------------------------------------------------------------------+
 
 +---------------------------------------------------------------------------------------------------+
-| 2. CURRENT STAGING SERVICE (Documented on Render; Dashboard Access Unverified)                    |
+| 2. CURRENT STAGING SERVICE (Render Free; native Python runtime)                                   |
 |                                                                                                   |
-|  [ Client / Postman ] ---> HTTPS (setu-guide.onrender.com:443)                                    |
+|  [ Client / Postman ] ---> HTTPS (setu-guide-1wiy.onrender.com:443)                               |
 |                                    |                                                              |
 |                                    v                                                              |
 |                     [ Render Ingress / Reverse Proxy ]                                            |
 |                                    |                                                              |
-|                                    v (HTTP)                                                       |
-|                     [ Render Web Service Instance ]                                               |
-|                       - Deployed from remote Git branch/commit                                    |
-|                       - Managed via Render Web Dashboard (NEEDS RENDER ACCESS)                    |
-|                       - Environment variables configured on dashboard                             |
-|                       - Single instance assumed (in-memory cache/rate limiter)                    |
+|                                    v (HTTP, Render-assigned $PORT)                                |
+|                     [ Render Web Service Instance - Free plan ]                                   |
+|                       - Deployed from branch `dev` via the Render dashboard                       |
+|                       - Auto-Deploy: disabled (manual deploy only)                                |
+|                       - Native Python runtime (not Docker)                                        |
+|                       - Start: uvicorn app.main:app --host 0.0.0.0 --port $PORT                  |
+|                       - Health Check Path: /health                                                |
+|                       - PYTHON_VERSION configured by environment variable name only               |
+|                       - TRUSTED_PROXY=false                                                       |
+|                       - Single instance (in-memory cache/rate limiter)                            |
 |                       - Default mode: USE_MOCK=true                                               |
 +---------------------------------------------------------------------------------------------------+
-
-+---------------------------------------------------------------------------------------------------+
-| 3. HYPOTHETICAL PRODUCTION DEPLOYMENT (Strictly Unbuilt / Out of Scope)                           |
-|                                                                                                   |
-|  Status: NO PRODUCTION ENVIRONMENT EXISTS.                                                        |
-|  Hypothetical prerequisites required before any production release:                               |
-|    - Container Registry (GHCR/ECR) for immutable image tagging.                                   |
-|    - External Redis instance for shared rate limiting and cache across replicas.                  |
-|    - Reverse proxy / API Gateway with TLS termination and TRUSTED_PROXY=true.                     |
-|    - Secrets Manager (AWS Secrets Manager / Vault) replacing plain dashboard variables.           |
-|    - Centralized telemetry / log aggregation stack (Prometheus / Grafana / Loki / Datadog).       |
-|    - Formal production deployment pipeline with automated rollback triggers.                      |
-+---------------------------------------------------------------------------------------------------+
 ```
+
+Staging is the only hosted environment. There is no production environment in
+this repository and no production deployment is planned. Do not add production
+diagrams, production-to-production checklists, or production readiness claims.
 
 ### 1.2 Verification Matrix: Verified, Documented, and Unknown
 
@@ -86,17 +81,18 @@ The Setu Guide service operates across distinct deployment topologies:
 |---|---|---|---|
 | **Docker Configuration & Test Specs** | **VERIFIED IN REPO** | `docker/Dockerfile`, `docker-compose.yml`, `tests/failure/test_container.py` | Multi-stage builder, non-root user `app`, and container failure test definitions are present in repo. |
 | **Docker Runtime Execution** | **PENDING EXECUTION** | `tests/failure/test_container.py` (3 tests skip if image absent) | Container build and runtime execution must be run by operator; skipped in CI by design. Labeled pending until local run succeeds. |
-| **Release Tag (`v0.1`)** | **VERIFIED (LOCAL)** | `git tag -l` resolves to `bfa5e83` | Tag `v0.1` exists locally and resolves to `bfa5e838a381fcddeb9ed816f08c269c1ce88519`, matching the SHA supplied by the Team Lead. Formal release approval status must be confirmed with the lead if not otherwise documented. Releasing new tags, moving `v0.1`, or claiming release status requires explicit approval. |
+| **Release Tag** | **NOT CREATED** | `git tag --list` and post-prune check return no tags | No release tag exists. Do not create, push, move, or recreate a tag. Wait for the project lead's frozen SHA before any redeploy or tagging. |
 | **Fail-Fast Configuration** | **VERIFIED** | `app/config.py:118-125`, `tests/test_day2_config.py` | Missing `LLM_API_KEY` when `USE_MOCK=false` aborts startup cleanly. |
 | **In-Memory Rate Limiting** | **VERIFIED** | `app/api/ratelimit.py`, `tests/test_day2_rate_limit.py`, Scenario C | In-process limiter verified. Thresholds (30/user, 60/IP) are proposed placeholders pending lead approval. Single-instance only. |
 | **In-Memory Response Caching** | **VERIFIED** | `app/api/cache.py`, `tests/test_day2_cache.py`, Scenario B | In-process cache verified. TTL (600s) and size (500) are proposed placeholders pending lead approval. Single-instance only. |
 | **Health Probe Contract** | **VERIFIED** | `app/api/main.py:133-136`, `Dockerfile:48-49` | `GET /health` returns `200 {"status":"ok"}`; exempt from rate limits. |
 | **Log Privacy Guard** | **VERIFIED** | `app/api/main.py:102-132`, `tests/failure/test_log_privacy.py` | Request body, PII, and API keys are strictly excluded from logs. |
-| **Staging Service URL** | **DOCUMENTED** | `docs/api.md:25`, `docs/verification/devops2-handover.md:58` | URL is `https://setu-guide.onrender.com`; endpoint verified in docs. |
-| **Render Web Dashboard** | **UNKNOWN** | No in-repo dashboard credentials or API tokens | Operator must obtain Render access from repository owner. |
-| **Render Deploy Mechanism** | **UNKNOWN** | No `render.yaml` or webhook in repo | Whether Render deploys on `git push` or manual trigger is unconfirmed. |
-| **Render Rollback Capability** | **UNKNOWN** | Render platform feature tier unconfirmed | Dedicated "Rollback" button depends on Render plan; redeploying SHA is the fallback. |
-| **Production Environment** | **UNKNOWN** | No production configuration in repo | Does not exist. Do not configure or claim production readiness. |
+| **Staging Service URL** | **CURRENT** | Project lead review; `docs/api.md`, Postman collection | The only current staging base URL is `https://setu-guide-1wiy.onrender.com`. |
+| **Render Web Dashboard** | **REQUIRES ACCESS** | No dashboard credentials or API tokens in repo | Operator must obtain Render access from the repository owner. |
+| **Render Deploy Mechanism** | **DOCUMENTED (NOT EXERCISED)** | Render dashboard Deploys page; Auto-Deploy disabled | Manual deploy from a selected commit. Deploying a specific commit also disables Auto-Deploy. |
+| **Render Rollback Capability** | **DOCUMENTED (NOT EXERCISED)** | Render rollback documentation; Free plan limit | Render Free supports rollback only to the two most recent previous deploys. Actual availability depends on retained build artifacts. |
+| **Active Deployment SHA** | **PENDING LEAD** | Render Deploys/Events tab | Must be checked against the frozen SHA the project lead will provide later. Do not guess or claim a match. |
+| **Production Environment** | **OUT OF SCOPE** | No production configuration in repo | No production environment exists or is planned. Do not configure or claim production readiness. |
 
 ### 1.3 Service Boundaries and Role Ownership
 
@@ -148,13 +144,13 @@ Before initiating any deployment (local container run or staging update), execut
    ```
    *Pass condition:* All executed tests must pass with 0 failures and 0 errors.
    *Test count policy:* Total test counts are version-specific evidence and must not be treated as a static invariant across development. Operators must record the exact counts (passed, skipped) for each specific commit under test.
-   - Reference baseline on branch `feature/devops2-deploy-runbook` (`94785e6`): **308 passed, 3 skipped** (total 311).
-   - Reference baseline on `origin/dev` (`5f91a1a`): **315 passed, 3 skipped** (total 318) following provider failure drill additions (`tests/failure/test_provider_drills.py`).
+   - Latest run on this branch after syncing with `origin/dev`: **321 passed, 3 skipped** (`.venv/bin/python -m pytest -q`).
    - *Skipped tests explanation:* `tests/failure/test_container.py` (3 tests) skips automatically when the Docker image `setu-guide-api:day3` has not been built locally or the daemon is unreachable.
+   - *Validation suite location:* input-validation checks live in `tests/validation/test_validation_matrix.py` (moved from `tests/failure/test_bad_input.py` on `dev`). There is no `tests/validation/test_bad_input.py`.
 
 2. Run the failure and privacy regression suite:
    ```bash
-   python -m pytest tests/failure/test_log_privacy.py tests/failure/test_bad_input.py tests/failure/test_llm_failures.py -q
+   python -m pytest tests/failure/test_log_privacy.py tests/validation/test_validation_matrix.py tests/failure/test_llm_failures.py -q
    ```
    *Pass condition:* All failure cases pass with 0 errors.
 
@@ -167,7 +163,7 @@ Before initiating any deployment (local container run or staging update), execut
 ### 2.3 Dependency and Container Image Validation
 
 1. Verify dependency declarations:
-   - `requirements.txt`: runtime production dependencies (`fastapi`, `uvicorn`, `pydantic`, `pydantic-settings`, `cachetools`).
+   - `requirements.txt`: runtime dependencies (`fastapi`, `uvicorn`, `pydantic`, `pydantic-settings`, `cachetools`, `google-genai`).
    - `requirements-dev.txt`: development and test tools (`pytest`, `httpx`, `locust`).
    *Pass condition:* No unpinned or floating dependencies without exact versions.
 
@@ -209,32 +205,32 @@ Before initiating any deployment (local container run or staging update), execut
    | `LLM_TIMEOUT_SECONDS` | No | `10` | Positive integer. Total call budget is `LLM_TIMEOUT_SECONDS + 1s`. [Proposed placeholder - pending lead approval per `.env.example:15`]. |
    | `RATE_LIMIT_PER_USER` | Yes | `30/minute` | Format: `<count>/<period>` (`second`, `minute`, `hour`, `day`). [Proposed placeholder - pending lead approval per `.env.example:19`]. |
    | `RATE_LIMIT_PER_IP` | Yes | `60/minute` | Format: `<count>/<period>`. [Proposed placeholder - pending lead approval per `.env.example:19`]. |
-   | `TRUSTED_PROXY` | Yes | `false` | Boolean. Must be `false` unless behind a verified reverse proxy. |
+   | `TRUSTED_PROXY` | Yes | `false` | Boolean. Staging is explicitly `false`: do not trust `X-Forwarded-For` on this service. |
    | `CACHE_ENABLED` | Yes | `true` | Boolean (`true`/`false`). Set `false` for consistency evaluations. |
    | `CACHE_TTL_SECONDS` | No | `600` | Positive integer (seconds). [Proposed placeholder - pending lead approval per `.env.example:29`]. |
    | `CACHE_MAX_ITEMS` | No | `500` | Positive integer. [Proposed placeholder - pending lead approval per `.env.example:29`]. |
    | `LOG_LEVEL` | Yes | `INFO` | Valid Python log level (`DEBUG`, `INFO`, `WARNING`, `ERROR`). |
+   | `PYTHON_VERSION` | Render | *(configured on Render)* | Environment variable **name only**. Do not publish or commit its value. |
    | `INTERNAL_API_KEY` | No | *(empty)* | Reserved for shared setup; not currently enforced. |
 
 3. Verify fail-fast behavior:
    - `app/config.py` raises `SettingsError` at import time if `USE_MOCK=false` but `LLM_API_KEY` is missing or empty.
    - Malformed rate limits or invalid log levels immediately fail container startup.
 
-### 2.5 Approval and Release-Tag Prerequisites
+### 2.5 Frozen SHA and Release-Tag Prerequisites
 
-1. Release Approval Requirements:
+1. Frozen SHA Requirement:
    - Every merge to `dev` or release candidate requires explicit sign-off from the Team Lead (`CONTRIBUTING.md:4`).
-   - Do not claim explicit release approval without documented evidence. The Team Lead supplied the commit SHA (`bfa5e838a381fcddeb9ed816f08c269c1ce88519`) and requested verification, but formal approval status of this commit as the frozen release candidate must be confirmed directly with the Team Lead if not otherwise documented.
+   - The project lead will provide the frozen deployment SHA later. Until then, do not redeploy staging, tag a commit, or claim that the active deployment matches a release.
 2. Release Tag Status:
    - Check existing tags:
      ```bash
-     git tag -l -n99
-     git rev-parse v0.1^{commit}
+     git tag --list
      ```
-   - Current state: **Tag `v0.1` exists** in the local repository and resolves to `bfa5e838a381fcddeb9ed816f08c269c1ce88519`, matching the SHA supplied by the Team Lead for verification.
+   - Current state: **no release tags exist** in this repository. The obsolete local tag previously described in this runbook is not present and must not be recreated.
    - **Rules:**
-     - Do not create, move, delete, or push any tag.
-     - Never claim a running deployment corresponds to release `v0.1` unless the hosting platform's live commit SHA matches `bfa5e838a381fcddeb9ed816f08c269c1ce88519` exactly AND formal release approval has been confirmed by the Team Lead.
+     - Do not create, move, delete, recreate, or push any tag.
+     - Never claim a running deployment corresponds to a release until the Render deployment SHA matches the project lead's frozen SHA exactly.
      - Any future release tag creation or modification requires explicit Team Lead authorization following documented commit approval.
 
 ---
@@ -289,64 +285,149 @@ Follow these exact commands to build and run the containerized service locally:
    docker compose down
    ```
 
-### 3.2 Staging Deployment Procedure (Render Web Service)
+### 3.2 Staging Deployment Procedure (Render Free, Native Python)
 
-Staging is hosted on Render at `https://setu-guide.onrender.com`. There is no automated deployment pipeline in the repository; operations require authorized Render dashboard access.
+Staging is a **Render Free web service** at `https://setu-guide-1wiy.onrender.com`.
+It is deployed from the `dev` branch, uses Render's **native Python runtime**
+(not Docker), and has **Auto-Deploy disabled**. Operations require authorized
+Render dashboard access.
 
 > **Operational Status Notice:**
-> The deployment procedure below has **NOT been operationally executed or exercised** during this handover. It combines verified repository commands (git SHA verification) with proposed platform dashboard steps awaiting Render account access and owner confirmation.
+> The Render dashboard operations below are documented from platform behavior
+> and the project lead's review. They have **NOT** been exercised as part of
+> this documentation task. Do not redeploy, restart, or roll back staging until
+> the project lead provides the frozen SHA.
 
 #### Step 1: Pre-Deploy Git Verification (Local CLI)
 ```bash
 git fetch origin
 TARGET_SHA=$(git rev-parse --short origin/dev)
-echo "Target deployment commit: ${TARGET_SHA}"
+echo "Selected commit: ${TARGET_SHA}"
 git log -1 --oneline ${TARGET_SHA}
 ```
+*Pass condition:* the selected commit exists on `origin/dev` and matches the
+commit the project lead approved.
 
-#### Step 2: Trigger Deployment on Render Dashboard `[NEEDS RENDER ACCESS]`
-*Action:* Authorized operator logs into [Render Dashboard](https://dashboard.render.com):
-1. Navigate to the **setu-guide** Web Service.
-2. If **Auto-Deploy** is enabled for the branch:
-   - Pushing the approved commit to `dev` triggers the build automatically.
-3. If **Manual Deploy** is configured:
-   - Click **Manual Deploy** -> **Deploy latest commit** (or **Clear build cache & deploy** if dependencies changed).
-4. Monitor the deploy logs on the dashboard until the status changes from `Building` to `Live`.
+#### Step 2: Confirm the Frozen SHA
+The project lead will provide the frozen deployment SHA later. Record it and
+compare it to the selected commit before deploying. If they differ, stop and ask
+the lead; do not guess, redeploy, or tag.
 
-#### Step 3: Platform Settings Checklist `[PROPOSED / REQUIRES OWNER CONFIRMATION]`
-Verify that the service configuration in the Render dashboard matches the repository contract:
+#### Step 3: Manual Deployment from the Selected Commit `[REQUIRES RENDER ACCESS]`
+1. Open the [Render Dashboard](https://dashboard.render.com) and select the
+   `setu-guide-1wiy` web service.
+2. Open the **Deploys** page.
+3. Click **Manual Deploy** > **Deploy a specific commit**.
+4. Paste or select the approved commit SHA and click **Deploy Commit**.
+   *Note:* This action disables Auto-Deploy; staging is already configured with
+   Auto-Deploy off.
+5. Watch the deploy progress until it reports **Live**. If the build or start
+   command fails, the previous deployment remains live; do not hotfix in place.
+
+#### Step 4: Platform Settings Checklist `[REQUIRES RENDER ACCESS]`
+Verify the staging service configuration matches the repository contract:
 
 | Setting Category | Expected Value | Purpose / Constraint |
 |---|---|---|
-| **Runtime Environment** | Docker (or Python 3.11) | Dockerfile path: `docker/Dockerfile`. |
-| **Port Mapping** | `8000` | Service exposes `8000`. Set Render `PORT=8000`. |
-| **Health Check Path** | `/health` | Set Render Health Check Path to `/health`. |
-| **Auto-Deploy** | Yes / No (confirm with owner) | Determines whether git push triggers deploy. |
-| **Environment: USE_MOCK** | `true` | Required for POC staging; mock reply active. |
-| **Environment: LOG_LEVEL** | `INFO` | Never set to `DEBUG` in shared environments. |
-| **Environment: RATE_LIMIT_*** | `30/minute` / `60/minute` | Default per-user / per-IP rate limits [Proposed placeholder]. |
-| **Environment: TRUSTED_PROXY**| `true` | Set to `true` behind Render's reverse proxy so client IP is read. |
+| **Instance type** | Render Free | Single instance. No scaling, persistent disk, shell, or one-off jobs on Free. |
+| **Source branch** | `dev` | Staging deploys from `dev` only. |
+| **Auto-Deploy** | **Off** | Deployments are manual from a selected commit. |
+| **Runtime** | Render native Python | Do not configure Docker for this staging service. |
+| **Build command** | `pip install -r requirements.txt` | Installs the runtime dependency set. |
+| **Start command** | `uvicorn app.main:app --host 0.0.0.0 --port $PORT` | `app.main:app` re-exports `app.api.main:app`; verified in `app/main.py`. Render supplies `$PORT`. |
+| **Port** | Render-assigned `$PORT` | Do **not** set `PORT=8000`. |
+| **Health Check Path** | `/health` | Render health check endpoint. |
+| **Environment: PYTHON_VERSION** | Configured by name only | Never publish the value or any secret in documentation. |
+| **Environment: USE_MOCK** | `true` for mock mode | Mock mode is the safe staging default. See §4.2 for mock-versus-real verification. |
+| **Environment: TRUSTED_PROXY** | `false` | Staging must not trust `X-Forwarded-For`. |
+| **Environment: LOG_LEVEL** | `INFO` | Do not leave shared environments at `DEBUG`. |
+| **Environment: RATE_LIMIT_PER_USER / RATE_LIMIT_PER_IP** | `30/minute` / `60/minute` | Proposed defaults pending lead approval. |
 | **Environment: CACHE_ENABLED** | `true` | Enables in-process quick-action caching. |
 
-#### Step 4: Verify Deployed Commit on Platform `[NEEDS RENDER ACCESS]`
-1. On the Render **Deploys** tab, check the short SHA of the currently live deployment.
-2. Cross-reference the live SHA with the local git history:
+#### Step 5: Check the Events Tab and Deployed Commit SHA `[REQUIRES RENDER ACCESS]`
+1. Open the service's **Events** tab and confirm the latest deploy event reports
+   **Live** and the intended commit.
+2. Open **Deploys** and read the currently live deployment's short SHA.
+3. Cross-reference that SHA with local git history:
    ```bash
    DEPLOYED_SHA="<sha-from-render>"
-   git branch -r --contains ${DEPLOYED_SHA}
-   git log -1 --oneline ${DEPLOYED_SHA}
+   git branch -r --contains "${DEPLOYED_SHA}"
+   git log -1 --oneline "${DEPLOYED_SHA}"
    ```
-   *Pass condition:* `DEPLOYED_SHA` matches `TARGET_SHA` exactly and is present on `origin/dev`.
+   *Pass condition:* `DEPLOYED_SHA` matches the project lead's frozen SHA and is
+   present on `origin/dev`. If no frozen SHA has been provided, record the SHA
+   and mark the comparison **PENDING**, not passed.
+
+#### Step 6: View and Inspect Runtime Logs `[REQUIRES RENDER ACCESS]`
+1. Open the service's **Logs** page.
+2. Use **Live tail** or a recent time range; search for `http_request`,
+   `unhandled`, `orchestrator_failed`, `llm_failed`, or a specific
+   `X-Request-Id`.
+3. On Render's Hobby plan, log retention is 7 days. HTTP request logs are a
+   Pro-workspace feature, so do not expect them on this Free service.
+4. The application's own structured `http_request` lines are still available.
+
+#### Step 7: LLM-Provider Outage Handling
+- If `USE_MOCK=false` and the provider is down, the API should return HTTP `200`
+  with `fallback_used=true` and a safe reply; logs may show
+  `orchestrator_failed mode=real` or `llm_failed`.
+- Do not switch modes, change keys, restart, or redeploy during this
+  documentation task.
+- If a mode switch is approved later, change `USE_MOCK` in the Render
+  Environment page and trigger the approved manual deploy. Never read, copy, or
+  publish the value of `LLM_API_KEY`.
+
+#### Step 8: Free-Tier Cold Starts
+- Render Free spins down after 15 minutes without inbound traffic and takes
+  about a minute to spin back up.
+- The first request after idle may be slow or time out before the instance is
+  warm. Retry once after the instance is up; do not treat a single cold-start
+  timeout as evidence that the deploy is unhealthy.
+- Staging health and smoke tests must be interpreted only after warm-up.
+
+#### Step 9: Safe Restart and Deployment Termination Behavior
+- **Restart:** In the Render Dashboard, open **Deploys** > **Manual Deploy** >
+  **Restart service**. Render creates a new instance with the same commit and
+  configuration and swaps traffic when ready.
+- A restart clears in-memory rate-limit buckets and cache state.
+- **Failed deploy:** Render keeps the previous successful deployment live.
+- **Cancel a deploy:** Use **Cancel deploy** on the Deploys page while a deploy
+  is in progress.
+- **Termination:** During a successful swap Render sends `SIGTERM` to the old
+  instance, then `SIGKILL` if it does not exit within the shutdown delay
+  (default 30 seconds).
+- No restart or deployment termination was performed for this task.
 
 ---
 
 ## 4. Post-Deployment Validation
 
-Execute the following smoke tests against the deployed endpoint. Replace `$BASE_URL` with `http://localhost:8000` for local testing or `https://setu-guide.onrender.com` for staging.
+Execute the following smoke tests against the deployed endpoint. Replace `$BASE_URL` with `http://localhost:8000` for local testing or `https://setu-guide-1wiy.onrender.com` for staging.
 
 ```bash
-BASE_URL="https://setu-guide.onrender.com"
+BASE_URL="https://setu-guide-1wiy.onrender.com"
 ```
+
+The only valid stage values are:
+`connect`, `understand`, `reflect`, `discuss`, `agree`, `family`, `reflect_again`, `decision`.
+
+### 4.0 Mock-Versus-Real Mode Verification
+
+The staging API must be verified in the correct mode without exposing secrets and
+without sending extra staging API requests for this documentation task.
+
+1. **Authoritative check (Render dashboard):** Open the service's **Environment**
+   page and read only the `USE_MOCK` value (`true` = mock, `false` = real).
+   Never copy, screenshot, or document `LLM_API_KEY`, `INTERNAL_API_KEY`, or any
+   other secret value.
+2. **Corroborating check (logs):** After an approved smoke test, inspect the
+   Render **Logs** page for `orchestrator_failed mode=real` or `llm_failed`.
+   These indicate real mode attempted a provider call and fell back.
+3. **Do not infer the mode from a single successful reply alone:** both mock and
+   real modes can return the same schema. In real mode a provider failure returns
+   `fallback_used=true`; a mock quick action normally returns `fallback_used=false`.
+4. Record the observed `USE_MOCK` setting, the response mode evidence, and the
+   timestamp in the deployment record. Do not record secret values.
 
 ### 4.1 Health Endpoint Check (`GET /health`)
 
@@ -572,6 +653,15 @@ Record the following evidence for every deployment:
 | Error Envelope | 422, 404, 405 checks | Standard error JSON; no input echoed | [ ] |
 | Privacy Audit | Grep logs for sentinel markers | Zero occurrences of user data or secrets | [ ] |
 
+### 4.6 Health Check and Monitoring
+
+- **Render Health Check Path:** `/health` (`GET /health` returns `200 {"status":"ok"}` and is never rate limited).
+- **Failed-deploy notifications:** Configure Render email or Slack notifications for **failed deploys**.
+- **Unhealthy-service notifications:** Enable notifications for a **running service becomes unhealthy**.
+- **Render Free visibility:** The service exposes **outbound bandwidth metrics** (Network Metrics) and the **Events timeline**.
+- **Not available / not implemented:** CPU/memory graphs, a custom monitoring dashboard, and a metrics exporter are not available or implemented for this service based on current evidence. Do not invent or promise them.
+- **Do not use** the monitoring requirements in `docs/verification/monitoring.md` as evidence that a monitoring stack exists; that document is requirements only.
+
 ---
 
 ## 5. Failure Response and Rollback
@@ -585,10 +675,10 @@ When anomalies occur during or after deployment, follow this decision tree:
                  |
                  +---> 1. Health Check Failure (/health returns non-200, 502/503/504, or hangs)
                  |        |
-                 |        +-- Check container startup logs for fail-fast error (missing LLM_API_KEY, bad rate limit).
-                 |        +-- Check Render port binding ($PORT / 8000).
-                 |        +-- Trigger platform restart. If healthy in < 90s [proposed threshold - pending lead approval] -> Continue validation.
-                 |        +-- If unhealthy after 90s -> STOP ROLLOUT -> Initiate Rollback (§5.2).
+                 |        +-- Check deploy/runtime logs for fail-fast error (missing LLM_API_KEY, bad rate limit).
+                 |        +-- Confirm the service uses Render's $PORT and the exact start command.
+                 |        +-- Rule out a Free-tier cold start: retry after warm-up before declaring failure.
+                 |        +-- If still unhealthy after warm-up -> STOP ROLLOUT -> Initiate Rollback (§5.2).
                  |
                  +---> 2. Elevated 5xx Responses (Error rate > 1.0% over 5 min [proposed threshold - pending lead approval] or repeated 500)
                  |        |
@@ -634,23 +724,28 @@ docker run --rm -d \
   setu-guide-api:known-good-sha
 ```
 
-#### B. Staging Rollback on Render `[NEEDS RENDER ACCESS]`
+#### B. Staging Rollback on Render `[REQUIRES RENDER ACCESS]`
 
 > **Operational Status Notice:**
-> Staging rollback has **NOT been operationally exercised**. The actual rollback capability depends on Render's plan tier and permissions, which are unconfirmed. The procedure below is proposed operational guidance awaiting platform access and owner verification.
+> Staging rollback has **NOT** been operationally exercised. The procedure below
+> follows Render's documented rollback behavior; actual availability depends on
+> retained build artifacts. On the Free plan, rollback is limited to the two most
+> recent previous deploys. Do not roll back during this documentation task.
 
-1. **Identify Rollback Target:** Retrieve the short SHA of the last deployment that passed full post-deployment validation from the deployment log (§7.1).
-2. **Execute Rollback on Platform:**
-   - *Option 1 (Direct Rollback):* In the Render **Deploys** tab, locate the prior successful deployment. If the platform tier supports it, select **Rollback to this deploy**.
-   - *Option 2 (Redeploy Specific Commit):* If direct rollback is unavailable:
-     ```bash
-     # Locally checkout known-good commit to a rollback branch or reset dev (with lead approval):
-     git fetch origin
-     git log -1 --oneline <known-good-sha>
-     ```
-     Trigger a manual deploy of `<known-good-sha>` via the Render dashboard.
-3. **Verify Active Commit on Render:** Confirm that the live deployment SHA displayed on the Render dashboard matches `<known-good-sha>`.
-4. **Execute Post-Rollback Validation:** Run the post-rollback checks (§5.4).
+1. **Identify the rollback target:** Use the last deployment that passed full
+   post-deployment validation from the deployment record (§7.1).
+2. **Trigger the rollback:**
+   - Open the service's **Deploys** page.
+   - Find a recent **successful** deploy whose build artifact is still retained.
+   - Click **Rollback** and confirm **Rollback to this deploy**.
+   - A rollback itself creates a new deploy and, in the dashboard, disables
+     Auto-Deploy as a safeguard.
+3. **If rollback is unavailable:** Deploy the known-good commit manually via
+   **Manual Deploy** > **Deploy a specific commit**. Do not use destructive git
+   commands or reset `dev`.
+4. **Verify the active commit:** Confirm the live deployment SHA on the
+   **Deploys** page matches the target. Record it.
+5. **Run post-rollback validation** (§5.4) only after the instance is warm.
 
 ### 5.3 What Rollback Is and Is NOT
 
@@ -711,7 +806,7 @@ To avoid accidental service disruption or data loss:
 - **Prohibited:** Never execute `docker system prune -a --volumes` or `docker volume prune` on hosts with active data or model volumes.
 - **Prohibited:** Never force-push (`git push --force` or `--force-with-lease`) to `main` or `dev`.
 - **Prohibited:** Never delete remote tags or branches without explicit written confirmation from the Team Lead.
-- **Prohibited:** Never run Locust load tests (`tests/load/`) against staging or production while `USE_MOCK=false` (prevents API key exhaustion and financial charges).
+- **Prohibited:** Never run Locust load tests (`tests/load/`) against staging while `USE_MOCK=false` (prevents provider quota exhaustion and charges).
 
 ### 6.3 Principle of Least Privilege and Governance
 
@@ -725,11 +820,11 @@ To avoid accidental service disruption or data loss:
 ### 6.4 Operational Uncertainty Summary
 
 The following procedures and platform claims have NOT been operationally exercised and remain unconfirmed:
-1. **Live Staging Deployment:** Staging deployment on Render has not been performed or verified by DevOps Intern 2; steps are proposed based on Render documentation and await platform credentials.
-2. **Platform Rollback Mechanics:** Render's rollback capabilities (one-click rollback button vs redeploying past commits) have not been exercised or confirmed on the service's plan.
-3. **Render Deployment Triggers:** Repository lacks deployment webhooks or `render.yaml`; exact auto-deploy vs manual-deploy configuration requires dashboard confirmation.
+1. **Live Staging Deployment:** No deployment, redeploy, restart, or rollback was performed during this documentation task. Dashboard steps follow Render behavior and the project lead's review.
+2. **Platform Rollback Mechanics:** Render's rollback action is documented, but it has not been exercised on this service. Free-plan retention may limit rollback targets to the two most recent previous deploys.
+3. **Active Deployment SHA:** The frozen SHA has not yet been provided by the project lead. Any current active SHA must be recorded as pending comparison, not as a release match.
 4. **Docker Runtime Verification:** While Dockerfile and test files exist, container runtime tests (`tests/failure/test_container.py`) were skipped in the local test run; runtime verification remains pending operator execution.
-5. **Formal Release Approval:** While tag `v0.1` resolves to `bfa5e838a381fcddeb9ed816f08c269c1ce88519` (the SHA supplied by the Team Lead for verification), formal written approval of this commit as the frozen release commit has not yet been confirmed.
+5. **Monitoring Exports:** Render Free provides outbound bandwidth and the Events timeline. No custom dashboard, metrics exporter, or CPU/memory alerting is implemented; do not claim these capabilities.
 6. **Multi-Instance Scalability:** In-memory rate limiting and caching are single-instance only; horizontal scaling without Redis will cause split-brain limits and cache misses.
 
 ---
@@ -752,16 +847,19 @@ Approving Lead:         <team-lead-name>
 
 GIT & PLATFORM METADATA:
 Target Branch:          dev
+Frozen SHA (from lead): <not-yet-provided | frozen-sha>
 Deployed Commit SHA:    <7-character-short-sha>
 Git Commit Title:       <commit subject line>
 Platform Deployed SHA:  <sha-read-from-render-deploys-tab>
-Release Tag:            None | v0.1 (commit bfa5e83)
+Release Tag:            None (no tag created)
 
 RUNTIME CONFIGURATION:
 USE_MOCK:               true | false
 LLM_PROVIDER:           placeholder | <provider-name>
 RATE_LIMIT_PER_USER:    30/minute [proposed placeholder]
 RATE_LIMIT_PER_IP:      60/minute [proposed placeholder]
+TRUSTED_PROXY:          false
+PYTHON_VERSION:         <configured on Render; name only>
 CACHE_ENABLED:          true
 LOG_LEVEL:              INFO
 
@@ -801,7 +899,7 @@ SIGN-OFF STATUS:        [ ] VERIFIED & ACCEPTED   [ ] REJECTED / ROLLED BACK
 
 Before handoff or release sign-off, verify every item with measurable pass criteria:
 
-- [ ] **Commit Alignment:** `git rev-parse --short HEAD` matches the SHA reported by the hosting platform (or matches `v0.1` commit `bfa5e83` if formal release approval for v0.1 is confirmed).
+- [ ] **Commit Alignment:** the Render deployed SHA matches the project lead's frozen SHA exactly. If the lead has not provided a frozen SHA, record **PENDING** and do not claim a match.
 - [ ] **Test Suite Green:** Full test suite executed locally and passed with 0 failures/errors; actual test counts recorded for the specific commit.
 - [ ] **Docker Status Known:** Container runtime tests verified or explicitly documented as pending if image was not built.
 - [ ] **CI Pipeline Green:** GitHub Actions workflow `ci / test` passed on the deployment commit.
