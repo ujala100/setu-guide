@@ -42,7 +42,7 @@ The Setu Guide service operates across distinct deployment topologies:
 |    |             USE_MOCK=true                   USE_MOCK=false                              |    |
 |    |             Mock Provider (Extractive KB)   Real LLM Provider                           |    |
 |    |             "Here are some questions..."    (Requires LLM_API_KEY;                      |    |
-|    |                                              handle_chat fallback path)                 |    |
+|    |                                              handle_chat entry point)                  |    |
 |    +-----------------------------------------------------------------------------------------+    |
 |          |                                                                                        |
 |          +--- Mount: ./models -> /app/models:ro (docker-compose.yml)                              |
@@ -497,7 +497,7 @@ Earlier Day 1 documentation described a literal `"(mock reply)"` placeholder. In
 - `conversation_ideas`: returns the fixed intro `"Here are some questions you can explore. Choose the ones that feel right."` plus extracted questions.
 - `next_steps`: returns extractive checklist/tip text, empty `questions`, and populated chips/sources.
 - Unrouted free-text: returns `"I could not confidently understand your request..."`.
-- Real-mode fallback (`USE_MOCK=false` when provider unavailable or `handle_chat` missing): returns `FALLBACK_REPLY` (*"I'm having trouble answering that right now..."*) with `fallback_used: true`.
+- Real-mode fallback (`USE_MOCK=false` when the provider is unavailable or the `handle_chat` entry point cannot be loaded): returns `FALLBACK_REPLY` (*"I'm having trouble answering that right now..."*) with `fallback_used: true`.
 
 #### Test 2: Free-Text Message (Routing and Non-Cacheable)
 ```bash
