@@ -1,0 +1,900 @@
+{
+  "version": "v2",
+  "synthetic_only": true,
+  "profiles": [
+    {
+      "profile_id": "SYN-P001",
+      "synthetic": true,
+      "stage": "connect",
+      "communication_style": "quiet",
+      "interests": [
+        "reading",
+        "sports"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P002",
+      "synthetic": true,
+      "stage": "understand",
+      "communication_style": "outgoing",
+      "interests": [
+        "travel",
+        "volunteering"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P003",
+      "synthetic": true,
+      "stage": "reflect",
+      "communication_style": "thoughtful",
+      "interests": [
+        "cooking",
+        "technology"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P004",
+      "synthetic": true,
+      "stage": "discuss",
+      "communication_style": "curious",
+      "interests": [
+        "music",
+        "nature"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P005",
+      "synthetic": true,
+      "stage": "agree",
+      "communication_style": "family-oriented",
+      "interests": [
+        "sports",
+        "films"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "mismatched"
+    },
+    {
+      "profile_id": "SYN-P006",
+      "synthetic": true,
+      "stage": "family",
+      "communication_style": "career-focused",
+      "interests": [
+        "volunteering",
+        "learning"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P007",
+      "synthetic": true,
+      "stage": "reflect_again",
+      "communication_style": null,
+      "interests": [],
+      "discussion_preferences": [],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P008",
+      "synthetic": true,
+      "stage": "decision",
+      "communication_style": "practical",
+      "interests": [
+        "nature",
+        "travel"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P009",
+      "synthetic": true,
+      "stage": "connect",
+      "communication_style": "reserved",
+      "interests": [
+        "films",
+        "cooking"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P010",
+      "synthetic": true,
+      "stage": "understand",
+      "communication_style": "communicative",
+      "interests": [
+        "learning",
+        "music"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "mismatched"
+    },
+    {
+      "profile_id": "SYN-P011",
+      "synthetic": true,
+      "stage": "reflect",
+      "communication_style": "quiet",
+      "interests": [
+        "reading",
+        "sports"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "unusual_combination"
+    },
+    {
+      "profile_id": "SYN-P012",
+      "synthetic": true,
+      "stage": "discuss",
+      "communication_style": "outgoing",
+      "interests": [
+        "travel",
+        "volunteering"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P013",
+      "synthetic": true,
+      "stage": "agree",
+      "communication_style": "thoughtful",
+      "interests": [
+        "cooking",
+        "technology"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P014",
+      "synthetic": true,
+      "stage": "family",
+      "communication_style": null,
+      "interests": [],
+      "discussion_preferences": [],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P015",
+      "synthetic": true,
+      "stage": "reflect_again",
+      "communication_style": "family-oriented",
+      "interests": [
+        "sports",
+        "films"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "mismatched"
+    },
+    {
+      "profile_id": "SYN-P016",
+      "synthetic": true,
+      "stage": "decision",
+      "communication_style": "career-focused",
+      "interests": [
+        "volunteering",
+        "learning"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P017",
+      "synthetic": true,
+      "stage": "connect",
+      "communication_style": "creative",
+      "interests": [
+        "technology",
+        "reading"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P018",
+      "synthetic": true,
+      "stage": "understand",
+      "communication_style": "practical",
+      "interests": [
+        "nature",
+        "travel"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P019",
+      "synthetic": true,
+      "stage": "reflect",
+      "communication_style": "reserved",
+      "interests": [
+        "films",
+        "cooking"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P020",
+      "synthetic": true,
+      "stage": "discuss",
+      "communication_style": "communicative",
+      "interests": [
+        "learning",
+        "music"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "mismatched"
+    },
+    {
+      "profile_id": "SYN-P021",
+      "synthetic": true,
+      "stage": "agree",
+      "communication_style": null,
+      "interests": [],
+      "discussion_preferences": [],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P022",
+      "synthetic": true,
+      "stage": "family",
+      "communication_style": "outgoing",
+      "interests": [
+        "travel",
+        "volunteering"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "unusual_combination"
+    },
+    {
+      "profile_id": "SYN-P023",
+      "synthetic": true,
+      "stage": "reflect_again",
+      "communication_style": "thoughtful",
+      "interests": [
+        "cooking",
+        "technology"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P024",
+      "synthetic": true,
+      "stage": "decision",
+      "communication_style": "curious",
+      "interests": [
+        "music",
+        "nature"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P025",
+      "synthetic": true,
+      "stage": "connect",
+      "communication_style": "family-oriented",
+      "interests": [
+        "sports",
+        "films"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "mismatched"
+    },
+    {
+      "profile_id": "SYN-P026",
+      "synthetic": true,
+      "stage": "understand",
+      "communication_style": "career-focused",
+      "interests": [
+        "volunteering",
+        "learning"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P027",
+      "synthetic": true,
+      "stage": "reflect",
+      "communication_style": "creative",
+      "interests": [
+        "technology",
+        "reading"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P028",
+      "synthetic": true,
+      "stage": "discuss",
+      "communication_style": null,
+      "interests": [],
+      "discussion_preferences": [],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P029",
+      "synthetic": true,
+      "stage": "agree",
+      "communication_style": "reserved",
+      "interests": [
+        "films",
+        "cooking"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P030",
+      "synthetic": true,
+      "stage": "family",
+      "communication_style": "communicative",
+      "interests": [
+        "learning",
+        "music"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "mismatched"
+    },
+    {
+      "profile_id": "SYN-P031",
+      "synthetic": true,
+      "stage": "reflect_again",
+      "communication_style": "quiet",
+      "interests": [
+        "reading",
+        "sports"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P032",
+      "synthetic": true,
+      "stage": "decision",
+      "communication_style": "outgoing",
+      "interests": [
+        "travel",
+        "volunteering"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P033",
+      "synthetic": true,
+      "stage": "connect",
+      "communication_style": "thoughtful",
+      "interests": [
+        "cooking",
+        "technology"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "unusual_combination"
+    },
+    {
+      "profile_id": "SYN-P034",
+      "synthetic": true,
+      "stage": "understand",
+      "communication_style": "curious",
+      "interests": [
+        "music",
+        "nature"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P035",
+      "synthetic": true,
+      "stage": "reflect",
+      "communication_style": null,
+      "interests": [],
+      "discussion_preferences": [],
+      "consent_status": "consented_fields_only",
+      "pair_type": "mismatched"
+    },
+    {
+      "profile_id": "SYN-P036",
+      "synthetic": true,
+      "stage": "discuss",
+      "communication_style": "career-focused",
+      "interests": [
+        "volunteering",
+        "learning"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P037",
+      "synthetic": true,
+      "stage": "agree",
+      "communication_style": "creative",
+      "interests": [
+        "technology",
+        "reading"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P038",
+      "synthetic": true,
+      "stage": "family",
+      "communication_style": "practical",
+      "interests": [
+        "nature",
+        "travel"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P039",
+      "synthetic": true,
+      "stage": "reflect_again",
+      "communication_style": "reserved",
+      "interests": [
+        "films",
+        "cooking"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P040",
+      "synthetic": true,
+      "stage": "decision",
+      "communication_style": "communicative",
+      "interests": [
+        "learning",
+        "music"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "mismatched"
+    },
+    {
+      "profile_id": "SYN-P041",
+      "synthetic": true,
+      "stage": "connect",
+      "communication_style": "quiet",
+      "interests": [
+        "reading",
+        "sports"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P042",
+      "synthetic": true,
+      "stage": "understand",
+      "communication_style": null,
+      "interests": [],
+      "discussion_preferences": [],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P043",
+      "synthetic": true,
+      "stage": "reflect",
+      "communication_style": "thoughtful",
+      "interests": [
+        "cooking",
+        "technology"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P044",
+      "synthetic": true,
+      "stage": "discuss",
+      "communication_style": "curious",
+      "interests": [
+        "music",
+        "nature"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "unusual_combination"
+    },
+    {
+      "profile_id": "SYN-P045",
+      "synthetic": true,
+      "stage": "agree",
+      "communication_style": "family-oriented",
+      "interests": [
+        "sports",
+        "films"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "mismatched"
+    },
+    {
+      "profile_id": "SYN-P046",
+      "synthetic": true,
+      "stage": "family",
+      "communication_style": "career-focused",
+      "interests": [
+        "volunteering",
+        "learning"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P047",
+      "synthetic": true,
+      "stage": "reflect_again",
+      "communication_style": "creative",
+      "interests": [
+        "technology",
+        "reading"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P048",
+      "synthetic": true,
+      "stage": "decision",
+      "communication_style": "practical",
+      "interests": [
+        "nature",
+        "travel"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P049",
+      "synthetic": true,
+      "stage": "connect",
+      "communication_style": null,
+      "interests": [],
+      "discussion_preferences": [],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P050",
+      "synthetic": true,
+      "stage": "understand",
+      "communication_style": "communicative",
+      "interests": [
+        "learning",
+        "music"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "mismatched"
+    },
+    {
+      "profile_id": "SYN-P051",
+      "synthetic": true,
+      "stage": "reflect",
+      "communication_style": "quiet",
+      "interests": [
+        "reading",
+        "sports"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P052",
+      "synthetic": true,
+      "stage": "discuss",
+      "communication_style": "outgoing",
+      "interests": [
+        "travel",
+        "volunteering"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P053",
+      "synthetic": true,
+      "stage": "agree",
+      "communication_style": "thoughtful",
+      "interests": [
+        "cooking",
+        "technology"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P054",
+      "synthetic": true,
+      "stage": "family",
+      "communication_style": "curious",
+      "interests": [
+        "music",
+        "nature"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P055",
+      "synthetic": true,
+      "stage": "reflect_again",
+      "communication_style": "family-oriented",
+      "interests": [
+        "sports",
+        "films"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "mismatched"
+    },
+    {
+      "profile_id": "SYN-P056",
+      "synthetic": true,
+      "stage": "decision",
+      "communication_style": null,
+      "interests": [],
+      "discussion_preferences": [],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P057",
+      "synthetic": true,
+      "stage": "connect",
+      "communication_style": "creative",
+      "interests": [
+        "technology",
+        "reading"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P058",
+      "synthetic": true,
+      "stage": "understand",
+      "communication_style": "practical",
+      "interests": [
+        "nature",
+        "travel"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P059",
+      "synthetic": true,
+      "stage": "reflect",
+      "communication_style": "reserved",
+      "interests": [
+        "films",
+        "cooking"
+      ],
+      "discussion_preferences": [
+        "values",
+        "daily routines"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "standard"
+    },
+    {
+      "profile_id": "SYN-P060",
+      "synthetic": true,
+      "stage": "discuss",
+      "communication_style": "communicative",
+      "interests": [
+        "learning",
+        "music"
+      ],
+      "discussion_preferences": [
+        "future goals"
+      ],
+      "consent_status": "consented_fields_only",
+      "pair_type": "mismatched"
+    }
+  ]
+}
