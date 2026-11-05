@@ -22,4 +22,4 @@
 -**Issue:** Bot was grabbing chunks from the wrong stage.
 -**Fix:** Enforced a strict `stage` filter in the retrieval logic.
  "Top-k is set to 3 to ensure the orchestrator receives the best 3 chunks, avoiding context overload."
- 
+ "Top-k is set to 3 to ensure the orchestrator receives the best 3 chunks, avoiding context overload."
