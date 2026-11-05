@@ -18,8 +18,8 @@ This service never reads MongoDB.
 Integration-ready API document: docs/api.md (request/response schemas,
 enums, safety, errors, rate limiting, caching, mock/fallback, staging checklist).
 Postman collection: docs/postman/Setu-Guide.postman_collection.json
-(`base_url` defaults to http://localhost:8000; set it to
-https://setu-guide.onrender.com for staging).
+(`base_url` defaults to https://setu-guide-1wiy.onrender.com for staging;
+override it to http://localhost:8000 for local runs).
 
 ## Day 2: Docker, config, rate limiting, caching
 
@@ -90,12 +90,11 @@ The key is never logged and never appears in an error message.
 - Same scaling note: in-memory TTL cache, **Redis needed for multiple instances**.
 
 ### Orchestrator and LLM failure safety net
-- `USE_MOCK=true` -> the Day 1 mock reply, exactly as before.
-- `USE_MOCK=false` -> `app.core.orchestrator.handle_chat(request)`; it does not
-  exist yet (app/core is owned by the lead), so until then real mode answers a
-  safe 200 with `fallback_used: true` instead of a 500.
-- The call runs under a timeout of `LLM_TIMEOUT_SECONDS + 1s`. If the
-  orchestrator raises or times out: **HTTP 200**, template reply,
+- `USE_MOCK=true` -> knowledge-base/template mock replies (no provider call).
+- `USE_MOCK=false` -> `app.core.orchestrator.handle_chat(request)` uses the
+  configured provider; missing key fails startup.
+- The call runs under a timeout of `LLM_TIMEOUT_SECONDS + 1s`. If the provider
+  raises or times out: **HTTP 200**, safe knowledge-base/template reply,
   `safety.status: "pass"`, `flags: []`, `fallback_used: true` - never an error,
   and the user's message is not logged.
 - Structured access log, one line per request: `request_id`, `method`, `path`,
@@ -113,7 +112,7 @@ The key is never logged and never appears in an error message.
 | `CACHE_TTL_SECONDS` | `600` | lead |
 | `CACHE_MAX_ITEMS` | `500` | lead |
 | `TRUSTED_PROXY` | `false` (flip behind nginx/ALB) | DevOps |
-| Orchestrator entry point | `handle_chat()` missing; `handle_chat(request) -> ChatResponse` naming vs frozen `GuideRequest`/`GuideResponse` | lead |
+| Orchestrator entry point | `handle_chat = handle` now exists; real-model output remains unvalidated | lead |
 | Model volume path | `/app/models` vs `/app/data` | AI/ML |
 
 ## Day 3: Load and failure testing

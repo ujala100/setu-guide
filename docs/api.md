@@ -12,8 +12,8 @@ Single public chat operation: `POST /v1/guide/chat`, plus a liveness probe `GET 
 
 Current mock/staging status:
 
-- Default runtime is **mock mode** (`USE_MOCK=true`). The mock reply body is the literal string `"(mock reply)"` with `fallback_used=false` on the normal path.
-- The real orchestrator entry point `app.core.orchestrator.handle_chat` **does not exist yet** (lead-owned `app/core`). When `USE_MOCK=false`, every chat call currently returns a safe HTTP `200` with `fallback_used=true` instead of a `500` (see §17).
+- Default runtime is **mock mode** (`USE_MOCK=true`). Mock mode answers from the verified knowledge base (extractive retrieval/templates), not a literal `"(mock reply)"` string. `fallback_used` is normally `false` on the clean path.
+- The real orchestrator entry point `app.core.orchestrator.handle_chat` exists (`handle_chat = handle`). When `USE_MOCK=false`, requests use the configured provider; provider errors/timeouts return a safe HTTP `200` with `fallback_used=true` instead of a `500` (see §17).
 - Rate limiting and response caching are implemented in-process (single instance). Multi-instance deployments need Redis (see §§15–16).
 - No authentication is implemented (see §3).
 
@@ -22,7 +22,7 @@ Current mock/staging status:
 | Environment | Base URL |
 |-------------|----------|
 | Local | `http://localhost:8000` |
-| Staging | `https://setu-guide.onrender.com` |
+| Staging | `https://setu-guide-1wiy.onrender.com` |
 
 Run locally:
 
@@ -173,7 +173,7 @@ All seven fields are always present on a `200` (`app/schemas/guide.py:60`):
 | Field | Type | Limits |
 |-------|------|--------|
 | `intent` | `Intent` enum (`string`) | Always set (echoed or routed; fallback path uses `req.intent or conversation_ideas`). |
-| `reply` | `string` | No `max_length`. Mock: `"(mock reply)"`. Safety refusal: fixed template. Real-mode failure: `FALLBACK_REPLY` (see §17). |
+| `reply` | `string` | No `max_length`. Mock: knowledge-base/template text. Safety refusal: fixed template. Provider failure: `FALLBACK_REPLY` (see §17). |
 | `questions` | `string[]` | Default `[]`, max **5 items**. Orchestrator truncates `questions[:5]`. |
 | `chips` | `string[]` | Default `[]`, max **4 items**. Orchestrator truncates `chips[:4]`. |
 | `sources` | `string[]` | Default `[]`, unbounded. Currently `[]` (`retrieve` stub returns no chunks). |
@@ -255,16 +255,17 @@ Manual 429 verification (do not run against production with default limits): tem
 
 ## 17. Mock / fallback behavior
 
-- `USE_MOCK=true` (current staging default): the Day-1 mock pipeline `orchestrator.handle(req)` runs directly. Normal quick-action/message reply is `"(mock reply)"` with `fallback_used=false`. Input-safety hits still return safety-blocked `200`s with `fallback_used=true`.
-- `USE_MOCK=false` (real mode): requires `LLM_API_KEY`, else startup fails fast. The call budget is `LLM_TIMEOUT_SECONDS + 1s` (`10 + 1` by default) on a worker pool. Because `app.core.orchestrator.handle_chat` is **not implemented yet**, real mode currently answers every request with HTTP `200`, the fixed template:
+- `USE_MOCK=true` (safe staging default): the mock path (`orchestrator.handle`) answers from verified knowledge-base chunks when possible, then falls back to fixed templates. A clean quick action normally returns `fallback_used=false`; a knowledge-base/template fallback can return `true`. Input-safety hits return safety-blocked `200`s with `fallback_used=true`.
+- `USE_MOCK=false` (real mode): requires `LLM_API_KEY`, else startup fails fast. The call budget is `LLM_TIMEOUT_SECONDS + 1s` (`10 + 1` by default) on a worker pool. `app.core.orchestrator.handle_chat` exists (`handle_chat = handle`) and uses the configured provider.
+- If the provider raises, times out, or returns an invalid response, the API returns HTTP `200` with a safe knowledge-base/template reply and `fallback_used=true`. The last-resort template is:
 
 ```text
 I'm having trouble answering that right now. Please try again in a moment, or pick one of the quick actions. I'm here to help with your journey whenever you're ready.
 ```
 
-with `intent = <request intent or conversation_ideas>`, `safety = {"status":"pass","flags":[]}`, `fallback_used=true`, `X-Cache: MISS` (not cached). The same `200`-fallback covers orchestrator exceptions and timeouts (only the exception type is logged; the message is not). `HTTPException` control flow (e.g. `429`) is re-raised, not converted to fallback.
+with `intent = <request intent or conversation_ideas>`, `safety = {"status":"pass","flags":[]}`, `fallback_used=true`, `X-Cache: MISS` (not cached). Only the exception type is logged; the message is not. `HTTPException` control flow (e.g. `429`) is re-raised, not converted to fallback.
 
-The real LLM responder is **not** currently implemented — do not document or depend on real-model output.
+Do not depend on exact real-model wording. The response schema is stable; generated text is not.
 
 ## 18. Logging / privacy
 
@@ -348,15 +349,19 @@ Request with topic/context (consented fields only):
 
 ## 20. Complete response examples
 
-Normal successful response (`200`, `X-Cache: MISS` first time, `fallback_used=false`):
+Normal successful response (`200`, `X-Cache: MISS` first time, `fallback_used=false`).
+Exact reply text, questions, chips, and sources depend on the stage and verified knowledge-base content:
 
 ```json
 {
-  "intent": "next_steps",
-  "reply": "(mock reply)",
-  "questions": [],
-  "chips": [],
-  "sources": [],
+  "intent": "conversation_ideas",
+  "reply": "Here are some questions you can explore. Choose the ones that feel right.",
+  "questions": [
+    "What does a typical day look like for you?",
+    "How do you like to spend your weekends?"
+  ],
+  "chips": ["Help me understand", "Tips for next steps", "Privacy & safety"],
+  "sources": ["KB-GLOBAL-031"],
   "safety": {"status": "pass", "flags": []},
   "fallback_used": false
 }
@@ -376,7 +381,7 @@ Safety-blocked response (`200`, never cached):
 }
 ```
 
-Fallback response — real-mode failure or missing `handle_chat` (`200`, `X-Cache: MISS`, never cached):
+Fallback response — real-mode provider failure/timeout (`200`, `X-Cache: MISS`, never cached):
 
 ```json
 {
@@ -429,7 +434,7 @@ Unknown route (`404`) and wrong method (`405`) share the envelope with codes `no
 
 ## 22. Staging verification checklist
 
-Base: `https://setu-guide.onrender.com` (Postman `base_url` variable; local default `http://localhost:8000`).
+Base: `https://setu-guide-1wiy.onrender.com` (Postman `base_url` default; override to `http://localhost:8000` for local runs).
 
 - [ ] `GET /health` → `200 {"status":"ok"}`, `X-Request-Id` present, no `X-Cache`.
 - [ ] `POST /v1/guide/chat` quick action (`connect`/`next_steps`, synthetic ids) → `200`, 7-key body, `safety.status=="pass"`, `fallback_used==false`, `X-Cache: MISS` then `HIT` on repeat.
@@ -440,4 +445,5 @@ Base: `https://setu-guide.onrender.com` (Postman `base_url` variable; local defa
 - [ ] Log privacy: server access line contains `request_id/method/path/status/latency_ms/cache/intent/stage/fallback_used` only; grep for the synthetic `message`/`topic`/ids returns nothing.
 - [ ] Request-id correlation: send `X-Request-Id: staging-<uuid>`, assert identical response header value.
 - [ ] Manual rate-limit check only (temporarily lowered env): `429` envelope + numeric `Retry-After`; `/health` still `200` during the limit.
+- [ ] Mock-versus-real: read only the staging `USE_MOCK` setting in the Render Environment page (never copy secret values); corroborate with `orchestrator_failed mode=real` / `llm_failed` log lines after an approved test. Do not infer mode from a single successful response.
 - [ ] Confirm no secrets in responses/logs; confirm `USE_MOCK` mode and placeholder values with the lead before sign-off.
