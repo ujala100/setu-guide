@@ -1,0 +1,900 @@
+{
+  "benchmark_type": "official_setu_guide_reduced_sample",
+  "scenario_source": "teammate/data/scenarios-v1:data/scenarios_v1.json",
+  "created_at_utc": "2026-11-06T16:13:30.652932+00:00",
+  "scenario_count": 6,
+  "scenario_ids": [
+    "s01",
+    "s02",
+    "s03",
+    "s04",
+    "f06",
+    "f08"
+  ],
+  "repetitions_per_model": 3,
+  "timeout_seconds": 30,
+  "success_delay_seconds": 12,
+  "failure_cooldown_seconds": 20,
+  "total_planned_requests": 36,
+  "models": [
+    "gemini-3.5-flash-lite",
+    "gemini-3.5-flash"
+  ],
+  "summary": {
+    "gemini-3.5-flash-lite": {
+      "total_requests": 18,
+      "successful_requests": 18,
+      "failed_requests": 0,
+      "failure_rate_percent": 0.0,
+      "average_latency_all_seconds": 5.311,
+      "average_latency_success_seconds": 5.311,
+      "valid_responses": 18,
+      "intent_matches": 18
+    },
+    "gemini-3.5-flash": {
+      "total_requests": 18,
+      "successful_requests": 15,
+      "failed_requests": 3,
+      "failure_rate_percent": 16.67,
+      "average_latency_all_seconds": 18.247,
+      "average_latency_success_seconds": 15.742,
+      "valid_responses": 15,
+      "intent_matches": 15
+    }
+  },
+  "consistency": {
+    "gemini-3.5-flash-lite": {
+      "scenarios_tested": 6,
+      "scenarios_with_all_repetitions": 6,
+      "scenarios_valid_in_all_runs": 6,
+      "scenarios_intent_matched_in_all_runs": 6,
+      "scenarios_with_consistent_response_count": 5,
+      "scenarios_with_exact_same_response_all_runs": 0
+    },
+    "gemini-3.5-flash": {
+      "scenarios_tested": 6,
+      "scenarios_with_all_repetitions": 6,
+      "scenarios_valid_in_all_runs": 3,
+      "scenarios_intent_matched_in_all_runs": 3,
+      "scenarios_with_consistent_response_count": 2,
+      "scenarios_with_exact_same_response_all_runs": 0
+    }
+  },
+  "results": [
+    {
+      "request": 1,
+      "scenario_id": "s01",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 1,
+      "model": "gemini-3.5-flash",
+      "scenario": "What should I ask during our first conversation?",
+      "stage": "connect",
+      "expected_intent": "conversation_ideas",
+      "latency_seconds": 31.944,
+      "success": false,
+      "valid_response": false,
+      "intent_match": false,
+      "error": "Provider returned no response",
+      "response": null
+    },
+    {
+      "request": 2,
+      "scenario_id": "s01",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 1,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "What should I ask during our first conversation?",
+      "stage": "connect",
+      "expected_intent": "conversation_ideas",
+      "latency_seconds": 5.944,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "conversation_ideas",
+        "response": [
+          "What are some activities or hobbies you enjoy doing in your free time?",
+          "What is a memorable trip or experience you have had recently?",
+          "What are a few things you are most passionate about or interested in learning more about?"
+        ]
+      }
+    },
+    {
+      "request": 3,
+      "scenario_id": "s02",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 1,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "What should I understand before moving forward?",
+      "stage": "connect",
+      "expected_intent": "help_me_understand",
+      "latency_seconds": 5.133,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "help_me_understand",
+        "response": [
+          "At this connect stage, there is currently no additional context or specific information provided to help explain what you should understand before moving forward.",
+          "To give you a proper understanding, it is unclear what specific topic, concern, or area you are currently focusing on."
+        ]
+      }
+    },
+    {
+      "request": 4,
+      "scenario_id": "s02",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 1,
+      "model": "gemini-3.5-flash",
+      "scenario": "What should I understand before moving forward?",
+      "stage": "connect",
+      "expected_intent": "help_me_understand",
+      "latency_seconds": 30.163,
+      "success": false,
+      "valid_response": false,
+      "intent_match": false,
+      "error": "Provider returned no response",
+      "response": null
+    },
+    {
+      "request": 5,
+      "scenario_id": "s03",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 1,
+      "model": "gemini-3.5-flash",
+      "scenario": "What should I do next?",
+      "stage": "connect",
+      "expected_intent": "next_steps",
+      "latency_seconds": 16.238,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "next_steps",
+        "response": [
+          "Please provide more context about your current situation or goals, as additional details are needed to suggest specific next steps.",
+          "Share what specific aspect of the 'connect' stage you would like guidance on so tailored options can be provided."
+        ]
+      }
+    },
+    {
+      "request": 6,
+      "scenario_id": "s03",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 1,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "What should I do next?",
+      "stage": "connect",
+      "expected_intent": "next_steps",
+      "latency_seconds": 5.955,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "next_steps",
+        "response": [
+          "Share a bit more about where you currently are in your connection journey so I can suggest relevant options.",
+          "Explore ways to initiate or continue conversation based on your preferences.",
+          "Review general guidance on building and maintaining connections at your own pace."
+        ]
+      }
+    },
+    {
+      "request": 7,
+      "scenario_id": "s04",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 1,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "Is my information private?",
+      "stage": "connect",
+      "expected_intent": "privacy_safety",
+      "latency_seconds": 4.431,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "privacy_safety",
+        "response": [
+          "We understand you have questions about your privacy, but the available information is currently unclear.",
+          "Please consult our standard privacy guidelines or support team for more details on how your information is handled."
+        ]
+      }
+    },
+    {
+      "request": 8,
+      "scenario_id": "s04",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 1,
+      "model": "gemini-3.5-flash",
+      "scenario": "Is my information private?",
+      "stage": "connect",
+      "expected_intent": "privacy_safety",
+      "latency_seconds": 17.507,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "privacy_safety",
+        "response": [
+          "I currently do not have access to the specific privacy guidelines or details needed to answer your question.",
+          "Without additional context provided, I cannot state or guarantee how your information is handled."
+        ]
+      }
+    },
+    {
+      "request": 9,
+      "scenario_id": "f06",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "repetition": 1,
+      "model": "gemini-3.5-flash",
+      "scenario": "Pehli meeting mein main unse kya questions pooch sakta hoon?",
+      "stage": "connect",
+      "expected_intent": "conversation_ideas",
+      "latency_seconds": 30.218,
+      "success": false,
+      "valid_response": false,
+      "intent_match": false,
+      "error": "Provider returned no response",
+      "response": null
+    },
+    {
+      "request": 10,
+      "scenario_id": "f06",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "repetition": 1,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "Pehli meeting mein main unse kya questions pooch sakta hoon?",
+      "stage": "connect",
+      "expected_intent": "conversation_ideas",
+      "latency_seconds": 6.42,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "conversation_ideas",
+        "response": [
+          "Pehli meeting mein aap unke hobbies aur interests ke baare mein pooch sakte hain, jaise unhe free time mein kya karna pasand hai.",
+          "Aap unke daily routine ya work life ke baare mein baat shuru kar sakte hain taaki ek doosre ki lifestyle ko samajh sakein.",
+          "Aap unse unke favorite books, movies, ya travel destinations ke baare mein pooch kar aam dilchaspi ke vishayon par charcha kar sakte hain."
+        ]
+      }
+    },
+    {
+      "request": 11,
+      "scenario_id": "f08",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "repetition": 1,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "Agar hum dono ki expectations alag hain toh ab mujhe kya karna chahiye?",
+      "stage": "discuss",
+      "expected_intent": "next_steps",
+      "latency_seconds": 5.844,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "next_steps",
+        "response": [
+          "Aap apni expectations ko likh kar clear kar sakte hain taaki doosre person ke saath effectively discuss kar sakein.",
+          "Aap ek open conversation rakh sakte hain jismein dono taraf ki priorities aur concerns ko calmly suna jaye.",
+          "Aap yeh samajhne ki koshish kar sakte hain ki kaunsi differences par compromise ho sakta hai aur kaunsi dealbreakers hain."
+        ]
+      }
+    },
+    {
+      "request": 12,
+      "scenario_id": "f08",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "repetition": 1,
+      "model": "gemini-3.5-flash",
+      "scenario": "Agar hum dono ki expectations alag hain toh ab mujhe kya karna chahiye?",
+      "stage": "discuss",
+      "expected_intent": "next_steps",
+      "latency_seconds": 13.778,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "next_steps",
+        "response": [
+          "Identify and write down the specific areas (such as career, family, finances, or lifestyle) where your expectations differ.",
+          "Have a calm, open conversation with your partner to explore each other's non-negotiable priorities and areas where compromise might be possible.",
+          "Take time to reflect on your own core values to understand what is most important to you moving forward.",
+          "Share more details about which specific expectations are differing if you would like more tailored guidance."
+        ]
+      }
+    },
+    {
+      "request": 13,
+      "scenario_id": "s01",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 2,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "What should I ask during our first conversation?",
+      "stage": "connect",
+      "expected_intent": "conversation_ideas",
+      "latency_seconds": 5.794,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "conversation_ideas",
+        "response": [
+          "What are some of your favorite ways to spend your weekends or free time?",
+          "What is a memorable place you have traveled to or would love to visit?",
+          "What are a few things you are most passionate about or enjoy learning about?"
+        ]
+      }
+    },
+    {
+      "request": 14,
+      "scenario_id": "s01",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 2,
+      "model": "gemini-3.5-flash",
+      "scenario": "What should I ask during our first conversation?",
+      "stage": "connect",
+      "expected_intent": "conversation_ideas",
+      "latency_seconds": 19.864,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "conversation_ideas",
+        "response": [
+          "Since specific details about your match are not provided in the guidance, it is unclear what specific mutual interests you share; however, you can begin by asking about their hobbies and how they like to spend their free time.",
+          "You can discuss daily routines, favorite foods, or interests to get a sense of each other's lifestyle.",
+          "You can ask about their career or study goals and what they enjoy most about their work.",
+          "You can discuss family background, general life values, and background experiences.",
+          "You can talk about what both of you hope to focus on or learn about during these initial conversations."
+        ]
+      }
+    },
+    {
+      "request": 15,
+      "scenario_id": "s02",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 2,
+      "model": "gemini-3.5-flash",
+      "scenario": "What should I understand before moving forward?",
+      "stage": "connect",
+      "expected_intent": "help_me_understand",
+      "latency_seconds": 9.745,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "help_me_understand",
+        "response": [
+          "It is currently unclear what specific topic, connection, or situation you are asking about, as no detailed context has been provided.",
+          "Please share more details or clarify what specific aspect you would like to understand so I can provide accurate information without making assumptions."
+        ]
+      }
+    },
+    {
+      "request": 16,
+      "scenario_id": "s02",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 2,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "What should I understand before moving forward?",
+      "stage": "connect",
+      "expected_intent": "help_me_understand",
+      "latency_seconds": 4.993,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "help_me_understand",
+        "response": [
+          "At this connect stage, there is not enough information or context provided to explain specific details about what you should understand before moving forward.",
+          "Please share more details or context about your situation so I can help answer your question clearly."
+        ]
+      }
+    },
+    {
+      "request": 17,
+      "scenario_id": "s03",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 2,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "What should I do next?",
+      "stage": "connect",
+      "expected_intent": "next_steps",
+      "latency_seconds": 3.939,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "next_steps",
+        "response": [
+          "Share a bit more about where you currently are in your connection journey so we can provide more tailored options.",
+          "Explore ways to initiate or continue communication with the person you are trying to connect with.",
+          "Review the basic guidelines and resources available for the connection stage."
+        ]
+      }
+    },
+    {
+      "request": 18,
+      "scenario_id": "s03",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 2,
+      "model": "gemini-3.5-flash",
+      "scenario": "What should I do next?",
+      "stage": "connect",
+      "expected_intent": "next_steps",
+      "latency_seconds": 12.576,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "next_steps",
+        "response": [
+          "Please share more details about your current situation or goals in the 'connect' stage, as additional context is needed to provide specific next steps.",
+          "Clarify whether you need assistance with initiating communication, scheduling a discussion, or another specific topic."
+        ]
+      }
+    },
+    {
+      "request": 19,
+      "scenario_id": "s04",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 2,
+      "model": "gemini-3.5-flash",
+      "scenario": "Is my information private?",
+      "stage": "connect",
+      "expected_intent": "privacy_safety",
+      "latency_seconds": 11.23,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "privacy_safety",
+        "response": [
+          "Thank you for reaching out with your question about privacy.",
+          "Currently, there is no specific privacy policy or context available to me to confirm the details of how your information is handled. Please check back later or consult the main privacy policy documentation."
+        ]
+      }
+    },
+    {
+      "request": 20,
+      "scenario_id": "s04",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 2,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "Is my information private?",
+      "stage": "connect",
+      "expected_intent": "privacy_safety",
+      "latency_seconds": 4.472,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "privacy_safety",
+        "response": [
+          "We understand you have questions about your privacy.",
+          "The available information is not enough to provide specific details about how your information is handled."
+        ]
+      }
+    },
+    {
+      "request": 21,
+      "scenario_id": "f06",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "repetition": 2,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "Pehli meeting mein main unse kya questions pooch sakta hoon?",
+      "stage": "connect",
+      "expected_intent": "conversation_ideas",
+      "latency_seconds": 4.889,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "conversation_ideas",
+        "response": [
+          "Pehli meeting mein aap unke hobbies aur interests ke baare mein pooch sakte hain taaki yeh pata chale ki unka khali samay kaise beetta hai.",
+          "Aap unke daily routine ya work life ke baare mein baat kar sakte hain taaki ek doosre ki busy life ko samajh sakein.",
+          "Aap unke pasandida khane, travel destinations ya movies ke baare mein pooch kar halka-fulka aur aaramdayak mahaul bana sakte hain."
+        ]
+      }
+    },
+    {
+      "request": 22,
+      "scenario_id": "f06",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "repetition": 2,
+      "model": "gemini-3.5-flash",
+      "scenario": "Pehli meeting mein main unse kya questions pooch sakta hoon?",
+      "stage": "connect",
+      "expected_intent": "conversation_ideas",
+      "latency_seconds": 20.044,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "conversation_ideas",
+        "response": [
+          "It is unclear what specific preferences, background, or values you want to focus on, as no additional guidance or context was provided.",
+          "To get tailored conversation topics for your first meeting, please share more details about what you would like to discuss (such as hobbies, lifestyle expectations, career goals, or family values)."
+        ]
+      }
+    },
+    {
+      "request": 23,
+      "scenario_id": "f08",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "repetition": 2,
+      "model": "gemini-3.5-flash",
+      "scenario": "Agar hum dono ki expectations alag hain toh ab mujhe kya karna chahiye?",
+      "stage": "discuss",
+      "expected_intent": "next_steps",
+      "latency_seconds": 18.473,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "next_steps",
+        "response": [
+          "Identify the specific areas (such as lifestyle, family, or career) where your expectations differ.",
+          "Schedule an open, honest conversation with your partner to discuss which expectations are flexible and which are non-negotiable.",
+          "Provide more specific details about your situation if you need tailored guidance, as additional context is currently unavailable."
+        ]
+      }
+    },
+    {
+      "request": 24,
+      "scenario_id": "f08",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "repetition": 2,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "Agar hum dono ki expectations alag hain toh ab mujhe kya karna chahiye?",
+      "stage": "discuss",
+      "expected_intent": "next_steps",
+      "latency_seconds": 5.095,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "next_steps",
+        "response": [
+          "Aap apni expectations aur unki expectations ko ek jagah likh kar compare kar sakte hain taaki yeh samajh sakein ki kahan aur kitna farak hai.",
+          "Aap dono aaram se baith kar is baare mein khul ke baat kar sakte hain ki aap dono ki kya zarooratein aur umeedon mein antar hai.",
+          "Aap kisi neutral vyakti ya counselor se baat karke yeh samajhne ki koshish kar sakte hain ki in differences ko kaise handle kiya jaye."
+        ]
+      }
+    },
+    {
+      "request": 25,
+      "scenario_id": "s01",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 3,
+      "model": "gemini-3.5-flash",
+      "scenario": "What should I ask during our first conversation?",
+      "stage": "connect",
+      "expected_intent": "conversation_ideas",
+      "latency_seconds": 18.716,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "conversation_ideas",
+        "response": [
+          "Ask about their personal interests, hobbies, and how they like to spend their free time.",
+          "Discuss daily routines, work life, and personal passions to get a sense of each other's lifestyle.",
+          "Explore core personal values, family background, and what matters most to them.",
+          "Share and discuss mutual expectations for communication during these initial interactions."
+        ]
+      }
+    },
+    {
+      "request": 26,
+      "scenario_id": "s01",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 3,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "What should I ask during our first conversation?",
+      "stage": "connect",
+      "expected_intent": "conversation_ideas",
+      "latency_seconds": 4.914,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "conversation_ideas",
+        "response": [
+          "What are some of your favorite ways to spend a relaxing weekend?",
+          "What are a few passions or hobbies that keep you excited outside of work?",
+          "What is a memorable trip or adventure you've been on recently?",
+          "What are some values or qualities you appreciate most in your friendships and connections?"
+        ]
+      }
+    },
+    {
+      "request": 27,
+      "scenario_id": "s02",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 3,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "What should I understand before moving forward?",
+      "stage": "connect",
+      "expected_intent": "help_me_understand",
+      "latency_seconds": 5.035,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "help_me_understand",
+        "response": [
+          "At this connect stage, there is not enough information or context provided to explain specific details about what you should understand before moving forward.",
+          "Please share more about the specific topic, concern, or details you are considering, so I can help clarify them for you based on the available information."
+        ]
+      }
+    },
+    {
+      "request": 28,
+      "scenario_id": "s02",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 3,
+      "model": "gemini-3.5-flash",
+      "scenario": "What should I understand before moving forward?",
+      "stage": "connect",
+      "expected_intent": "help_me_understand",
+      "latency_seconds": 15.848,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "help_me_understand",
+        "response": [
+          "It is currently unclear what specific topic, situation, or relationship details you are asking about, as no context has been provided.",
+          "Please share more details or specific questions so I can help you understand what to consider before moving forward."
+        ]
+      }
+    },
+    {
+      "request": 29,
+      "scenario_id": "s03",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 3,
+      "model": "gemini-3.5-flash",
+      "scenario": "What should I do next?",
+      "stage": "connect",
+      "expected_intent": "next_steps",
+      "latency_seconds": 11.823,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "next_steps",
+        "response": [
+          "It is unclear what specific profile or situation you are referring to, as no additional context was provided.",
+          "Please share more details about your specific goal or query in the 'connect' stage so relevant next steps can be suggested."
+        ]
+      }
+    },
+    {
+      "request": 30,
+      "scenario_id": "s03",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 3,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "What should I do next?",
+      "stage": "connect",
+      "expected_intent": "next_steps",
+      "latency_seconds": 5.411,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "next_steps",
+        "response": [
+          "Share a bit more about what you are looking for in your connection journey so we can provide more tailored options.",
+          "Explore the available resources or introductory guides to understand how the Sambandh Setu connect stage works.",
+          "Reach out to support if you have specific questions about navigating your current stage."
+        ]
+      }
+    },
+    {
+      "request": 31,
+      "scenario_id": "s04",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 3,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "Is my information private?",
+      "stage": "connect",
+      "expected_intent": "privacy_safety",
+      "latency_seconds": 6.489,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "privacy_safety",
+        "response": [
+          "The provided information is not sufficient to answer whether your information is private.",
+          "Please provide more details or context regarding the privacy policy and safety guidelines so I can assist you further."
+        ]
+      }
+    },
+    {
+      "request": 32,
+      "scenario_id": "s04",
+      "input_type": "structured",
+      "language": "en",
+      "repetition": 3,
+      "model": "gemini-3.5-flash",
+      "scenario": "Is my information private?",
+      "stage": "connect",
+      "expected_intent": "privacy_safety",
+      "latency_seconds": 8.937,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "privacy_safety",
+        "response": [
+          "Thank you for asking about the privacy of your information.",
+          "Currently, there is no specific privacy policy or guidance context available to answer your question, so I cannot provide details or guarantees regarding how your information is handled."
+        ]
+      }
+    },
+    {
+      "request": 33,
+      "scenario_id": "f06",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "repetition": 3,
+      "model": "gemini-3.5-flash",
+      "scenario": "Pehli meeting mein main unse kya questions pooch sakta hoon?",
+      "stage": "connect",
+      "expected_intent": "conversation_ideas",
+      "latency_seconds": 17.581,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "conversation_ideas",
+        "response": [
+          "No additional context or shared details are available to provide specific conversation topics tailored to you and your partner.",
+          "It is unclear what hobbies, background, or preferences you both have without further information.",
+          "To receive relevant conversation suggestions for your first meeting, please provide more details about your mutual interests or what topics you would like to explore."
+        ]
+      }
+    },
+    {
+      "request": 34,
+      "scenario_id": "f06",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "repetition": 3,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "Pehli meeting mein main unse kya questions pooch sakta hoon?",
+      "stage": "connect",
+      "expected_intent": "conversation_ideas",
+      "latency_seconds": 5.067,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "conversation_ideas",
+        "response": [
+          "Pehli meeting mein aap unke hobbies aur interests ke baare mein pooch sakte hain, jaise unhein free time mein kya karna pasand hai.",
+          "Aap unke daily routine ya work life ke baare mein baat shuru kar sakte hain taaki ek doosre ke lifestyle ko samajhne mein madad mile.",
+          "Aap unse unke favourite books, movies, ya travel destinations ke baare mein pooch sakte hain jisse halki-fulki aur positive baat-cheet ho sake."
+        ]
+      }
+    },
+    {
+      "request": 35,
+      "scenario_id": "f08",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "repetition": 3,
+      "model": "gemini-3.5-flash-lite",
+      "scenario": "Agar hum dono ki expectations alag hain toh ab mujhe kya karna chahiye?",
+      "stage": "discuss",
+      "expected_intent": "next_steps",
+      "latency_seconds": 5.776,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "next_steps",
+        "response": [
+          "Aap apni aur unki expectations ko clearly likh kar aapas mein ek open aur calm conversation kar sakte hain.",
+          "Aap yeh samajhne ki koshish kar sakte hain ki kaunsi expectations par compromise kiya ja sakta hai aur kaunsi aapke liye non-negotiable hain.",
+          "Aap kisi neutral third party ya counselor se guidance le sakte hain taaki dono ke nazariye ko samajhne mein madad mil sake."
+        ]
+      }
+    },
+    {
+      "request": 36,
+      "scenario_id": "f08",
+      "input_type": "free_text",
+      "language": "hinglish",
+      "repetition": 3,
+      "model": "gemini-3.5-flash",
+      "scenario": "Agar hum dono ki expectations alag hain toh ab mujhe kya karna chahiye?",
+      "stage": "discuss",
+      "expected_intent": "next_steps",
+      "latency_seconds": 23.763,
+      "success": true,
+      "valid_response": true,
+      "intent_match": true,
+      "error": null,
+      "response": {
+        "intent": "next_steps",
+        "response": [
+          "Identify the specific areas where your expectations differ and reflect on which priorities are non-negotiable for you.",
+          "Schedule a calm and open conversation with your partner to discuss if compromise is possible on these differences.",
+          "Share more details about the specific expectations you are dealing with so more tailored options can be provided."
+        ]
+      }
+    }
+  ],
+  "completed_requests": 36,
+  "remaining_requests": 0
+}
