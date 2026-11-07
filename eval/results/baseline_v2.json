@@ -1,0 +1,133 @@
+{
+  "version": "v2-pre-router-fix",
+  "note": "Baseline summary captured before the targeted router changes on 2026-10-26. Detailed original failure examples are listed below; latest full results are in latest_v2.json.",
+  "counts": {
+    "profiles": 60,
+    "scenarios": 128,
+    "edge_cases": 15,
+    "red_team_cases": 14
+  },
+  "metrics": {
+    "intent_accuracy": 0.8516,
+    "relevance_proxy_intent_match": 0.8516,
+    "five_run_consistency": 1.0,
+    "red_team_pass_rate": 1.0,
+    "edge_cases_no_crash_rate": 1.0
+  },
+  "failed_scenarios_before_fix": [
+    {
+      "id": "SCN-002",
+      "message": "Suggest some questions about hobbies.",
+      "expected": "conversation_ideas",
+      "actual": null
+    },
+    {
+      "id": "SCN-010",
+      "message": "Suggest a next step for our conversation.",
+      "expected": "next_steps",
+      "actual": "conversation_ideas"
+    },
+    {
+      "id": "SCN-018",
+      "message": "Suggest some questions about hobbies.",
+      "expected": "conversation_ideas",
+      "actual": null
+    },
+    {
+      "id": "SCN-026",
+      "message": "Suggest a next step for our conversation.",
+      "expected": "next_steps",
+      "actual": "conversation_ideas"
+    },
+    {
+      "id": "SCN-030",
+      "message": "What should I avoid sharing?",
+      "expected": "privacy_safety",
+      "actual": null
+    },
+    {
+      "id": "SCN-042",
+      "message": "Suggest a next step for our conversation.",
+      "expected": "next_steps",
+      "actual": "conversation_ideas"
+    },
+    {
+      "id": "SCN-046",
+      "message": "What should I avoid sharing?",
+      "expected": "privacy_safety",
+      "actual": null
+    },
+    {
+      "id": "SCN-050",
+      "message": "Suggest some questions about hobbies.",
+      "expected": "conversation_ideas",
+      "actual": null
+    },
+    {
+      "id": "SCN-058",
+      "message": "Suggest a next step for our conversation.",
+      "expected": "next_steps",
+      "actual": "conversation_ideas"
+    },
+    {
+      "id": "SCN-062",
+      "message": "What should I avoid sharing?",
+      "expected": "privacy_safety",
+      "actual": null
+    },
+    {
+      "id": "SCN-066",
+      "message": "Suggest some questions about hobbies.",
+      "expected": "conversation_ideas",
+      "actual": null
+    },
+    {
+      "id": "SCN-078",
+      "message": "What should I avoid sharing?",
+      "expected": "privacy_safety",
+      "actual": null
+    },
+    {
+      "id": "SCN-082",
+      "message": "Suggest some questions about hobbies.",
+      "expected": "conversation_ideas",
+      "actual": null
+    },
+    {
+      "id": "SCN-090",
+      "message": "Suggest a next step for our conversation.",
+      "expected": "next_steps",
+      "actual": "conversation_ideas"
+    },
+    {
+      "id": "SCN-098",
+      "message": "Suggest some questions about hobbies.",
+      "expected": "conversation_ideas",
+      "actual": null
+    },
+    {
+      "id": "SCN-106",
+      "message": "Suggest a next step for our conversation.",
+      "expected": "next_steps",
+      "actual": "conversation_ideas"
+    },
+    {
+      "id": "SCN-110",
+      "message": "What should I avoid sharing?",
+      "expected": "privacy_safety",
+      "actual": null
+    },
+    {
+      "id": "SCN-122",
+      "message": "Suggest a next step for our conversation.",
+      "expected": "next_steps",
+      "actual": "conversation_ideas"
+    },
+    {
+      "id": "SCN-126",
+      "message": "What should I avoid sharing?",
+      "expected": "privacy_safety",
+      "actual": null
+    }
+  ]
+}

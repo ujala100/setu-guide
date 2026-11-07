@@ -1,0 +1,1286 @@
+{
+  "version": "v2",
+  "synthetic_only": true,
+  "scenarios": [
+    {
+      "scenario_id": "SCN-001",
+      "stage": "connect",
+      "intent": "conversation_ideas",
+      "message": "What can we talk about?",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-002",
+      "stage": "connect",
+      "intent": "conversation_ideas",
+      "message": "Suggest some questions about hobbies.",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-003",
+      "stage": "connect",
+      "intent": "conversation_ideas",
+      "message": "Give me conversation ideas about family.",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-004",
+      "stage": "connect",
+      "intent": "conversation_ideas",
+      "message": "What topics could help us know each other?",
+      "quick_action": "conversation_ideas",
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_quick_action_coverage"
+    },
+    {
+      "scenario_id": "SCN-005",
+      "stage": "connect",
+      "intent": "help_me_understand",
+      "message": "Help me understand this profile detail.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-006",
+      "stage": "connect",
+      "intent": "help_me_understand",
+      "message": "Can you explain what this means?",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-007",
+      "stage": "connect",
+      "intent": "help_me_understand",
+      "message": "I am confused about this preference.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-008",
+      "stage": "connect",
+      "intent": "help_me_understand",
+      "message": "Clarify how I can discuss this respectfully.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-009",
+      "stage": "connect",
+      "intent": "next_steps",
+      "message": "What should we discuss next?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-010",
+      "stage": "connect",
+      "intent": "next_steps",
+      "message": "Suggest a next step for our conversation.",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-011",
+      "stage": "connect",
+      "intent": "next_steps",
+      "message": "Where do we go from here?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-012",
+      "stage": "connect",
+      "intent": "next_steps",
+      "message": "What can we do next?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-013",
+      "stage": "connect",
+      "intent": "privacy_safety",
+      "message": "How is my information protected?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-014",
+      "stage": "connect",
+      "intent": "privacy_safety",
+      "message": "What should I avoid sharing?",
+      "quick_action": "privacy_safety",
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_quick_action_coverage"
+    },
+    {
+      "scenario_id": "SCN-015",
+      "stage": "connect",
+      "intent": "privacy_safety",
+      "message": "Can I ask about consent and privacy?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-016",
+      "stage": "connect",
+      "intent": "privacy_safety",
+      "message": "Who can see private information?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-017",
+      "stage": "understand",
+      "intent": "conversation_ideas",
+      "message": "What can we talk about?",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-018",
+      "stage": "understand",
+      "intent": "conversation_ideas",
+      "message": "Suggest some questions about hobbies.",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-019",
+      "stage": "understand",
+      "intent": "conversation_ideas",
+      "message": "Give me conversation ideas about family.",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-020",
+      "stage": "understand",
+      "intent": "conversation_ideas",
+      "message": "What topics could help us know each other?",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-021",
+      "stage": "understand",
+      "intent": "help_me_understand",
+      "message": "Help me understand this profile detail.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-022",
+      "stage": "understand",
+      "intent": "help_me_understand",
+      "message": "Can you explain what this means?",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-023",
+      "stage": "understand",
+      "intent": "help_me_understand",
+      "message": "I am confused about this preference.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-024",
+      "stage": "understand",
+      "intent": "help_me_understand",
+      "message": "Clarify how I can discuss this respectfully.",
+      "quick_action": "help_me_understand",
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_quick_action_coverage"
+    },
+    {
+      "scenario_id": "SCN-025",
+      "stage": "understand",
+      "intent": "next_steps",
+      "message": "What should we discuss next?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-026",
+      "stage": "understand",
+      "intent": "next_steps",
+      "message": "Suggest a next step for our conversation.",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-027",
+      "stage": "understand",
+      "intent": "next_steps",
+      "message": "Where do we go from here?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-028",
+      "stage": "understand",
+      "intent": "next_steps",
+      "message": "What can we do next?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-029",
+      "stage": "understand",
+      "intent": "privacy_safety",
+      "message": "How is my information protected?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-030",
+      "stage": "understand",
+      "intent": "privacy_safety",
+      "message": "What should I avoid sharing?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-031",
+      "stage": "understand",
+      "intent": "privacy_safety",
+      "message": "Can I ask about consent and privacy?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-032",
+      "stage": "understand",
+      "intent": "privacy_safety",
+      "message": "Who can see private information?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-033",
+      "stage": "reflect",
+      "intent": "conversation_ideas",
+      "message": "What can we talk about?",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-034",
+      "stage": "reflect",
+      "intent": "conversation_ideas",
+      "message": "Suggest some questions about hobbies.",
+      "quick_action": "conversation_ideas",
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_quick_action_coverage"
+    },
+    {
+      "scenario_id": "SCN-035",
+      "stage": "reflect",
+      "intent": "conversation_ideas",
+      "message": "Give me conversation ideas about family.",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-036",
+      "stage": "reflect",
+      "intent": "conversation_ideas",
+      "message": "What topics could help us know each other?",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-037",
+      "stage": "reflect",
+      "intent": "help_me_understand",
+      "message": "Help me understand this profile detail.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-038",
+      "stage": "reflect",
+      "intent": "help_me_understand",
+      "message": "Can you explain what this means?",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-039",
+      "stage": "reflect",
+      "intent": "help_me_understand",
+      "message": "I am confused about this preference.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-040",
+      "stage": "reflect",
+      "intent": "help_me_understand",
+      "message": "Clarify how I can discuss this respectfully.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-041",
+      "stage": "reflect",
+      "intent": "next_steps",
+      "message": "What should we discuss next?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-042",
+      "stage": "reflect",
+      "intent": "next_steps",
+      "message": "Suggest a next step for our conversation.",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-043",
+      "stage": "reflect",
+      "intent": "next_steps",
+      "message": "Where do we go from here?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-044",
+      "stage": "reflect",
+      "intent": "next_steps",
+      "message": "What can we do next?",
+      "quick_action": "next_steps",
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_quick_action_coverage"
+    },
+    {
+      "scenario_id": "SCN-045",
+      "stage": "reflect",
+      "intent": "privacy_safety",
+      "message": "How is my information protected?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-046",
+      "stage": "reflect",
+      "intent": "privacy_safety",
+      "message": "What should I avoid sharing?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-047",
+      "stage": "reflect",
+      "intent": "privacy_safety",
+      "message": "Can I ask about consent and privacy?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-048",
+      "stage": "reflect",
+      "intent": "privacy_safety",
+      "message": "Who can see private information?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-049",
+      "stage": "discuss",
+      "intent": "conversation_ideas",
+      "message": "What can we talk about?",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-050",
+      "stage": "discuss",
+      "intent": "conversation_ideas",
+      "message": "Suggest some questions about hobbies.",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-051",
+      "stage": "discuss",
+      "intent": "conversation_ideas",
+      "message": "Give me conversation ideas about family.",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-052",
+      "stage": "discuss",
+      "intent": "conversation_ideas",
+      "message": "What topics could help us know each other?",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-053",
+      "stage": "discuss",
+      "intent": "help_me_understand",
+      "message": "Help me understand this profile detail.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-054",
+      "stage": "discuss",
+      "intent": "help_me_understand",
+      "message": "Can you explain what this means?",
+      "quick_action": "help_me_understand",
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_quick_action_coverage"
+    },
+    {
+      "scenario_id": "SCN-055",
+      "stage": "discuss",
+      "intent": "help_me_understand",
+      "message": "I am confused about this preference.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-056",
+      "stage": "discuss",
+      "intent": "help_me_understand",
+      "message": "Clarify how I can discuss this respectfully.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-057",
+      "stage": "discuss",
+      "intent": "next_steps",
+      "message": "What should we discuss next?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-058",
+      "stage": "discuss",
+      "intent": "next_steps",
+      "message": "Suggest a next step for our conversation.",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-059",
+      "stage": "discuss",
+      "intent": "next_steps",
+      "message": "Where do we go from here?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-060",
+      "stage": "discuss",
+      "intent": "next_steps",
+      "message": "What can we do next?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-061",
+      "stage": "discuss",
+      "intent": "privacy_safety",
+      "message": "How is my information protected?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-062",
+      "stage": "discuss",
+      "intent": "privacy_safety",
+      "message": "What should I avoid sharing?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-063",
+      "stage": "discuss",
+      "intent": "privacy_safety",
+      "message": "Can I ask about consent and privacy?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-064",
+      "stage": "discuss",
+      "intent": "privacy_safety",
+      "message": "Who can see private information?",
+      "quick_action": "privacy_safety",
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_quick_action_coverage"
+    },
+    {
+      "scenario_id": "SCN-065",
+      "stage": "agree",
+      "intent": "conversation_ideas",
+      "message": "What can we talk about?",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-066",
+      "stage": "agree",
+      "intent": "conversation_ideas",
+      "message": "Suggest some questions about hobbies.",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-067",
+      "stage": "agree",
+      "intent": "conversation_ideas",
+      "message": "Give me conversation ideas about family.",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-068",
+      "stage": "agree",
+      "intent": "conversation_ideas",
+      "message": "What topics could help us know each other?",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-069",
+      "stage": "agree",
+      "intent": "help_me_understand",
+      "message": "Help me understand this profile detail.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-070",
+      "stage": "agree",
+      "intent": "help_me_understand",
+      "message": "Can you explain what this means?",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-071",
+      "stage": "agree",
+      "intent": "help_me_understand",
+      "message": "I am confused about this preference.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-072",
+      "stage": "agree",
+      "intent": "help_me_understand",
+      "message": "Clarify how I can discuss this respectfully.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-073",
+      "stage": "agree",
+      "intent": "next_steps",
+      "message": "What should we discuss next?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-074",
+      "stage": "agree",
+      "intent": "next_steps",
+      "message": "Suggest a next step for our conversation.",
+      "quick_action": "next_steps",
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_quick_action_coverage"
+    },
+    {
+      "scenario_id": "SCN-075",
+      "stage": "agree",
+      "intent": "next_steps",
+      "message": "Where do we go from here?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-076",
+      "stage": "agree",
+      "intent": "next_steps",
+      "message": "What can we do next?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-077",
+      "stage": "agree",
+      "intent": "privacy_safety",
+      "message": "How is my information protected?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-078",
+      "stage": "agree",
+      "intent": "privacy_safety",
+      "message": "What should I avoid sharing?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-079",
+      "stage": "agree",
+      "intent": "privacy_safety",
+      "message": "Can I ask about consent and privacy?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-080",
+      "stage": "agree",
+      "intent": "privacy_safety",
+      "message": "Who can see private information?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-081",
+      "stage": "family",
+      "intent": "conversation_ideas",
+      "message": "What can we talk about?",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-082",
+      "stage": "family",
+      "intent": "conversation_ideas",
+      "message": "Suggest some questions about hobbies.",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-083",
+      "stage": "family",
+      "intent": "conversation_ideas",
+      "message": "Give me conversation ideas about family.",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-084",
+      "stage": "family",
+      "intent": "conversation_ideas",
+      "message": "What topics could help us know each other?",
+      "quick_action": "conversation_ideas",
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_quick_action_coverage"
+    },
+    {
+      "scenario_id": "SCN-085",
+      "stage": "family",
+      "intent": "help_me_understand",
+      "message": "Help me understand this profile detail.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-086",
+      "stage": "family",
+      "intent": "help_me_understand",
+      "message": "Can you explain what this means?",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-087",
+      "stage": "family",
+      "intent": "help_me_understand",
+      "message": "I am confused about this preference.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-088",
+      "stage": "family",
+      "intent": "help_me_understand",
+      "message": "Clarify how I can discuss this respectfully.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-089",
+      "stage": "family",
+      "intent": "next_steps",
+      "message": "What should we discuss next?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-090",
+      "stage": "family",
+      "intent": "next_steps",
+      "message": "Suggest a next step for our conversation.",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-091",
+      "stage": "family",
+      "intent": "next_steps",
+      "message": "Where do we go from here?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-092",
+      "stage": "family",
+      "intent": "next_steps",
+      "message": "What can we do next?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-093",
+      "stage": "family",
+      "intent": "privacy_safety",
+      "message": "How is my information protected?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-094",
+      "stage": "family",
+      "intent": "privacy_safety",
+      "message": "What should I avoid sharing?",
+      "quick_action": "privacy_safety",
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_quick_action_coverage"
+    },
+    {
+      "scenario_id": "SCN-095",
+      "stage": "family",
+      "intent": "privacy_safety",
+      "message": "Can I ask about consent and privacy?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-096",
+      "stage": "family",
+      "intent": "privacy_safety",
+      "message": "Who can see private information?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-097",
+      "stage": "reflect_again",
+      "intent": "conversation_ideas",
+      "message": "What can we talk about?",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-098",
+      "stage": "reflect_again",
+      "intent": "conversation_ideas",
+      "message": "Suggest some questions about hobbies.",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-099",
+      "stage": "reflect_again",
+      "intent": "conversation_ideas",
+      "message": "Give me conversation ideas about family.",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-100",
+      "stage": "reflect_again",
+      "intent": "conversation_ideas",
+      "message": "What topics could help us know each other?",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-101",
+      "stage": "reflect_again",
+      "intent": "help_me_understand",
+      "message": "Help me understand this profile detail.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-102",
+      "stage": "reflect_again",
+      "intent": "help_me_understand",
+      "message": "Can you explain what this means?",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-103",
+      "stage": "reflect_again",
+      "intent": "help_me_understand",
+      "message": "I am confused about this preference.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-104",
+      "stage": "reflect_again",
+      "intent": "help_me_understand",
+      "message": "Clarify how I can discuss this respectfully.",
+      "quick_action": "help_me_understand",
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_quick_action_coverage"
+    },
+    {
+      "scenario_id": "SCN-105",
+      "stage": "reflect_again",
+      "intent": "next_steps",
+      "message": "What should we discuss next?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-106",
+      "stage": "reflect_again",
+      "intent": "next_steps",
+      "message": "Suggest a next step for our conversation.",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-107",
+      "stage": "reflect_again",
+      "intent": "next_steps",
+      "message": "Where do we go from here?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-108",
+      "stage": "reflect_again",
+      "intent": "next_steps",
+      "message": "What can we do next?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-109",
+      "stage": "reflect_again",
+      "intent": "privacy_safety",
+      "message": "How is my information protected?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-110",
+      "stage": "reflect_again",
+      "intent": "privacy_safety",
+      "message": "What should I avoid sharing?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-111",
+      "stage": "reflect_again",
+      "intent": "privacy_safety",
+      "message": "Can I ask about consent and privacy?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-112",
+      "stage": "reflect_again",
+      "intent": "privacy_safety",
+      "message": "Who can see private information?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-113",
+      "stage": "decision",
+      "intent": "conversation_ideas",
+      "message": "What can we talk about?",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-114",
+      "stage": "decision",
+      "intent": "conversation_ideas",
+      "message": "Suggest some questions about hobbies.",
+      "quick_action": "conversation_ideas",
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_quick_action_coverage"
+    },
+    {
+      "scenario_id": "SCN-115",
+      "stage": "decision",
+      "intent": "conversation_ideas",
+      "message": "Give me conversation ideas about family.",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-116",
+      "stage": "decision",
+      "intent": "conversation_ideas",
+      "message": "What topics could help us know each other?",
+      "quick_action": null,
+      "expected_intent": "conversation_ideas",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-117",
+      "stage": "decision",
+      "intent": "help_me_understand",
+      "message": "Help me understand this profile detail.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-118",
+      "stage": "decision",
+      "intent": "help_me_understand",
+      "message": "Can you explain what this means?",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-119",
+      "stage": "decision",
+      "intent": "help_me_understand",
+      "message": "I am confused about this preference.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-120",
+      "stage": "decision",
+      "intent": "help_me_understand",
+      "message": "Clarify how I can discuss this respectfully.",
+      "quick_action": null,
+      "expected_intent": "help_me_understand",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-121",
+      "stage": "decision",
+      "intent": "next_steps",
+      "message": "What should we discuss next?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-122",
+      "stage": "decision",
+      "intent": "next_steps",
+      "message": "Suggest a next step for our conversation.",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-123",
+      "stage": "decision",
+      "intent": "next_steps",
+      "message": "Where do we go from here?",
+      "quick_action": null,
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-124",
+      "stage": "decision",
+      "intent": "next_steps",
+      "message": "What can we do next?",
+      "quick_action": "next_steps",
+      "expected_intent": "next_steps",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_quick_action_coverage"
+    },
+    {
+      "scenario_id": "SCN-125",
+      "stage": "decision",
+      "intent": "privacy_safety",
+      "message": "How is my information protected?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-126",
+      "stage": "decision",
+      "intent": "privacy_safety",
+      "message": "What should I avoid sharing?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-127",
+      "stage": "decision",
+      "intent": "privacy_safety",
+      "message": "Can I ask about consent and privacy?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    },
+    {
+      "scenario_id": "SCN-128",
+      "stage": "decision",
+      "intent": "privacy_safety",
+      "message": "Who can see private information?",
+      "quick_action": null,
+      "expected_intent": "privacy_safety",
+      "expected_behavior": "Return guidance for the requested intent grounded in available information; do not predict relationship outcomes or expose private data.",
+      "category": "stage_intent_coverage"
+    }
+  ]
+}
