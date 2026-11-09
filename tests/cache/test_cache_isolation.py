@@ -6,20 +6,24 @@ so one user never receives another user's cached reply.
 
 import pytest
 
+from fastapi.testclient import TestClient
+from app.schemas.guide import GuideRequest, Stage, Intent
+from app.api.cache import cache_key
 
-def test_cache_isolation_no_cross_user_response(client, app):
+
+def test_cache_isolation_no_cross_user_response(client):
     """Two different users should never receive each other's cached reply."""
     # Create two distinct users with different stages and intents
     user1_data = {
-        "stage": "ideation",
-        "intent": "explore",
+        "stage": "connect",
+        "intent": "conversation_ideas",
         "topic": "test-topic-1",
         "match_id": "match-001",
         "user_id": "user-1",
     }
     user2_data = {
-        "stage": "planning",
-        "intent": "decide",
+        "stage": "understand",
+        "intent": "help_me_understand",
         "topic": "test-topic-2",
         "match_id": "match-002",
         "user_id": "user-2",
@@ -44,45 +48,49 @@ def test_cache_isolation_no_cross_user_response(client, app):
 
 def test_cache_key_includes_user_match_stage_intent(client):
     """Verify cache key construction includes all required identifiers."""
-    from app.api.cache import build_cache_key
-
     # Same stage, intent, topic but different users
-    key1 = build_cache_key(
-        stage="ideation",
-        intent="explore",
-        topic="test-topic",
-        match_id="match-001",
-        user_id="user-1",
+    key1 = cache_key(
+        GuideRequest(
+            stage=Stage.connect,
+            intent=Intent.conversation_ideas,
+            topic="test-topic",
+            match_id="match-001",
+            user_id="user-1",
+        )
     )
-    key2 = build_cache_key(
-        stage="ideation",
-        intent="explore",
-        topic="test-topic",
-        match_id="match-001",
-        user_id="user-2",
+    key2 = cache_key(
+        GuideRequest(
+            stage=Stage.connect,
+            intent=Intent.conversation_ideas,
+            topic="test-topic",
+            match_id="match-001",
+            user_id="user-2",
+        )
     )
 
     # Different users must produce different keys
     assert key1 != key2, "Cache key must differentiate by user_id"
 
     # Same user, same request = same key
-    key3 = build_cache_key(
-        stage="ideation",
-        intent="explore",
-        topic="test-topic",
-        match_id="match-001",
-        user_id="user-1",
+    key3 = cache_key(
+        GuideRequest(
+            stage=Stage.connect,
+            intent=Intent.conversation_ideas,
+            topic="test-topic",
+            match_id="match-001",
+            user_id="user-1",
+        )
     )
     assert key1 == key3, "Same request should produce identical cache key"
 
 
-def test_cache_isolation_never_mixes_users(client, app):
+def test_cache_isolation_never_mixes_users(client):
     """Assert that across 20 requests from different users, no cross-mixing occurs."""
     from app.core.llm_provider import GeminiLLMProvider
 
     base_data = {
-        "stage": "ideation",
-        "intent": "explore",
+        "stage": "connect",
+        "intent": "conversation_ideas",
         "topic": "test-topic",
         "match_id": "match-001",
     }

@@ -59,7 +59,7 @@ _HTTP_ERRORS: Dict[int, tuple] = {
 
 
 def _error(code: str, message: str, details: Optional[List[Any]] = None) -> Dict[str, Any]:
-    return {"error_code": code, "message": message, "details": details or []}
+    return {"error": {"code": code, "message": message, "details": details or []}}
 
 
 def _validation_details(exc: RequestValidationError) -> List[str]:

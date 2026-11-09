@@ -12,14 +12,6 @@ class Stage(str, Enum):
     family = "family"
     reflect_again = "reflect_again"
     decision = "decision"
-    ideation = "ideation"
-    planning = "planning"
-    design = "design"
-    development = "development"
-    testing = "testing"
-    deployment = "deployment"
-    maintenance = "maintenance"
-    retirement = "retirement"
 
 
 class Intent(str, Enum):
@@ -27,14 +19,7 @@ class Intent(str, Enum):
     help_me_understand = "help_me_understand"
     next_steps = "next_steps"
     privacy_safety = "privacy_safety"
-    explore = "explore"
-    decide = "decide"
-    feedback = "feedback"
-    review = "review"
 
-
-class SafetyStatus(str, Enum):
-    passed = "pass"
 
 class SafetyStatus(str, Enum):
     passed = "pass"

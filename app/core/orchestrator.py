@@ -39,10 +39,6 @@ TEMPLATES = {  # last-resort answers if anything above raises
     Intent.help_me_understand: ("I can compare what you've both chosen to share. Ask about the things you haven't discussed yet.", []),
     Intent.next_steps: ("Take it at your own pace. Pick one topic for this stage and talk it through.", []),
     Intent.privacy_safety: ("I only use details people choose to share, and I can't reveal private answers. You can pause or leave a journey at any time.", []),
-    Intent.explore: ("I'd be happy to explore this with you. What aspects would you like to discuss?", []),
-    Intent.decide: ("Let's discuss the options. What are you leaning toward?", []),
-    Intent.feedback: ("Thank you for your feedback. We'll use it to improve your experience.", []),
-    Intent.review: ("Let's review this together. What aspects should we focus on?", []),
 }
 
 # Only these consented fields ever reach retrieval or the LLM. Anything else
@@ -137,8 +133,6 @@ ANSWER_TOPICS = {
     Intent.help_me_understand: ("stage_description", "checklist"),
     Intent.next_steps: ("tips", "next_steps"),
     Intent.privacy_safety: ("privacy_consent", "safety"),
-    Intent.explore: ("exploration_topics", "exploration_guide"),
-    Intent.decide: ("decision_topics", "decision_guide"),
 }
 USER_FACING_GLOBAL = {"KB-GLOBAL-031", "KB-GLOBAL-032", "KB-GLOBAL-033", "KB-GLOBAL-035", "KB-GLOBAL-036",
                       "KB-GLOBAL-037", "KB-GLOBAL-038", "KB-GLOBAL-039", "KB-GLOBAL-040"}

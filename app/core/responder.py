@@ -6,8 +6,6 @@ SUPPORTED_INTENTS = {
     "help_me_understand",
     "next_steps",
     "privacy_safety",
-    "explore",
-    "decide",
 }
 
 
@@ -56,26 +54,6 @@ def create_response(intent, user_message):
                 "Please review the available privacy and safety information before sharing sensitive information.",
                 "Avoid sharing unnecessary personal or sensitive details.",
                 "If you have a specific privacy concern, ask about that concern directly."
-            ]
-        }
-
-    elif intent == "explore":
-        return {
-            "intent": intent,
-            "response": [
-                "I'd be happy to explore this with you. Tell me more about what you'd like to explore.",
-                "What aspects of this topic interest you most?",
-                "What have you discovered so far?"
-            ]
-        }
-
-    elif intent == "decide":
-        return {
-            "intent": intent,
-            "response": [
-                "Let's discuss the options. What are you leaning toward?",
-                "What factors are most important in your decision?",
-                "How do you feel about the different choices?"
             ]
         }
 

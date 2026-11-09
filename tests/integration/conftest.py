@@ -11,6 +11,13 @@ from tests.conftest import client  # noqa: F401, for the client fixture registra
 
 
 @pytest.fixture(scope="session")
+def app():
+    """App fixture for integration test suites."""
+    from app.api.main import app as _app
+    return _app
+
+
+@pytest.fixture(scope="session")
 def client_with_api_key(app):
     """Test client with API key authentication configured."""
     # Configure API key mode
