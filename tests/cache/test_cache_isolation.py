@@ -9,8 +9,6 @@ import pytest
 
 def test_cache_isolation_no_cross_user_response(client, app):
     """Two different users should never receive each other's cached reply."""
-    from app.core.llm_provider import GeminiLLMProvider
-
     # Create two distinct users with different stages and intents
     user1_data = {
         "stage": "ideation",
