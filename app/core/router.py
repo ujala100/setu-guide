@@ -6,6 +6,8 @@ SUPPORTED_INTENTS = {
     "help_me_understand",
     "next_steps",
     "privacy_safety",
+    "explore",
+    "decide",
 }
 
 
@@ -123,7 +125,39 @@ def route_intent(user_message, quick_action=None):
 
     for keyword in privacy_keywords:
         if keyword in message:
-            return "privacy_safety"
+            return "privacy_safety"# ---------------------------------------------------------
+    # Rule 7: Feedback intent
+    # ---------------------------------------------------------
+
+    feedback_keywords = [
+        "feedback",
+        "what did you think",
+        "how was your experience",
+        "share your thoughts",
+        "your feedback",
+        "I think",
+        "I feel",
+    ]
+
+    for keyword in feedback_keywords:
+        if keyword in message:
+            return "feedback"
+
+    # ---------------------------------------------------------
+    # Rule 8: Review intent
+    # ---------------------------------------------------------
+
+    review_keywords = [
+        "review",
+        "review this",
+        "let's review",
+        "we should review",
+        "overall review",
+    ]
+
+    for keyword in review_keywords:
+        if keyword in message:
+            return "review"
 
     # ---------------------------------------------------------
     # Rule 7: No confident match
@@ -141,6 +175,8 @@ if __name__ == "__main__":
         "Is my information private?",
         "What questions can we ask each other?",
         "Hello, I have a question.",
+        "Here is my feedback",
+        "I'd like to review this",
     ]
 
     for message in test_messages:

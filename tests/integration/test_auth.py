@@ -178,9 +178,10 @@ def test_health_never_needs_credential(client):
 
 def test_startup_fails_fast_when_method_on_no_key(monkeypatch):
     """Startup fails fast when a method is on but no key is set."""
-    from app.config import settings
+    from app.config import get_settings
 
     # Monkeypatch to simulate no key set with method enabled
+    settings = get_settings()
     original_auth_method = settings.auth_method
     # We'll test that config validation catches this
     settings.auth_method = "api_key"
@@ -212,9 +213,7 @@ def test_key_never_appears_in_response(client_with_api_key):
     assert "sk-" not in str(data).lower(), "API key material found in response"
 
 
-def test_key_never_appears_in_logs_or_settings(
-    caplog, app, client_with_api_key
-):
+def test_key_never_appears_in_logs_or_settings(caplog, app, client_with_api_key):
     """The API key must not appear in logs or settings repr."""
     payload = {
         "stage": "ideation",
@@ -230,7 +229,8 @@ def test_key_never_appears_in_logs_or_settings(
     assert "sk-" not in log_messages.lower(), "API key found in logs"
 
     # Check settings repr doesn't expose key
-    from app.config import settings
+    from app.config import get_settings
+    settings = get_settings()
     settings_repr = repr(settings)
     assert "sk-" not in settings_repr.lower(), "API key found in settings repr"
 
