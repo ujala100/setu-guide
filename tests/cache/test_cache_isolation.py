@@ -85,9 +85,14 @@ def test_cache_key_includes_user_match_stage_intent(client):
 
 
 def test_cache_isolation_never_mixes_users(client):
-    """Assert that across 20 requests from different users, no cross-mixing occurs."""
-    from app.core.llm_provider import GeminiLLMProvider
+    """Across 20 users, no user ever gets another user's cache entry.
 
+    Isolation is proven through X-Cache: every user's first request must MISS
+    (so an earlier user's cached reply was not served), and every user's own
+    repeat must HIT (so each user has their own entry). Response bodies may
+    legitimately be identical on the deterministic mock pipeline, so the body
+    alone is not the isolation signal.
+    """
     base_data = {
         "stage": "connect",
         "intent": "conversation_ideas",
@@ -95,17 +100,22 @@ def test_cache_isolation_never_mixes_users(client):
         "match_id": "match-001",
     }
 
-    user_responses = {}
-    for uid in [f"user-{i}" for i in range(20)]:
-        data = {**base_data, "user_id": uid}
-        resp = client.post("/v1/guide/chat", json=data)
-        assert resp.status_code == 200
-        user_responses[uid] = resp.json()
+    user_ids = [f"user-{i}" for i in range(20)]
+    first_bodies = {}
+    for uid in user_ids:
+        first = client.post("/v1/guide/chat", json={**base_data, "user_id": uid})
+        assert first.status_code == 200
+        assert first.headers.get("X-Cache") == "MISS", (
+            f"{uid} first request was served from another user's cache entry"
+        )
+        first_bodies[uid] = first.json()
 
-    # Each user should have a distinct response (no mixing)
-    responses = list(user_responses.values())
-    for i, uid1 in enumerate([f"user-{i}" for i in range(20)]):
-        for uid2 in [f"user-{j}" for j in range(i + 1, 20)]:
-            assert (
-                user_responses[uid1] != user_responses[uid2]
-            ), f"Cross-user cache mixing detected between {uid1} and {uid2}"
+    for uid in user_ids:
+        repeat = client.post("/v1/guide/chat", json={**base_data, "user_id": uid})
+        assert repeat.status_code == 200
+        assert repeat.headers.get("X-Cache") == "HIT", (
+            f"{uid} repeat request did not hit its own cache entry"
+        )
+        assert repeat.json() == first_bodies[uid], (
+            f"{uid} cached reply differs from its own first reply"
+        )
