@@ -19,6 +19,17 @@ services:
     init: true
     restart: unless-stopped
 
+    # Day 3 hardening: the API is fully in-memory, so the root filesystem can
+    # be read-only. Only /tmp is writable, all capabilities are dropped and
+    # privilege escalation is disabled.
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
     # Values come from .env (ignored by git). `required: false` keeps the file
     # optional so a fresh clone can still start with the built-in defaults.
     env_file:
