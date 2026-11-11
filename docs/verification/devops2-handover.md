@@ -106,9 +106,9 @@ cp .env.example .env
 
 - `.env` is ignored by git **and** by docker (`.env.example:3`), so secrets
   never leave your machine. Never commit a real key.
-- Defaults work without editing. `USE_MOCK=true` keeps the Day 1 mock reply;
-  flip to `false` only once `app.core.orchestrator.handle_chat` exists and a
-  real `LLM_API_KEY` is set — until then real mode answers a safe 200 with
+- Defaults work without editing. `USE_MOCK=true` uses knowledge-base/template
+  mock replies. `app.core.orchestrator.handle_chat` exists; flipping to `false`
+  requires a real `LLM_API_KEY`, and provider failures answer a safe 200 with
   `fallback_used=true` (README.md:92-96).
 - Startup fails fast with one clear line if the environment cannot work
   (README.md:66-68).
@@ -301,16 +301,16 @@ intentionally empty — do not add a row you cannot back with evidence.
 | Environment | Base URL |
 |---|---|
 | Local | `http://localhost:8000` |
-| Staging | `https://setu-guide.onrender.com` |
+| Staging | `https://setu-guide-1wiy.onrender.com` |
 
-Source: `docs/api.md:22-25` (§2 Base URLs). The Postman collection's
-`base_url` defaults to localhost; set it to the staging URL for staging runs
-(README.md:20-22).
+Source: `docs/api.md` §2 Base URLs. The Postman collection's `base_url`
+defaults to the staging URL; override it to `http://localhost:8000` for local
+runs (README.md).
 
 ### 6.2 Verify service health (liveness)
 
 ```bash
-curl -i https://setu-guide.onrender.com/health
+curl -i https://setu-guide-1wiy.onrender.com/health
 ```
 
 Expected (`docs/api.md:65-78`):
@@ -355,7 +355,7 @@ any sign-off. Summary of the items beyond `/health`:
 ### 7.1 Current state (verified)
 
 - **No release tags exist.** `git tag` returns nothing across the repository.
-  `v0.1` has **not** been created.
+  No release tag has been created.
 - **No `/version` endpoint or build metadata exists.** The service exposes only
   `GET /health` and `POST /v1/guide/chat` (`docs/api.md:11`); there is no
   version/build endpoint to query a running instance.
@@ -406,38 +406,37 @@ every deploy, using the platform's recorded commit SHA:
    `docs/verification/` if the team wants a durable log). See also
    `deploy/README.md` (staging deploy is DevOps 2's area).
 
-### 7.3 Matching a deployment to a release tag (blocked on the team lead)
+### 7.3 Matching a deployment to the frozen SHA (blocked on the project lead)
 
-The intended release process is: the lead freezes a commit, a `v0.1` tag is
-created on that commit, and a deploy is verified to be running exactly that
-commit.
+The intended release process is: the project lead freezes a commit, provides
+that SHA, and a deploy is verified to be running exactly that commit. Tagging is
+separate and is not authorized by this handover.
 
 **This has not happened yet**, and this handover does not claim otherwise:
 
-- Do **not** create the `v0.1` tag until the **team lead confirms the frozen
-  commit SHA**. (Currently no tag exists at all — §7.1.)
+- Do **not** create or push any tag. The project lead has not provided the
+  frozen SHA yet.
 - Do **not** claim staging matches a release commit until the deployed version
   has been **verified** via the procedure in §7.2 (platform SHA recorded, the
   commit found in the repo, health check passing).
 
-Once the lead freezes the commit, the verification loop is:
+Once the lead provides the frozen SHA, the verification loop is:
 
 ```bash
-# 1. Tag is on the expected commit (create only after lead confirmation):
-git tag -a v0.1 <frozen-sha> -m "v0.1 - first staging release"
-git push origin v0.1
+# 1. Confirm the frozen commit exists in the repo:
+git fetch origin
+git log -1 --oneline <frozen-sha>
 
-# 2. Deploy is running that commit — compare the Render SHA with the tag SHA:
-git rev-parse v0.1^{commit}        # tag's commit
-#   ^ compare against the short SHA shown on Render's Deploys page
+# 2. Compare the Render deployed SHA with the frozen SHA:
+#    read the short SHA from Render's Deploys page and record it
 
 # 3. They must match exactly. If they do not, the deploy is stale or from the
-#    wrong commit — redeploy from the tag/commit before signing off.
+#    wrong commit. Stop and ask the lead; do not redeploy without approval.
 ```
 
-Record the result (date, tag SHA, Render SHA, match/mismatch) alongside the
-deploy record from §7.2. Only after "tag SHA == deployed SHA" may you state that
-staging runs the release commit.
+Record the result (date, frozen SHA, Render SHA, match/mismatch) alongside the
+deploy record from §7.2. Only after "frozen SHA == deployed SHA" may you state
+that staging runs the approved commit.
 
 ---
 
@@ -451,9 +450,10 @@ staging runs the release commit.
 - [ ] Open feature branches as `feature/<area>-<description>`; PR into `dev`.
 - [ ] CI check to watch: **`ci / test`** (Checks tab).
 - [ ] Read `docs/verification/README.md` before filing a bug.
-- [ ] Staging: `https://setu-guide.onrender.com/health` → 200 `{"status":"ok"}`.
-- [ ] Do **not** tag `v0.1` or claim a staging/commit match until the lead
-      freezes the commit **and** the deploy is verified (§7).
+- [ ] Staging: `https://setu-guide-1wiy.onrender.com/health` → 200 `{"status":"ok"}`.
+- [ ] Do **not** create or push any tag, and do not claim a staging/commit match
+      until the project lead provides the frozen SHA **and** the deploy is
+      verified (§7).
 
 ---
 

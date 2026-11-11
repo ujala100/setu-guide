@@ -686,5 +686,85 @@
     "intent": "privacy_safety",
     "text": "Users can pause the journey at any time. Pausing is not failure — it is a valid choice.",
     "source": "roadmap_sec22_safeguard"
+  },
+    {
+    "chunk_id": "c_conv_1",
+    "stage": "connect",
+    "topic": "hobbies",
+    "intent": "conversation_ideas",
+    "text": "Ask about their favorite weekend activities or hobbies to break the ice.",
+    "source": "roadmap_sec4_conversation"
+  },
+  {
+    "chunk_id": "c_conv_2",
+    "stage": "understand",
+    "topic": "family",
+    "intent": "conversation_ideas",
+    "text": "Discuss how they spend time with their family on holidays.",
+    "source": "roadmap_sec4_conversation"
+  },
+  {
+    "chunk_id": "c_conv_3",
+    "stage": "reflect",
+    "topic": "values",
+    "intent": "conversation_ideas",
+    "text": "Ask what values are most important to them in a partner.",
+    "source": "roadmap_sec4_conversation"
+  },
+  {
+    "chunk_id": "c_conv_4",
+    "stage": "discuss",
+    "topic": "career",
+    "intent": "conversation_ideas",
+    "text": "Talk about their career goals and how they balance work and life.",
+    "source": "roadmap_sec4_conversation"
+  },
+  {
+    "chunk_id": "c_conv_5",
+    "stage": "agree",
+    "topic": "lifestyle",
+    "intent": "conversation_ideas",
+    "text": "Ask about their daily routine and lifestyle habits.",
+    "source": "roadmap_sec4_conversation"
+  },
+  {
+    "chunk_id": "c_conv_6",
+    "stage": "family",
+    "topic": "parents",
+    "intent": "conversation_ideas",
+    "text": "Suggest asking how involved their parents are in their life decisions.",
+    "source": "roadmap_sec4_conversation"
+  },
+  {
+    "chunk_id": "c_conv_7",
+    "stage": "reflect_again",
+    "topic": "goals",
+    "intent": "conversation_ideas",
+    "text": "Ask if their long-term goals have changed after the initial conversations.",
+    "source": "roadmap_sec4_conversation"
+  },
+  {
+    "chunk_id": "c_conv_8",
+    "stage": "decision",
+    "topic": "future",
+    "intent": "conversation_ideas",
+    "text": "Ask them to describe their ideal future five years from now.",
+    "source": "roadmap_sec4_conversation"
+  },
+  {
+    "chunk_id": "c_conv_9",
+    "stage": "connect",
+    "topic": "travel",
+    "intent": "conversation_ideas",
+    "text": "Ask about a favorite travel destination or a dream trip.",
+    "source": "roadmap_sec4_conversation"
+  },
+  {
+    "chunk_id": "c_conv_10",
+    "stage": "understand",
+    "topic": "communication",
+    "intent": "conversation_ideas",
+    "text": "Discuss how they prefer to communicate when resolving disagreements.",
+    "source": "roadmap_sec4_conversation"
   }
 ]
