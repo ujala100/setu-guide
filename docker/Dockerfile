@@ -7,9 +7,15 @@
 # - base pinned by digest (refresh deliberately, not silently)
 # - no build tools in the final stage (pip/setuptools/wheel removed)
 # - Debian fixes applied at build time where Debian ships them
+#
+# 2026-11-10 deliberate base refresh (see docs/security_scan_report_phase2_day4.md):
+# the 2026-10-22 digest re-scanned with a fresh vulnerability DB showed
+# new OS HIGH CVEs with a Debian fix available that apt could not reach
+# from the old point release. The base was moved to the current
+# python:3.11-slim manifest so apt-get upgrade can pick those up.
 
 # ---------------------------------------------------------------- builder
-FROM python:3.11-slim@sha256:e88e9763f943ec1834f992a4b51e0f24500486803e8bc534e5767af9ea65f6ce AS builder
+FROM python:3.11-slim@sha256:07d4824036af339fa1b6ef769cc99d9c10a141769538b52b3b597c84f7a7b535 AS builder
 
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=1 \
@@ -28,7 +34,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip uninstall -y pip setuptools
 
 # ---------------------------------------------------------------- runtime
-FROM python:3.11-slim@sha256:e88e9763f943ec1834f992a4b51e0f24500486803e8bc534e5767af9ea65f6ce
+FROM python:3.11-slim@sha256:07d4824036af339fa1b6ef769cc99d9c10a141769538b52b3b597c84f7a7b535
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
