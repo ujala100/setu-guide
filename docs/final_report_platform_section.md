@@ -74,17 +74,17 @@ Linux container, image `setu-guide-api:day3`, mounted slow `handle_chat`.
 | SIGTERM, 3 requests (20 s) | **200, 200, 200**, exit **0**, stop 19.2 s |
 | Restart mid-load | `/health` 200 after **1.65 s**; 32/40 tail requests 200 |
 
-Keep-alive 5 s; graceful 30 s / `stop_grace_period: 35s`; auth 401/401/200. **8/8 PASS.** Before, an 8 s request was SIGKILLed (exit 137); Windows cannot prove graceful shutdown, so evidence is from Linux.
+Keep-alive 5 s; graceful 30 s / `stop_grace_period: 35s`; auth 401/401/200. **8/8 PASS on the Day-4 branch.** On this branch (`app/` = `dev`) the auth container check moved with the auth suite to `feature/auth-tests` → **7/7 PASS, re-verified 2026-11-10**. Before, an 8 s request was SIGKILLed (exit 137); Windows cannot prove graceful shutdown, so evidence is from Linux.
 
-## 8. Integration with Shreya
+## 8. Integration with Sakshi (the new backend engineer)
 
 | Item | Status |
 |---|---|
-| Backend end-to-end | **Not started** (lead, 2026-10-22); Shreya left, a new engineer reviews the backend |
-| Contract (45/45) | Frozen: 8 stages, 4 intents, `message` ≤ 500, `topic` ≤ 100; required `user_id`/`match_id`/`stage`; 7-field response; one error envelope; 429 `Retry-After`; `fallback_used=true` = normal 200; 15 s client timeout |
-| Auth | `X-API-Key` / Bearer, default `none`, key from env, constant-time; no credential issued |
-| Gap | AI/ML `handle_request()` uses a different internal shape; mapping unagreed; `handle_chat` missing (#15) |
-| Staging | URL confirmed 2026-10-24; `/health`, `/docs` and POST smoke → 200; SHA, restart policy, `API_KEY` path and mock-vs-real mode `[PLACEHOLDER]` |
+| Backend end-to-end | **Not started** (lead, 2026-10-22); the previous engineer left; Sakshi now reviews the backend |
+| Contract (45/45 → re-verified 36/36 on this branch, 2026-11-10) | Frozen: 8 stages, 4 intents, `message` ≤ 500, `topic` ≤ 100; required `user_id`/`match_id`/`stage`; 7-field response; one error envelope; 429 `Retry-After`; `fallback_used=true` = normal 200; 15 s client timeout. The auth half (25 tests) moved to `feature/auth-tests` — `dev` has no inbound auth |
+| Auth | `X-API-Key` / Bearer, default `none`, key from env, constant-time — implemented and tested on `feature/auth-tests` / `feature/phase2-day4-recovery-integration`, **not in `dev`**; no credential issued |
+| Gap | AI/ML `handle_request()` uses a different internal shape; mapping unagreed; ~~`handle_chat` missing (#15)~~ landed via PRs #36/#37, staging build predates it |
+| Staging | URL confirmed 2026-10-24 (`https://setu-guide.onrender.com`); `/health`, `/docs` and POST smoke → 200; 2026-11-01 retest on the lead's target → `docs/render_retest_results.md`; restart recovery → `docs/recovery_test_results.md` |
 
 **Open items:** schema mapping; backend URL/test window; auth issuer/rotation; backend handling of 429/422/`fallback_used`; staging deploy details and test window; `handle_chat` timeline.
 
