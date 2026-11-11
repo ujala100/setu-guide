@@ -112,7 +112,7 @@ class GeminiLLMProvider(LLMProvider):
             )
 
         except KeyboardInterrupt:
-            print("Gemini request interrupted.")
+            logger.warning("Gemini request interrupted.")
             return None
 
         except Exception as error:
