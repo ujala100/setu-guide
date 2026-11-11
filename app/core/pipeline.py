@@ -1,6 +1,7 @@
 ﻿import json
 import sys
 import os
+import logging
 
 # Add project root to Python path
 sys.path.append(
@@ -159,8 +160,8 @@ def run_pipeline(
 
     except Exception as error:
 
-        print(
-            f"LLM provider failed: {error}"
+        logging.warning(
+            "LLM provider failed: %s", type(error).__name__
         )
 
         llm_result = None

@@ -84,7 +84,11 @@ class GeminiLLMProvider(LLMProvider):
 
     def __init__(self):
 
+        from app.config import get_settings
+        settings = get_settings()
+
         api_key = os.environ.get("GEMINI_API_KEY")
+        model = getattr(settings, "llm_model", "gemini-3.8-flash")
 
         if not api_key:
             raise ValueError(
@@ -94,9 +98,10 @@ class GeminiLLMProvider(LLMProvider):
         self.client = genai.Client(
             api_key=api_key,
             http_options={
-                "timeout": 10000
+                "timeout": settings.llm_timeout_seconds * 1000
             }
         )
+        self.model = model
 
     def generate(self, prompt):
 
@@ -107,18 +112,18 @@ class GeminiLLMProvider(LLMProvider):
             )
 
         except KeyboardInterrupt:
-            print("Gemini request interrupted.")
+            logger.warning("Gemini request interrupted.")
             return None
 
         except Exception as error:
-            print(f"Gemini provider unavailable: {error}")
+            logger.warning("Gemini provider unavailable: %s", type(error).__name__)
             return None
 
         try:
             output_text = interaction.output_text.strip()
 
         except Exception as error:
-            print(f"Gemini output error: {error}")
+            logger.warning("Gemini output error: %s", type(error).__name__)
             return None
 
         # Remove Markdown code fences if Gemini returns them.
@@ -137,7 +142,7 @@ class GeminiLLMProvider(LLMProvider):
             return json.loads(output_text)
 
         except json.JSONDecodeError as error:
-            print(f"Gemini returned invalid JSON: {error}")
+            logger.warning("Gemini returned invalid JSON: %s", type(error).__name__)
             return None
 
 

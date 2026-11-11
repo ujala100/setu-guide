@@ -6,3 +6,14 @@ pydantic-settings==2.15.0
 cachetools==7.2.1
 uvicorn==0.54.0
 google-genai==2.29.0
+# Transitive dependencies pinned for security (2026-11-10 re-scan,
+# docs/security_scan_report_phase2_day4.md):
+# - certifi (TLS root store, pulled in by the google-genai tree):
+#   1 CRITICAL advisory - emSign root CAs with compromised intermediate
+#   CA keys; fixed in 2026.10.18.
+# - pyasn1 (via google-auth): 4 HIGH advisories - DoS via ASN.1
+#   decoding; fixed in 0.6.5.
+# pip-audit only checks the direct pins above, so these two floors keep
+# the transitive tree auditable too. Exact advisory IDs: scan report.
+certifi==2026.10.18
+pyasn1==0.6.5
