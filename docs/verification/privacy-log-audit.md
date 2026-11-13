@@ -76,6 +76,13 @@ covers the response path (`:70-77`).
 
 Pass = the whole file green. Any failure is a Critical/High bug: see section 7.
 
+Provider failure paths are covered separately by
+`tests/failure/test_llm_provider_log_privacy.py` (see section 10):
+
+```bash
+python -m pytest tests/failure/test_llm_provider_log_privacy.py -q
+```
+
 ## 5. Manual / container audit
 
 For a built image or a running container (`docker/Dockerfile`):
@@ -153,3 +160,28 @@ Store records under `docs/verification/` (or paste into the PR description).
 - [ ] No secrets in any report, screenshot or bug row.
 - [ ] Any finding filed in `bug-tracker.csv` with severity and owner.
 - [ ] `LOG_LEVEL` never raised above `INFO` in shared environments.
+
+## 10. D2-24 follow-up: provider failure paths
+
+Audited the two places that handled a failing LLM provider with `print(...)`.
+Both wrote the exception text to stdout, and provider errors can echo the
+prompt, so they were a leak path that the request-path test above did not
+exercise.
+
+| File | Before | After |
+|---|---|---|
+| `app/core/llm_provider.py` | `print(f"Gemini provider unavailable: {error}")` and three similar prints | `logger.warning("gemini_request_failed type=%s", type(error).__name__)` and `gemini_output_failed`, `gemini_invalid_json`, `gemini_request_interrupted` |
+| `app/core/pipeline.py` (`run_pipeline`) | `print(f"LLM provider failed: {error}")` | `logger.warning("llm_provider_failed type=%s", type(error).__name__)` |
+
+New test `tests/failure/test_llm_provider_log_privacy.py`:
+
+1. Makes the Gemini provider raise an error containing a sentinel and asserts
+   the sentinel is absent from `caplog`, stdout and stderr.
+2. Makes `run_pipeline`'s provider lookup fail the same way, asserts the same,
+   and asserts the template fallback still answers.
+3. Asserts the `type=<ExcName>` line is present, so the test cannot pass
+   because nothing was logged.
+
+The `print(...)` calls inside `if __name__ == "__main__"` blocks are developer
+demos and do not run while serving a request.
+
