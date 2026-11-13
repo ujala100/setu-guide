@@ -1,6 +1,9 @@
 ﻿import json
+import logging
 import sys
 import os
+
+logger = logging.getLogger("setu.guide.pipeline")
 
 # Add project root to Python path
 sys.path.append(
@@ -159,9 +162,8 @@ def run_pipeline(
 
     except Exception as error:
 
-        print(
-            f"LLM provider failed: {error}"
-        )
+        # Never the message: it can contain the prompt or provider details.
+        logger.warning("llm_provider_failed type=%s", type(error).__name__)
 
         llm_result = None
 

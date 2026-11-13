@@ -1,7 +1,10 @@
 
 import os
 import json
+import logging
 from google import genai
+
+logger = logging.getLogger("setu.guide.llm")
 
 
 class LLMProvider:
@@ -107,18 +110,19 @@ class GeminiLLMProvider(LLMProvider):
             )
 
         except KeyboardInterrupt:
-            print("Gemini request interrupted.")
+            logger.info("gemini_request_interrupted")
             return None
 
         except Exception as error:
-            print(f"Gemini provider unavailable: {error}")
+            # Provider errors can echo the prompt, so log the type only.
+            logger.warning("gemini_request_failed type=%s", type(error).__name__)
             return None
 
         try:
             output_text = interaction.output_text.strip()
 
         except Exception as error:
-            print(f"Gemini output error: {error}")
+            logger.warning("gemini_output_failed type=%s", type(error).__name__)
             return None
 
         # Remove Markdown code fences if Gemini returns them.
@@ -137,7 +141,7 @@ class GeminiLLMProvider(LLMProvider):
             return json.loads(output_text)
 
         except json.JSONDecodeError as error:
-            print(f"Gemini returned invalid JSON: {error}")
+            logger.warning("gemini_invalid_json type=%s", type(error).__name__)
             return None
 
 
