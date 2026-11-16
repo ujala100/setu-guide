@@ -63,16 +63,24 @@ def _clean(value, limit: int = 200) -> str:
 
 # ----------------------------------------------------------------- routing
 def _detect(req: GuideRequest) -> Optional[Intent]:
-    if req.intent:                       # a quick action always wins
+    if req.intent:
         return req.intent
-    text = req.message or ""
-    if PRIVACY_WORDS.search(text):
+    
+    msg = req.message.lower() if req.message else ""
+    
+    # Hinglish mapping to REAL intents
+    if "kaise baat" in msg or "kya bolu" in msg or "baat karu" in msg:
+        return Intent.conversation_ideas
+    if "profile" in msg or "dekhni" in msg:
+        return Intent.help_me_understand
+    if "madad" in msg or "help" in msg:
+        return Intent.help_me_understand
+    if "next" in msg or "aage" in msg:
+        return Intent.next_steps
+    if "safety" in msg or "privacy" in msg or "safe" in msg:
         return Intent.privacy_safety
-    try:
-        found = route_intent(text, None)
-    except Exception:
-        found = None
-    return Intent(found) if found in SUPPORTED_INTENTS else None
+        
+    return None
 
 
 def route(req: GuideRequest) -> Intent:
