@@ -102,11 +102,15 @@ or any API key — the same rule the access log already enforces
   comparable across replicas. Needs Redis before scaling — outside this doc.
 - **No metrics pipeline.** Logs are emitted but not aggregated; M1–M8 cannot be
   charted until a log/metric sink (e.g. Render metrics, or Prometheus + Loki)
-  is chosen. Tooling choice is unassigned.
-- **Real-LLM p95 (12 s)** unvalidated — no real provider path yet
-  (`handle_chat` missing; `docs/api.md` §17).
+  is chosen. Tooling choice is unassigned. For the current Render Free service,
+  treat only outbound bandwidth metrics and the Events timeline as available;
+  no custom dashboard or metrics exporter is implemented.
+- **Real-LLM p95 (12 s)** unvalidated for this staging service. The
+  `handle_chat` entry point now exists, but real-provider latency has not been
+  measured (`docs/api.md` §17).
 - **Alert destinations/channels** not defined (email/Slack/webhook) — needs
-  team input.
+  team input. Render's failed-deploy and unhealthy-service notifications should
+  be configured in the dashboard.
 
 ## 8. Verification (once tooling exists)
 

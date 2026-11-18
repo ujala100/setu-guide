@@ -1,0 +1,104 @@
+{
+  "evaluation_type": "deterministic; no live LLM calls",
+  "router": {
+    "total": 32,
+    "correct": 32,
+    "accuracy_percent": 100.0,
+    "failures": []
+  },
+  "schema_validation": {
+    "valid_cases": {
+      "total": 120,
+      "passed": 120,
+      "pass_percent": 100.0
+    },
+    "invalid_cases": {
+      "total": 180,
+      "rejected": 180,
+      "rejection_percent": 100.0
+    },
+    "malformed_json_cases": {
+      "total": 5,
+      "rejected": 5,
+      "results": [
+        {
+          "input": "",
+          "malformed_json_rejected": true
+        },
+        {
+          "input": "{",
+          "malformed_json_rejected": true
+        },
+        {
+          "input": "{\"intent\": \"conversation_ideas\", \"response\": ",
+          "malformed_json_rejected": true
+        },
+        {
+          "input": "```json\n{}\n```",
+          "malformed_json_rejected": true
+        },
+        {
+          "input": "{\"intent\": \"conversation_ideas\", \"response\": []} trailing text",
+          "malformed_json_rejected": true
+        }
+      ]
+    },
+    "case_failures": []
+  },
+  "fallback_templates": {
+    "total": 4,
+    "valid": 4,
+    "results": {
+      "conversation_ideas": {
+        "valid": true,
+        "response": {
+          "intent": "conversation_ideas",
+          "response": [
+            "What is something you both enjoy discussing?",
+            "What is something you would like to understand better about each other?",
+            "What topic would you both feel comfortable talking about?"
+          ]
+        }
+      },
+      "help_me_understand": {
+        "valid": true,
+        "response": {
+          "intent": "help_me_understand",
+          "response": [
+            "Let's break the topic down into simpler points.",
+            "You can look at the different perspectives involved.",
+            "If something is still unclear, you can ask a more specific question."
+          ]
+        }
+      },
+      "next_steps": {
+        "valid": true,
+        "response": {
+          "intent": "next_steps",
+          "response": [
+            "You could discuss the topic openly with each other.",
+            "You could identify what is still unclear.",
+            "You could decide together what you would like to discuss next."
+          ]
+        }
+      },
+      "privacy_safety": {
+        "valid": true,
+        "response": {
+          "intent": "privacy_safety",
+          "response": [
+            "Please review the available privacy and safety information before sharing sensitive information.",
+            "Avoid sharing unnecessary personal or sensitive details.",
+            "If you have a specific privacy concern, ask about that concern directly."
+          ]
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Synthetic schema cases test the validator, not live model output.",
+    "Router accuracy is measured only on the labelled cases in this script.",
+    "Relevance, five-run consistency, provider comparison, and token costs require separate evaluation.",
+    "Safety cases here do not replace a full human-reviewed red-team test."
+  ]
+}

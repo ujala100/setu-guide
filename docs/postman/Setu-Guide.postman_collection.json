@@ -2,12 +2,12 @@
   "info": {
     "name": "Setu Guide API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "Setu Guide assistant API (v1.0.0). Collection variable `base_url` defaults to local `http://localhost:8000`. For staging, set `base_url` to `https://setu-guide.onrender.com`. Synthetic IDs only (devops-day3-user-001 / devops-day3-match-001) — never send real user data.\n\nMANUAL rate-limit test (do NOT automate against staging defaults): temporarily set RATE_LIMIT_PER_USER=3/minute on a scratch instance, send the quick-action 4x, expect 3x200 then 429 with numeric Retry-After. No 429 request is automated in this collection."
+    "description": "Setu Guide assistant API (v1.0.0). Collection variable `base_url` defaults to the current staging service `https://setu-guide-1wiy.onrender.com`; override it to `http://localhost:8000` for local runs. Endpoints: GET /health and POST /v1/guide/chat. Valid stage values: connect, understand, reflect, discuss, agree, family, reflect_again, decision. Synthetic IDs only (devops-day3-user-001 / devops-day3-match-001) — never send real user data.\n\nMock-versus-real: read only the staging USE_MOCK value in the Render Environment page; never copy LLM_API_KEY or other secrets. Corroborate with orchestrator_failed mode=real / llm_failed log lines after an approved test. Do not infer mode from a single successful response.\n\nMANUAL rate-limit test (do NOT automate against staging defaults): temporarily set RATE_LIMIT_PER_USER=3/minute on a scratch instance, send the quick-action 4x, expect 3x200 then 429 with numeric Retry-After. No 429 request is automated in this collection."
   },
   "variable": [
     {
       "key": "base_url",
-      "value": "http://localhost:8000",
+      "value": "https://setu-guide-1wiy.onrender.com",
       "type": "string"
     }
   ],
