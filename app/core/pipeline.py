@@ -1,9 +1,12 @@
 ﻿
+import logging
 import os
 import sys
 from pathlib import Path
 
 from app.config import get_settings
+
+logger = logging.getLogger("setu.guide.pipeline")
 from app.core.llm_provider import (
     MockLLMProvider,
     GeminiLLMProvider,
@@ -129,10 +132,8 @@ def run_pipeline(
     try:
         provider = get_provider()
     except Exception as error:
-        print(
-            "LLM provider initialization failed: "
-            f"{type(error).__name__}"
-        )
+        # Never log the message: it can contain the prompt or provider details.
+        logger.warning("llm_provider_failed type=%s", type(error).__name__)
         return create_response(intent, user_message)
 
     # Retry once after an exception or invalid response.
