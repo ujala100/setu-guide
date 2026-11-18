@@ -90,7 +90,11 @@ class GeminiLLMProvider(LLMProvider):
     MODEL = "gemini-3.8-flash"
 
     def __init__(self):
+        from app.config import get_settings
+        settings = get_settings()
+
         api_key = os.environ.get("GEMINI_API_KEY")
+        model = getattr(settings, "llm_model", "gemini-3.8-flash")
 
         if not api_key:
             raise ValueError(
@@ -99,8 +103,14 @@ class GeminiLLMProvider(LLMProvider):
 
         self.client = genai.Client(
             api_key=api_key,
-            http_options={"timeout": 10000},
+            http_options={
+                "timeout": settings.llm_timeout_seconds * 1000
+            },
         )
+        # Keep both names so config-driven model selection reaches generate()
+        # while existing class-level test doubles still work.
+        self.MODEL = model
+        self.model = model
 
     def generate(self, prompt):
         start = time.perf_counter()
@@ -111,63 +121,75 @@ class GeminiLLMProvider(LLMProvider):
                 input=prompt,
             )
 
-            output_text = interaction.output_text.strip()
-
-            usage = getattr(interaction, "usage", None)
-
-            if usage is None:
-                logger.info(
-                    "provider=gemini usage_available=false"
-                )
-            else:
-                input_tokens = (
-                    getattr(usage, "total_input_tokens", 0) or 0
-                )
-                output_tokens = (
-                    getattr(usage, "total_output_tokens", 0) or 0
-                )
-                total_tokens = (
-                    getattr(
-                        usage,
-                        "total_tokens",
-                        input_tokens + output_tokens,
-                    )
-                    or 0
-                )
-
-                # Approximate estimate only; verify current model pricing.
-                estimated_cost = (
-                    input_tokens * 0.30
-                    + output_tokens * 2.50
-                ) / 1_000_000
-
-                logger.info(
-                    "provider=gemini input_tokens=%s "
-                    "output_tokens=%s total_tokens=%s "
-                    "estimated_cost_usd=%.10f latency_ms=%.2f",
-                    input_tokens,
-                    output_tokens,
-                    total_tokens,
-                    estimated_cost,
-                    (time.perf_counter() - start) * 1000,
-                )
-
-            output_text = (
-                output_text.removeprefix("```json")
-                .removeprefix("```")
-                .strip()
-            )
-
-            if output_text.endswith("```"):
-                output_text = output_text[:-3].strip()
-
-            return json.loads(output_text)
+        except KeyboardInterrupt:
+            logger.info("gemini_request_interrupted")
+            return None
 
         except Exception as error:
-            logger.warning(
-                "Gemini request or response processing failed: %s",
-                type(error).__name__,
+            # Provider errors can echo the prompt, so log the type only.
+            logger.warning("gemini_request_failed type=%s", type(error).__name__)
+            return None
+
+        try:
+            output_text = interaction.output_text.strip()
+
+        except Exception as error:
+            logger.warning("gemini_output_failed type=%s", type(error).__name__)
+            return None
+
+        usage = getattr(interaction, "usage", None)
+
+        if usage is None:
+            logger.info(
+                "provider=gemini usage_available=false"
             )
+        else:
+            input_tokens = (
+                getattr(usage, "total_input_tokens", 0) or 0
+            )
+            output_tokens = (
+                getattr(usage, "total_output_tokens", 0) or 0
+            )
+            total_tokens = (
+                getattr(
+                    usage,
+                    "total_tokens",
+                    input_tokens + output_tokens,
+                )
+                or 0
+            )
+
+            # Approximate estimate only; verify current model pricing.
+            estimated_cost = (
+                input_tokens * 0.30
+                + output_tokens * 2.50
+            ) / 1_000_000
+
+            logger.info(
+                "provider=gemini input_tokens=%s "
+                "output_tokens=%s total_tokens=%s "
+                "estimated_cost_usd=%.10f latency_ms=%.2f",
+                input_tokens,
+                output_tokens,
+                total_tokens,
+                estimated_cost,
+                (time.perf_counter() - start) * 1000,
+            )
+
+        output_text = (
+            output_text.removeprefix("```json")
+            .removeprefix("```")
+            .strip()
+        )
+
+        if output_text.endswith("```"):
+            output_text = output_text[:-3].strip()
+
+        try:
+            return json.loads(output_text)
+
+        except json.JSONDecodeError as error:
+            logger.warning("gemini_invalid_json type=%s", type(error).__name__)
             return None
 
 
