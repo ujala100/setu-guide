@@ -1,0 +1,245 @@
+{
+  "note": "Pooja's 30 cases (used while tuning)",
+  "cases": [
+    {
+      "q": "what should I ask on a first call",
+      "stage": "connect",
+      "intent": "conversation_ideas",
+      "expect_topics": [
+        "conversation_starters"
+      ]
+    },
+    {
+      "q": "am I ready to move forward",
+      "stage": "connect",
+      "intent": "help_me_understand",
+      "expect_topics": [
+        "checklist"
+      ]
+    },
+    {
+      "q": "what is the readiness checklist",
+      "stage": "connect",
+      "intent": "help_me_understand",
+      "expect_topics": [
+        "stage_description"
+      ]
+    },
+    {
+      "q": "are we both comfortable taking the next step",
+      "stage": "connect",
+      "intent": "conversation_ideas",
+      "expect_topics": [
+        "conversation_starters"
+      ]
+    },
+    {
+      "q": "what does the shared readiness meter mean",
+      "stage": "understand",
+      "intent": "help_me_understand",
+      "expect_topics": [
+        "stage_description"
+      ]
+    },
+    {
+      "q": "is it safe to share my salary",
+      "stage": "understand",
+      "intent": "privacy_safety",
+      "expect_topics": [
+        "privacy_consent"
+      ]
+    },
+    {
+      "q": "what topics are in the checklist",
+      "stage": "understand",
+      "intent": "help_me_understand",
+      "expect_topics": [
+        "checklist"
+      ]
+    },
+    {
+      "q": "what should I be reflecting on",
+      "stage": "understand",
+      "intent": "next_steps",
+      "expect_topics": [
+        "tips"
+      ]
+    },
+    {
+      "q": "what should I think about before next conversation",
+      "stage": "reflect",
+      "intent": "next_steps",
+      "expect_topics": [
+        "next_steps"
+      ]
+    },
+    {
+      "q": "is reflection private",
+      "stage": "reflect",
+      "intent": "privacy_safety",
+      "expect_topics": [
+        "privacy_consent"
+      ]
+    },
+    {
+      "q": "what if I feel unsure",
+      "stage": "reflect",
+      "intent": "next_steps",
+      "expect_topics": [
+        "tips"
+      ]
+    },
+    {
+      "q": "what topics should we discuss",
+      "stage": "discuss",
+      "intent": "help_me_understand",
+      "expect_topics": [
+        "checklist"
+      ]
+    },
+    {
+      "q": "how do we move forward",
+      "stage": "discuss",
+      "intent": "next_steps",
+      "expect_topics": [
+        "next_steps"
+      ]
+    },
+    {
+      "q": "what does family involvement mean",
+      "stage": "discuss",
+      "intent": "conversation_ideas",
+      "expect_topics": [
+        "conversation_starters"
+      ]
+    },
+    {
+      "q": "do you share our private answers",
+      "stage": "discuss",
+      "intent": "privacy_safety",
+      "expect_topics": [
+        "privacy_consent"
+      ]
+    },
+    {
+      "q": "how do we confirm what we agreed",
+      "stage": "agree",
+      "intent": "help_me_understand",
+      "expect_topics": [
+        "stage_description"
+      ]
+    },
+    {
+      "q": "can we recap our agreement",
+      "stage": "agree",
+      "intent": "conversation_ideas",
+      "expect_topics": [
+        "conversation_starters"
+      ]
+    },
+    {
+      "q": "what if something still feels unclear",
+      "stage": "agree",
+      "intent": "next_steps",
+      "expect_topics": [
+        "tips"
+      ]
+    },
+    {
+      "q": "how should our families meet",
+      "stage": "family",
+      "intent": "conversation_ideas",
+      "expect_topics": [
+        "conversation_starters"
+      ]
+    },
+    {
+      "q": "what should family not see",
+      "stage": "family",
+      "intent": "privacy_safety",
+      "expect_topics": [
+        "privacy_consent"
+      ]
+    },
+    {
+      "q": "when do we plan the first meeting",
+      "stage": "family",
+      "intent": "next_steps",
+      "expect_topics": [
+        "next_steps"
+      ]
+    },
+    {
+      "q": "has anything changed after family talks",
+      "stage": "reflect_again",
+      "intent": "help_me_understand",
+      "expect_topics": [
+        "stage_description"
+      ]
+    },
+    {
+      "q": "what new questions should I ask",
+      "stage": "reflect_again",
+      "intent": "conversation_ideas",
+      "expect_topics": [
+        "conversation_starters"
+      ]
+    },
+    {
+      "q": "what comes after reflection",
+      "stage": "reflect_again",
+      "intent": "next_steps",
+      "expect_topics": [
+        "next_steps"
+      ]
+    },
+    {
+      "q": "should I say yes",
+      "stage": "decision",
+      "intent": "help_me_understand",
+      "expect_topics": [
+        "stage_description"
+      ]
+    },
+    {
+      "q": "how do I share my decision kindly",
+      "stage": "decision",
+      "intent": "next_steps",
+      "expect_topics": [
+        "next_steps"
+      ]
+    },
+    {
+      "q": "is it ok to say not yet",
+      "stage": "decision",
+      "intent": "next_steps",
+      "expect_topics": [
+        "tips"
+      ]
+    },
+    {
+      "q": "can you predict if we will succeed",
+      "stage": "decision",
+      "intent": "privacy_safety",
+      "expect_topics": [
+        "safety"
+      ]
+    },
+    {
+      "q": "should I decide for them",
+      "stage": "decision",
+      "intent": "privacy_safety",
+      "expect_topics": [
+        "safety"
+      ]
+    },
+    {
+      "q": "how do you protect my data",
+      "stage": "global",
+      "intent": "privacy_safety",
+      "expect_topics": [
+        "privacy_consent"
+      ]
+    }
+  ]
+}

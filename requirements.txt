@@ -1,5 +1,8 @@
-fastapi
-pydantic>=2
-uvicorn
-pytest
-httpx
+# Runtime dependencies only (installed in the Docker image).
+# Dev/test tools live in requirements-dev.txt.
+fastapi==0.142.2
+pydantic==2.13.5
+pydantic-settings==2.15.0
+cachetools==7.2.1
+uvicorn==0.54.0
+google-genai==2.29.0

@@ -1,0 +1,180 @@
+{
+  "note": "21 extra queries written after tuning; replace with AI/ML 1's held-out conversations",
+  "cases": [
+    {
+      "q": "give me icebreaker questions",
+      "stage": "connect",
+      "intent": "conversation_ideas",
+      "expect_topics": [
+        "conversation_starters"
+      ]
+    },
+    {
+      "q": "what happens in this stage",
+      "stage": "understand",
+      "intent": "help_me_understand",
+      "expect_topics": [
+        "stage_description",
+        "checklist"
+      ]
+    },
+    {
+      "q": "what does the checklist include",
+      "stage": "understand",
+      "intent": "help_me_understand",
+      "expect_topics": [
+        "checklist"
+      ]
+    },
+    {
+      "q": "what do I do now",
+      "stage": "understand",
+      "intent": "next_steps",
+      "expect_topics": [
+        "next_steps",
+        "tips"
+      ]
+    },
+    {
+      "q": "why is there a pause here",
+      "stage": "reflect",
+      "intent": "help_me_understand",
+      "expect_topics": [
+        "stage_description"
+      ]
+    },
+    {
+      "q": "questions about family and future plans",
+      "stage": "discuss",
+      "intent": "conversation_ideas",
+      "expect_topics": [
+        "conversation_starters"
+      ]
+    },
+    {
+      "q": "will the other person see what I wrote privately",
+      "stage": "discuss",
+      "intent": "privacy_safety",
+      "expect_topics": [
+        "privacy_consent"
+      ]
+    },
+    {
+      "q": "what happens after we agree",
+      "stage": "agree",
+      "intent": "next_steps",
+      "expect_topics": [
+        "next_steps"
+      ]
+    },
+    {
+      "q": "what does agreeing mean here",
+      "stage": "agree",
+      "intent": "help_me_understand",
+      "expect_topics": [
+        "stage_description",
+        "checklist"
+      ]
+    },
+    {
+      "q": "what happens in the family stage",
+      "stage": "family",
+      "intent": "help_me_understand",
+      "expect_topics": [
+        "stage_description",
+        "checklist"
+      ]
+    },
+    {
+      "q": "can my parents see our chats",
+      "stage": "family",
+      "intent": "privacy_safety",
+      "expect_topics": [
+        "privacy_consent"
+      ]
+    },
+    {
+      "q": "how do I get ready for the decision",
+      "stage": "reflect_again",
+      "intent": "next_steps",
+      "expect_topics": [
+        "next_steps",
+        "tips"
+      ]
+    },
+    {
+      "q": "tell me if this will work out",
+      "stage": "decision",
+      "intent": "privacy_safety",
+      "expect_topics": [
+        "safety"
+      ]
+    },
+    {
+      "q": "just choose for me",
+      "stage": "decision",
+      "intent": "privacy_safety",
+      "expect_topics": [
+        "safety"
+      ]
+    },
+    {
+      "q": "what should we talk about before deciding",
+      "stage": "decision",
+      "intent": "conversation_ideas",
+      "expect_topics": [
+        "conversation_starters"
+      ]
+    },
+    {
+      "q": "who can see my profile photo",
+      "stage": "connect",
+      "intent": "privacy_safety",
+      "expect_topics": [
+        "privacy_consent"
+      ]
+    },
+    {
+      "q": "someone asked for my phone number",
+      "stage": "connect",
+      "intent": "privacy_safety",
+      "expect_topics": [
+        "safety",
+        "privacy_consent"
+      ]
+    },
+    {
+      "q": "what should I do first",
+      "stage": "connect",
+      "intent": "next_steps",
+      "expect_topics": [
+        "next_steps",
+        "tips"
+      ]
+    },
+    {
+      "q": "we finished talking, now what",
+      "stage": "discuss",
+      "intent": "next_steps",
+      "expect_topics": [
+        "next_steps"
+      ]
+    },
+    {
+      "q": "I feel pressured to answer quickly",
+      "stage": "understand",
+      "intent": "privacy_safety",
+      "expect_topics": [
+        "safety"
+      ]
+    },
+    {
+      "q": "what if I feel judged by the readiness score",
+      "stage": "reflect",
+      "intent": "privacy_safety",
+      "expect_topics": [
+        "safety"
+      ]
+    }
+  ]
+}
