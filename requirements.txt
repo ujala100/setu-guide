@@ -6,7 +6,9 @@ pydantic-settings==2.15.0
 cachetools==7.2.1
 uvicorn==0.54.0
 google-genai==2.29.0
-# Transitive dependencies pinned for security (2026-11-10 re-scan,
+openai==3.35.1
+
+# Transitive dependencies pinned for security (see
 # docs/security_scan_report_phase2_day4.md):
 # - certifi (TLS root store, pulled in by the google-genai tree):
 #   1 CRITICAL advisory - emSign root CAs with compromised intermediate

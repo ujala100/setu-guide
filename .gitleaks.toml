@@ -1,0 +1,22 @@
+# Gitleaks configuration - Setu Guide.
+#
+# Extends the default rule set (every built-in detector stays active). The
+# allowlists below cover only values reviewed on 2026-11-13 (D1-03) and
+# confirmed to be synthetic test data or documentation placeholders.
+# Any other finding - including any real credential - still fails the scan.
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Documentation placeholder key in the curl example (reviewed 2026-11-13, D1-03)"
+regexTarget = "secret"
+regexes = ['''^your-real-key$''']
+
+[[allowlists]]
+description = "Synthetic API keys used only in tests and their documentation examples (reviewed 2026-11-13, D1-03)"
+paths = [
+  '''tests/integration/test_auth\.py''',
+  '''tests/failure/test_log_privacy\.py''',
+  '''docs/verification/privacy-log-audit\.md''',
+]
