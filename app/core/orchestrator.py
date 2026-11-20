@@ -68,7 +68,8 @@ def _detect(req: GuideRequest) -> Optional[Intent]:
     
     msg = req.message.lower() if req.message else ""
     
-    if "help" in msg or "madad" in msg or "what now" in msg or "not sure" in msg:
+    # Make sure we only catch "help" if it is the EXACT word, not in a sentence
+    if msg == "help" or "madad" in msg or "what now" in msg or "not sure" in msg:
         return Intent.help_me_understand
     if "kaise baat" in msg or "kya bolu" in msg or "baat karu" in msg:
         return Intent.conversation_ideas
